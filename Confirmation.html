@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="nl">
 <head>
 <script>(function(){try{if(sessionStorage.getItem('ur_ok')!=='1'){location.replace('index.html');}}catch(e){location.replace('index.html');}})();</script>
 <meta charset="UTF-8">
-<title>Immoweb – Confirmation &amp; envoi</title>
+<title>Immoweb – Bevestiging &amp; verzending</title>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+  .send-btn:disabled { opacity: 0.45; cursor: not-allowed; }
   a { color: inherit; text-decoration: none; }
   button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -100,10 +101,10 @@
   .consent-subtitle { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--iw-gray); margin-bottom: 12px; }
   .consent-item-opt > .checkbox { margin-top: 6px; }
   .bank-logo { width: 24px; height: 24px; border-radius: 6px; background: linear-gradient(135deg, #C8017E 0%, #9E0064 100%); color: white; font-weight: 800; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; font-family: var(--font); flex-shrink: 0; letter-spacing: -0.02em; }
-  .consent-item-opt { cursor: pointer; user-select: none; }
-  .consent-item-opt .checkbox { transition: background 0.15s, border-color 0.15s; }
-  .consent-item-opt:not(.checked) .checkbox { background: var(--iw-white); border: 1.5px solid var(--iw-border); }
-  .consent-item-opt:not(.checked) .checkbox svg { display: none; }
+  .consent-item-opt, .consent-item-req { cursor: pointer; user-select: none; }
+  .consent-item-opt .checkbox, .consent-item-req .checkbox { transition: background 0.15s, border-color 0.15s; }
+  .consent-item-opt:not(.checked) .checkbox, .consent-item-req:not(.checked) .checkbox { background: var(--iw-white); border: 1.5px solid var(--iw-border); }
+  .consent-item-opt:not(.checked) .checkbox svg, .consent-item-req:not(.checked) .checkbox svg { display: none; }
   .summary-box { background: var(--iw-white); border: 1px solid var(--iw-border); border-radius: 12px; padding: 18px 22px; margin-bottom: 14px; }
   .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--iw-border); font-size: 13px; }
   .summary-row:last-child { border-bottom: none; padding-bottom: 0; }
@@ -218,8 +219,8 @@
 <div class="announce">
   <div></div>
   <div class="announce-right">
-    <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Courtier agréé FSMA</span>
-    <span>🇧🇪 Belgique</span>
+    <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>FSMA-erkende kredietmakelaar</span>
+    <span>🇧🇪 België</span>
   </div>
 </div>
 
@@ -231,14 +232,14 @@
     </div>
     <nav class="hdr-nav">
       <a class="hdr-link active" href="Landing.html">HypoMatch</a>
-      <span class="hdr-link">Nos partenaires</span>
-      <a class="hdr-link" href="#">Notre modèle</a>
-      <a class="hdr-link" href="#">Courtier en crédit</a>
+      <span class="hdr-link">Onze partners</span>
+      <a class="hdr-link" role="link" aria-disabled="true">Ons model</a>
+      <a class="hdr-link" role="link" aria-disabled="true">Kredietmakelaar</a>
     </nav>
   </div>
   <div class="hdr-right">
-    <span class="hdr-lang on">FR</span>
-    <span class="hdr-lang">NL</span>
+    <span class="hdr-lang">FR</span>
+    <span class="hdr-lang on">NL</span>
     <span class="hdr-lang">EN</span>
     <button class="hdr-cta">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -249,21 +250,21 @@
 
 <div class="iw-progress-bar">
   <div class="iw-steps">
-    <div class="iw-step done"><div class="iw-step-num">✓</div> Mon projet</div>
+    <div class="iw-step done"><div class="iw-step-num">✓</div> Mijn project</div>
     <span class="iw-step-arrow done"></span>
-    <div class="iw-step done"><div class="iw-step-num">✓</div> Mes informations</div>
+    <div class="iw-step done"><div class="iw-step-num">✓</div> Mijn gegevens</div>
     <span class="iw-step-arrow done"></span>
-    <div class="iw-step done"><div class="iw-step-num">✓</div> Simulation</div>
+    <div class="iw-step done"><div class="iw-step-num">✓</div> Mijn voorstellen</div>
     <span class="iw-step-arrow done"></span>
-    <div class="iw-step active"><div class="iw-step-num">4</div> Confirmation</div>
+    <div class="iw-step active"><div class="iw-step-num">4</div> Bevestiging</div>
   </div>
 </div>
 
 <div class="iw-main">
   <div class="left-col">
     <div>
-      <h1 style="font-size: 24px; font-weight: 600; color: var(--iw-navy); margin-bottom: 5px;">Vérifier &amp; envoyer votre dossier</h1>
-      <p style="font-size: 14px; color: var(--iw-gray); line-height: 1.5;">Vérifiez toutes les informations avant d'envoyer votre dossier. Vous pouvez encore revenir en arrière pour modifier ce que vous voulez.</p>
+      <h1 style="font-size: 24px; font-weight: 600; color: var(--iw-navy); margin-bottom: 5px;">Controleer &amp; verstuur je dossier</h1>
+      <p style="font-size: 14px; color: var(--iw-gray); line-height: 1.5;">Controleer alle gegevens voordat je je dossier verstuurt. Je kan nog altijd terugkeren om aan te passen wat je wil.</p>
     </div>
 
     <!-- Projet -->
@@ -271,56 +272,56 @@
       <div class="card-header">
         <div class="card-title">
           <div class="card-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#133DBD" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-          Détails du projet
+          Projectdetails
         </div>
-        <a class="edit-link" href="#">Modifier</a>
+        <a class="edit-link" href="Mon_Projet.html?phase=projet">Wijzigen</a>
       </div>
       <div class="card-body">
         <div class="project-highlight">
           <div class="house-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
           <div style="flex: 1;">
-            <div class="project-address">Rue de la Loi 44, 1000 Bruxelles</div>
-            <div class="project-sub">Appartement · 87 m² · 2 chambres</div>
+            <div class="project-address">Wetstraat 44, 1000 Brussel</div>
+            <div class="project-sub">Appartement · 87 m² · 2 slaapkamers</div>
           </div>
-          <span class="project-badge">Achat</span>
+          <span class="project-badge">Aankoop</span>
         </div>
         <div class="data-grid">
           <div class="data-row" style="padding-right: 24px;">
-            <div class="data-label">Prix d'achat</div>
-            <div class="data-value">385.000 €</div>
+            <div class="data-label">Aankoopprijs</div>
+            <div class="data-value">400.000 €</div>
           </div>
           <div class="data-row">
-            <div class="data-label">Montant emprunté</div>
-            <div class="data-value">308.000 €</div>
+            <div class="data-label">Geleend bedrag</div>
+            <div class="data-value">235.935 €</div>
           </div>
           <div class="data-row" style="padding-right: 24px;">
-            <div class="data-label">Apport personnel</div>
-            <div class="data-value">77.000 € (20 %)</div>
+            <div class="data-label">Eigen inbreng</div>
+            <div class="data-value">200.000 € (50 %)</div>
           </div>
           <div class="data-row">
-            <div class="data-label">Durée souhaitée</div>
-            <div class="data-value">25 ans</div>
+            <div class="data-label">Gewenste looptijd</div>
+            <div class="data-value">20 jaar</div>
           </div>
           <div class="data-row" style="padding-right: 24px;">
-            <div class="data-label">Type de taux</div>
-            <div class="data-value">Fixe</div>
+            <div class="data-label">Type rentevoet</div>
+            <div class="data-value">Variabel (1+1)</div>
           </div>
           <div class="data-row">
-            <div class="data-label">Destination</div>
-            <div class="data-value">Résidence principale</div>
+            <div class="data-label">Bestemming</div>
+            <div class="data-value">Hoofdverblijfplaats</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Informations personnelles -->
+    <!-- Persoonlijke gegevens -->
     <div class="card">
       <div class="card-header">
         <div class="card-title">
           <div class="card-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#133DBD" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-          Informations personnelles
+          Persoonlijke gegevens
         </div>
-        <a class="edit-link" href="#">Modifier</a>
+        <a class="edit-link" href="Mon_Projet.html?phase=infos">Wijzigen</a>
       </div>
 
       <!-- Borrower switcher (visible when à deux) -->
@@ -329,99 +330,99 @@
           <button data-buyer="1" class="conf-btab" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:7px;text-align:left;background:white;box-shadow:0 2px 6px rgba(19,61,189,0.08);">
             <span class="conf-btab-icon" style="width:26px;height:26px;border-radius:50%;background:var(--iw-blue);color:white;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;">1</span>
             <span style="flex:1;">
-              <span style="display:block;font-size:13px;font-weight:700;color:var(--iw-blue);">Emprunteur 1</span>
+              <span style="display:block;font-size:13px;font-weight:700;color:var(--iw-blue);">Kredietnemer 1</span>
               <span style="display:block;font-size:11.5px;color:var(--iw-gray);font-weight:500;margin-top:1px;" id="conf-btab-1-name">Julien Maes</span>
             </span>
-            <span style="font-size:10.5px;font-weight:700;color:white;background:var(--iw-green);border-radius:999px;padding:3px 8px;">✓ Complet</span>
+            <span style="font-size:10.5px;font-weight:700;color:white;background:var(--iw-green);border-radius:999px;padding:3px 8px;">✓ Volledig</span>
           </button>
           <button data-buyer="2" class="conf-btab" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:7px;text-align:left;background:transparent;">
             <span class="conf-btab-icon" style="width:26px;height:26px;border-radius:50%;background:var(--iw-border);color:var(--iw-gray);font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;">2</span>
             <span style="flex:1;">
-              <span style="display:block;font-size:13px;font-weight:700;color:var(--iw-navy);">Emprunteur 2</span>
+              <span style="display:block;font-size:13px;font-weight:700;color:var(--iw-navy);">Kredietnemer 2</span>
               <span style="display:block;font-size:11.5px;color:var(--iw-gray);font-weight:500;margin-top:1px;" id="conf-btab-2-name">Camille Dubois</span>
             </span>
-            <span style="font-size:10.5px;font-weight:700;color:white;background:var(--iw-green);border-radius:999px;padding:3px 8px;">✓ Complet</span>
+            <span style="font-size:10.5px;font-weight:700;color:white;background:var(--iw-green);border-radius:999px;padding:3px 8px;">✓ Volledig</span>
           </button>
         </div>
       </div>
 
       <div class="card-body">
-        <!-- Emprunteur 1 -->
+        <!-- Kredietnemer 1 -->
         <div class="data-grid" data-buyer-panel="1">
           <div class="data-row" style="padding-right: 24px;">
-            <div class="data-label">Nom complet</div>
+            <div class="data-label">Volledige naam</div>
             <div class="data-value">Julien Maes</div>
           </div>
           <div class="data-row">
-            <div class="data-label">Date de naissance</div>
-            <div class="data-value">14 mars 1988</div>
+            <div class="data-label">Geboortedatum</div>
+            <div class="data-value">14 maart 1988</div>
           </div>
           <div class="data-row" style="padding-right: 24px;">
-            <div class="data-label">Numéro de registre national</div>
+            <div class="data-label">Rijksregisternummer</div>
             <div class="data-value">88.03.14-123.45</div>
           </div>
           <div class="data-row">
-            <div class="data-label">Situation familiale</div>
-            <div class="data-value">Marié(e)</div>
+            <div class="data-label">Burgerlijke staat</div>
+            <div class="data-value">Gehuwd</div>
           </div>
           <div class="data-row" style="padding-right: 24px;">
             <div class="data-label">E-mail</div>
             <div class="data-value">j.maes@email.be</div>
           </div>
           <div class="data-row">
-            <div class="data-label">Téléphone</div>
+            <div class="data-label">Telefoon</div>
             <div class="data-value">+32 478 12 34 56</div>
           </div>
           <div class="data-row data-row-full">
-            <div class="data-label">Adresse actuelle</div>
-            <div class="data-value">Avenue Louise 200, 1050 Ixelles, Belgique</div>
+            <div class="data-label">Huidig adres</div>
+            <div class="data-value">Louizalaan 200, 1050 Elsene, België</div>
           </div>
           <div class="data-row" style="padding-right: 24px;">
-            <div class="data-label">Type de contrat</div>
-            <div class="data-value">Employé (CDI)</div>
+            <div class="data-label">Type contract</div>
+            <div class="data-value">Bediende (vast contract)</div>
           </div>
           <div class="data-row">
-            <div class="data-label">Revenu net mensuel</div>
+            <div class="data-label">Netto maandinkomen</div>
             <div class="data-value">3.850 €</div>
           </div>
         </div>
 
-        <!-- Emprunteur 2 -->
+        <!-- Kredietnemer 2 -->
         <div class="data-grid" data-buyer-panel="2" style="display:none;">
           <div class="data-row" style="padding-right: 24px;">
-            <div class="data-label">Nom complet</div>
+            <div class="data-label">Volledige naam</div>
             <div class="data-value">Camille Dubois</div>
           </div>
           <div class="data-row">
-            <div class="data-label">Date de naissance</div>
-            <div class="data-value">22 juillet 1990</div>
+            <div class="data-label">Geboortedatum</div>
+            <div class="data-value">22 juli 1990</div>
           </div>
           <div class="data-row" style="padding-right: 24px;">
-            <div class="data-label">Numéro de registre national</div>
+            <div class="data-label">Rijksregisternummer</div>
             <div class="data-value">90.07.22-234.56</div>
           </div>
           <div class="data-row">
-            <div class="data-label">Situation familiale</div>
-            <div class="data-value">Marié(e)</div>
+            <div class="data-label">Burgerlijke staat</div>
+            <div class="data-value">Gehuwd</div>
           </div>
           <div class="data-row" style="padding-right: 24px;">
             <div class="data-label">E-mail</div>
             <div class="data-value">c.dubois@email.be</div>
           </div>
           <div class="data-row">
-            <div class="data-label">Téléphone</div>
+            <div class="data-label">Telefoon</div>
             <div class="data-value">+32 471 98 76 54</div>
           </div>
           <div class="data-row data-row-full">
-            <div class="data-label">Adresse actuelle</div>
-            <div class="data-value">Avenue Louise 200, 1050 Ixelles, Belgique</div>
+            <div class="data-label">Huidig adres</div>
+            <div class="data-value">Louizalaan 200, 1050 Elsene, België</div>
           </div>
           <div class="data-row" style="padding-right: 24px;">
-            <div class="data-label">Type de contrat</div>
-            <div class="data-value">Employée (CDI)</div>
+            <div class="data-label">Type contract</div>
+            <div class="data-value">Bediende (vast contract)</div>
           </div>
           <div class="data-row">
-            <div class="data-label">Revenu net mensuel</div>
+            <div class="data-label">Netto maandinkomen</div>
             <div class="data-value">3.200 €</div>
           </div>
         </div>
@@ -434,12 +435,12 @@
   <div style="display: flex; flex-direction: column; gap: 14px;">
 
     <div class="broker-card">
-      <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: rgba(255,255,255,0.6); margin-bottom: 14px;">Votre courtier assigné</div>
+      <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: rgba(255,255,255,0.6); margin-bottom: 14px;">Jouw toegewezen kredietmakelaar</div>
       <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
         <div class="broker-avatar">SV</div>
         <div>
           <div class="broker-name">Sophie Vermeersch</div>
-          <div class="broker-role">Courtière en crédit · Partenaire Immoweb</div>
+          <div class="broker-role">Kredietmakelaar · Immoweb-partner</div>
         </div>
       </div>
       <div class="broker-detail">
@@ -448,54 +449,54 @@
       </div>
       <div class="broker-detail">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        Répond dans les 24 heures
+        Antwoordt binnen 24 uur
       </div>
     </div>
 
     <div class="consent-box">
-      <div class="consent-title">Veuillez confirmer avant d'envoyer</div>
-      <div class="consent-item">
+      <div class="consent-title">Bevestig dit voordat je verstuurt</div>
+      <div class="consent-item consent-item-req" role="checkbox" aria-checked="false" tabindex="0">
         <div class="checkbox"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <div class="consent-text">Je confirme que toutes les informations personnelles et les documents que j'ai fournis sont exacts et complets.</div>
+        <div class="consent-text">Ik bevestig dat alle persoonlijke gegevens en documenten die ik heb aangeleverd, juist en volledig zijn.</div>
       </div>
-      <div class="consent-item">
+      <div class="consent-item consent-item-req" role="checkbox" aria-checked="false" tabindex="0">
         <div class="checkbox"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <div class="consent-text">J'autorise mon courtier à transmettre ce dossier aux banques partenaires pour obtenir des offres de crédit.</div>
+        <div class="consent-text">Ik geef mijn kredietmakelaar de toestemming om dit dossier aan de partnerbanken te bezorgen om kredietvoorstellen te verkrijgen.</div>
       </div>
-      <div class="consent-item">
+      <div class="consent-item consent-item-req" role="checkbox" aria-checked="false" tabindex="0">
         <div class="checkbox"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <div class="consent-text">J'ai lu et j'accepte la <a href="#">politique de confidentialité</a> et les <a href="#">conditions d'utilisation</a> d'Immoweb.</div>
+        <div class="consent-text">Ik heb het <a role="link" aria-disabled="true">privacybeleid</a> gelezen en aanvaard, net als de <a role="link" aria-disabled="true">gebruiksvoorwaarden</a> van Immoweb.</div>
       </div>
       <div class="consent-divider"></div>
-      <div class="consent-subtitle">Option supplémentaire</div>
+      <div class="consent-subtitle">Extra optie</div>
       <div class="consent-item consent-item-opt" data-consent="belfius" role="checkbox" aria-checked="false" tabindex="0">
         <div class="checkbox"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
         <div class="consent-text">
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;">
             <div class="bank-logo" aria-label="Belfius">B</div>
-            <strong>Envoyer également mon dossier à Belfius</strong>
+            <strong>Mijn dossier ook naar Belfius versturen</strong>
           </div>
-          Belfius recevra mon dossier en parallèle de mon courtier et pourra me proposer une offre directe. Vous pourrez la comparer aux offres négociées par votre courtier.
+          Belfius ontvangt mijn dossier parallel met mijn kredietmakelaar en kan me een rechtstreeks voorstel doen. Je kan dat vergelijken met de voorstellen die je kredietmakelaar onderhandelt.
         </div>
       </div>
     </div>
 
-    <button class="send-btn">
+    <button class="send-btn" disabled>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-      Envoyer à mon courtier
+      Versturen naar mijn kredietmakelaar
     </button>
     <button class="talk-btn">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      Parler à mon courtier
+      Praat met mijn kredietmakelaar
     </button>
     <a href="Simulation.html" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:var(--iw-white);color:var(--iw-navy);border:1px solid var(--iw-border);border-radius:10px;padding:12px;font-size:13px;font-weight:600;font-family:var(--font);text-decoration:none;cursor:pointer;">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
-      Retour à la simulation
+      Terug naar mijn voorstellen
     </a>
 
     <div class="security-note">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8A9BB5" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      Vos données sont chiffrées et protégées. Seuls votre courtier et les prêteurs sélectionnés peuvent accéder à ce dossier.
+      Je gegevens worden versleuteld en beschermd. Alleen je kredietmakelaar en de geselecteerde kredietgevers hebben toegang tot dit dossier.
     </div>
   </div>
 
@@ -504,9 +505,9 @@
     <div class="card-header">
       <div class="card-title">
         <div class="card-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#133DBD" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-        Vos documents
+        Jouw documenten
       </div>
-      <a class="edit-link" href="#">Modifier</a>
+      <a class="edit-link" href="Mon_Projet.html?phase=infos">Wijzigen</a>
     </div>
 
     <!-- Borrower switcher (mirrors #conf-btabs above; shown only when à deux) -->
@@ -515,102 +516,102 @@
         <button data-buyer="1" class="conf-btab" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:7px;text-align:left;background:white;box-shadow:0 2px 6px rgba(19,61,189,0.08);">
           <span class="conf-btab-icon" style="width:26px;height:26px;border-radius:50%;background:var(--iw-blue);color:white;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;">1</span>
           <span style="flex:1;">
-            <span style="display:block;font-size:13px;font-weight:700;color:var(--iw-blue);">Emprunteur 1</span>
+            <span style="display:block;font-size:13px;font-weight:700;color:var(--iw-blue);">Kredietnemer 1</span>
             <span style="display:block;font-size:11.5px;color:var(--iw-gray);font-weight:500;margin-top:1px;">Julien Maes</span>
           </span>
-          <span style="font-size:10.5px;font-weight:700;color:white;background:var(--iw-green);border-radius:999px;padding:3px 8px;">✓ Complet</span>
+          <span style="font-size:10.5px;font-weight:700;color:white;background:var(--iw-green);border-radius:999px;padding:3px 8px;">✓ Volledig</span>
         </button>
         <button data-buyer="2" class="conf-btab" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:7px;text-align:left;background:transparent;">
           <span class="conf-btab-icon" style="width:26px;height:26px;border-radius:50%;background:var(--iw-border);color:var(--iw-gray);font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;">2</span>
           <span style="flex:1;">
-            <span style="display:block;font-size:13px;font-weight:700;color:var(--iw-navy);">Emprunteur 2</span>
+            <span style="display:block;font-size:13px;font-weight:700;color:var(--iw-navy);">Kredietnemer 2</span>
             <span style="display:block;font-size:11.5px;color:var(--iw-gray);font-weight:500;margin-top:1px;">Camille Dubois</span>
           </span>
-          <span style="font-size:10.5px;font-weight:700;color:white;background:var(--iw-green);border-radius:999px;padding:3px 8px;">✓ Complet</span>
+          <span style="font-size:10.5px;font-weight:700;color:white;background:var(--iw-green);border-radius:999px;padding:3px 8px;">✓ Volledig</span>
         </button>
       </div>
     </div>
 
     <div class="card-body">
-      <!-- Documents — Emprunteur 1 -->
+      <!-- Documents — Kredietnemer 1 -->
       <div data-buyer-panel="1">
         <div class="doc-list">
           <div class="doc-item">
             <div class="doc-item-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
             <div style="flex:1;">
               <div class="doc-item-name">carte_identite_recto.pdf &amp; carte_identite_verso.pdf</div>
-              <div class="doc-item-meta">Carte d'identité — recto et verso</div>
+              <div class="doc-item-meta">Identiteitskaart — voor- en achterkant</div>
             </div>
-            <span class="doc-item-size">2,1 Mo</span>
+            <span class="doc-item-size">2,1 MB</span>
           </div>
           <div class="doc-item">
             <div class="doc-item-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
             <div style="flex:1;">
               <div class="doc-item-name">fiche_salaire_fev25.pdf · fiche_salaire_mar25.pdf · fiche_salaire_avr25.pdf</div>
-              <div class="doc-item-meta">Fiches de salaire — 3 derniers mois</div>
+              <div class="doc-item-meta">Loonfiches — laatste 3 maanden</div>
             </div>
-            <span class="doc-item-size">2,4 Mo</span>
+            <span class="doc-item-size">2,4 MB</span>
           </div>
           <div class="doc-item">
             <div class="doc-item-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
             <div style="flex:1;">
               <div class="doc-item-name">extrait_compte_fev25.pdf · extrait_compte_mar25.pdf · extrait_compte_avr25.pdf</div>
-              <div class="doc-item-meta">Extraits de compte — 3 derniers mois</div>
+              <div class="doc-item-meta">Rekeninguittreksels — laatste 3 maanden</div>
             </div>
-            <span class="doc-item-size">6,0 Mo</span>
+            <span class="doc-item-size">6,0 MB</span>
           </div>
           <div class="doc-item">
             <div class="doc-item-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
             <div style="flex:1;">
               <div class="doc-item-name">avertissement_role_2023.pdf · avertissement_role_2024.pdf</div>
-              <div class="doc-item-meta">Avertissement-extrait de rôle — 2 dernières années</div>
+              <div class="doc-item-meta">Aanslagbiljet — laatste 2 jaar</div>
             </div>
-            <span class="doc-item-size">3,2 Mo</span>
+            <span class="doc-item-size">3,2 MB</span>
           </div>
         </div>
         <div style="margin-top: 12px; padding: 10px 14px; background: var(--iw-blue-light); border-radius: 8px; font-size: 12.5px; color: var(--iw-blue);">
-          <strong style="font-weight: 700;">5 fichiers · 13,7 Mo</strong> — Documents vérifiés et prêts à être envoyés.
+          <strong style="font-weight: 700;">5 bestanden · 13,7 MB</strong> — Documenten gecontroleerd en klaar om te versturen.
         </div>
       </div>
 
-      <!-- Documents — Emprunteur 2 -->
+      <!-- Documents — Kredietnemer 2 -->
       <div data-buyer-panel="2" style="display:none;">
         <div class="doc-list">
           <div class="doc-item">
             <div class="doc-item-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
             <div style="flex:1;">
               <div class="doc-item-name">carte_identite_recto.pdf &amp; carte_identite_verso.pdf</div>
-              <div class="doc-item-meta">Carte d'identité — recto et verso</div>
+              <div class="doc-item-meta">Identiteitskaart — voor- en achterkant</div>
             </div>
-            <span class="doc-item-size">1,9 Mo</span>
+            <span class="doc-item-size">1,9 MB</span>
           </div>
           <div class="doc-item">
             <div class="doc-item-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
             <div style="flex:1;">
               <div class="doc-item-name">fiche_salaire_fev25.pdf · fiche_salaire_mar25.pdf · fiche_salaire_avr25.pdf</div>
-              <div class="doc-item-meta">Fiches de salaire — 3 derniers mois</div>
+              <div class="doc-item-meta">Loonfiches — laatste 3 maanden</div>
             </div>
-            <span class="doc-item-size">2,1 Mo</span>
+            <span class="doc-item-size">2,1 MB</span>
           </div>
           <div class="doc-item">
             <div class="doc-item-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
             <div style="flex:1;">
               <div class="doc-item-name">extrait_compte_fev25.pdf · extrait_compte_mar25.pdf · extrait_compte_avr25.pdf</div>
-              <div class="doc-item-meta">Extraits de compte — 3 derniers mois</div>
+              <div class="doc-item-meta">Rekeninguittreksels — laatste 3 maanden</div>
             </div>
-            <span class="doc-item-size">5,4 Mo</span>
+            <span class="doc-item-size">5,4 MB</span>
           </div>
           <div class="doc-item">
             <div class="doc-item-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
             <div style="flex:1;">
               <div class="doc-item-name">avertissement_role_2023.pdf · avertissement_role_2024.pdf</div>
-              <div class="doc-item-meta">Avertissement-extrait de rôle — 2 dernières années</div>
+              <div class="doc-item-meta">Aanslagbiljet — laatste 2 jaar</div>
             </div>
-            <span class="doc-item-size">2,9 Mo</span>
+            <span class="doc-item-size">2,9 MB</span>
           </div>
         </div>
         <div style="margin-top: 12px; padding: 10px 14px; background: var(--iw-blue-light); border-radius: 8px; font-size: 12.5px; color: var(--iw-blue);">
-          <strong style="font-weight: 700;">5 fichiers · 12,3 Mo</strong> — Documents vérifiés et prêts à être envoyés.
+          <strong style="font-weight: 700;">5 bestanden · 12,3 MB</strong> — Documenten gecontroleerd en klaar om te versturen.
         </div>
       </div>
     </div>
@@ -623,7 +624,7 @@
         <div class="ai-card-icon">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.7L19.5 10l-5.6 1.9L12 18l-1.9-6.1L4.5 10l5.6-1.3z"/><path d="M19 17l.9 2.1L22 20l-2.1.9L19 23l-.9-2.1L16 20l2.1-.9z"/></svg>
         </div>
-        Compléter avec l'IA
+        Aanvullen met AI
       </div>
       <div class="ai-privacy-pill">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -637,8 +638,8 @@
           <div class="ai-drop-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
           </div>
-          <div class="ai-drop-title">Ajoutez un document, ou <button type="button" class="ai-drop-pick" id="ai-pick">parcourir</button></div>
-          <div class="ai-drop-sub">L'IA extrait automatiquement les données utiles · PDF, JPG, PNG · max 15 Mo</div>
+          <div class="ai-drop-title">Voeg een document toe, of <button type="button" class="ai-drop-pick" id="ai-pick">blader</button></div>
+          <div class="ai-drop-sub">De AI haalt automatisch de nuttige gegevens eruit · PDF, JPG, PNG · max. 15 MB</div>
           <div class="ai-doc-list" id="ai-doc-list">
             <div class="ai-doc-item done" data-doc="cni">
               <span class="ai-doc-icon">
@@ -646,9 +647,9 @@
                 <svg class="ai-doc-done" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
               </span>
               <span class="ai-doc-content">
-                <span class="ai-doc-label">Carte d'identité</span>
+                <span class="ai-doc-label">Identiteitskaart</span>
               </span>
-              <span class="ai-doc-status">Reçu</span>
+              <span class="ai-doc-status">Ontvangen</span>
             </div>
             <div class="ai-doc-item done" data-doc="paie">
               <span class="ai-doc-icon">
@@ -656,9 +657,9 @@
                 <svg class="ai-doc-done" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
               </span>
               <span class="ai-doc-content">
-                <span class="ai-doc-label">3 dernières fiches de paie</span>
+                <span class="ai-doc-label">Laatste 3 loonfiches</span>
               </span>
-              <span class="ai-doc-status">Reçu</span>
+              <span class="ai-doc-status">Ontvangen</span>
             </div>
             <div class="ai-doc-item done" data-doc="aer">
               <span class="ai-doc-icon">
@@ -666,9 +667,9 @@
                 <svg class="ai-doc-done" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
               </span>
               <span class="ai-doc-content">
-                <span class="ai-doc-label">AER / fiche fiscale</span>
+                <span class="ai-doc-label">Aanslagbiljet / fiscale fiche</span>
               </span>
-              <span class="ai-doc-status">Reçu</span>
+              <span class="ai-doc-status">Ontvangen</span>
             </div>
             <div class="ai-doc-item done" data-doc="gage">
               <span class="ai-doc-icon">
@@ -676,10 +677,10 @@
                 <svg class="ai-doc-done" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
               </span>
               <span class="ai-doc-content">
-                <span class="ai-doc-label">Gage</span>
-                <span class="ai-doc-sub">Compromis de vente ou PV d'adjudication définitive</span>
+                <span class="ai-doc-label">Pand</span>
+                <span class="ai-doc-sub">Verkoopcompromis of PV van definitieve toewijzing</span>
               </span>
-              <span class="ai-doc-status">Reçu</span>
+              <span class="ai-doc-status">Ontvangen</span>
             </div>
             <div class="ai-doc-item" data-doc="pret">
               <span class="ai-doc-icon">
@@ -687,10 +688,10 @@
                 <svg class="ai-doc-done" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
               </span>
               <span class="ai-doc-content">
-                <span class="ai-doc-label">Prêt</span>
-                <span class="ai-doc-sub">Demande de crédit originale signée</span>
+                <span class="ai-doc-label">Krediet</span>
+                <span class="ai-doc-sub">Ondertekende originele kredietaanvraag</span>
               </span>
-              <span class="ai-doc-status">À fournir</span>
+              <span class="ai-doc-status">Aan te leveren</span>
             </div>
           </div>
         </div>
@@ -698,7 +699,7 @@
       <div class="ai-files" id="ai-files"></div>
       <div class="ai-foot-note">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
-        <span>TLS 1.3 · Aucune donnée conservée · RGPD UE</span>
+        <span>TLS 1.3 · Geen gegevens bewaard · GDPR EU</span>
       </div>
     </div>
   </div>
@@ -709,19 +710,19 @@
   <div class="footer-top">
     <div>
       <svg viewBox="0 0 668.2 145" style="width:120px;height:auto;display:block;opacity:0.85;"><style>.sf{fill:#fff;}</style><rect class="sf" height="65.8" width="17.8" x="37.6" y="69.8"/><path class="sf" d="M140.3,68.5c-7.9,0-15,3.7-19,12.3c-2.8-8.3-9.4-12.3-17.1-12.3c-7.5,0-13,3.3-16.2,9.4v-8H70.2v65.8H88V95.9c0-8.3,4.2-12.3,9.7-12.3c5.5,0,9.7,3.6,9.7,11v41.1H125V95.2c0-7.6,3.9-12.1,9.7-12.1c5.5,0,9.7,4,9.7,11.4v41.1h17.8V91.2C162.2,76.5,153.5,68.5,140.3,68.5z"/><path class="sf" d="M247.1,68.5c-7.9,0-15,3.7-19,12.3c-2.8-8.3-9.4-12.3-17.1-12.3c-7.5,0-13,3.3-16.2,9.4v-8h-17.8v65.8h17.8V95.9c0-8.3,4.2-12.3,9.7-12.3c5.5,0,9.7,3.6,9.7,11v41.1h17.6V95.2c0-7.6,3.9-12.1,9.7-12.1c5.5,0,9.7,4,9.7,11.4v41.1h17.8V91.2C269.1,76.5,260.3,68.5,247.1,68.5z"/><polygon class="sf" points="450.6,119 439.3,69.8 418.5,69.8 406.9,119 394.9,69.8 377.1,69.8 395.1,135.6 418,135.6 428.9,92.9 439.5,135.6 462.4,135.6 480.5,69.8 462.9,69.8"/><path class="sf" d="M599.7,68.5c-8.7,0-16.8,4.6-21.1,11.2V38.5h-17.8v97.1h17.1v-8.7c4.6,6.7,12.2,10.1,20.8,10.1c18.5,0,31.9-13.2,31.9-34C630.7,82.2,617.5,68.5,599.7,68.5z M595.4,121.9c-9,0-17.5-6.7-17.5-18.9c0-12.5,8.5-19.3,17.5-19.3c9.4,0,17.5,7.1,17.5,19.3C612.9,114.9,604.9,121.9,595.4,121.9z"/><rect class="sf" height="17.2" width="17.8" x="37.6" y="38.4"/><path class="sf" d="M520,121.7c-8.9,0-17.1-5.3-17.3-15.7h44.7c0.6-2.5,0.8-5.1,0.8-8c0-18.2-12.3-29.6-30.5-29.6c-19.7,0-32.7,15.1-32.7,33.9c0,21.1,14.6,34.7,34.8,34.7c14.1,0,23.8-6.4,29-16.6l-15.1-5.9C531.1,119.1,526.7,121.7,520,121.7z M517.7,82.8c7.9,0,13.3,4.3,13.3,11c0,0.3-0.1,0.6-0.1,0.6h-28.2C504.3,86.9,510.6,82.8,517.7,82.8z"/><path class="sf" d="M355.3,53.9h-13.7v9l-17.8-12.6l-44.9,31.8l17.5,53.6h54.8l17.5-53.6l-13.4-9.5V53.9z M340.3,120.8h-33.1L296.6,88l27.2-19.3L351,88L340.3,120.8z"/></svg>
-      <p class="footer-brand-sub">Immoweb HypoMatch est un service du groupe AVIV, agréé FSMA en tant que courtier en crédit hypothécaire.</p>
+      <p class="footer-brand-sub">Immoweb HypoMatch is een dienst van de AVIV-groep, FSMA-erkend als kredietmakelaar in hypothecair krediet.</p>
     </div>
     <div>
       <div class="footer-col-title">HypoMatch</div>
-      <div class="footer-links"><a class="footer-link">Nos partenaires</a><a class="footer-link" href="#">Courtier en crédit</a><a class="footer-link" href="#">Notre modèle</a><a class="footer-link">Taux actuels</a></div>
+      <div class="footer-links"><a class="footer-link">Onze partners</a><a class="footer-link" role="link" aria-disabled="true">Kredietmakelaar</a><a class="footer-link" role="link" aria-disabled="true">Ons model</a><a class="footer-link">Actuele rentevoeten</a></div>
     </div>
     <div>
-      <div class="footer-col-title">Légal</div>
-      <div class="footer-links"><a class="footer-link">Politique RGPD</a><a class="footer-link">Conditions générales</a><a class="footer-link">Agrément FSMA</a><a class="footer-link">Cookies</a></div>
+      <div class="footer-col-title">Juridisch</div>
+      <div class="footer-links"><a class="footer-link">GDPR-beleid</a><a class="footer-link">Algemene voorwaarden</a><a class="footer-link">FSMA-erkenning</a><a class="footer-link">Cookies</a></div>
     </div>
   </div>
   <div class="footer-bottom">
-    <div class="footer-bottom-l">© 2026 Immoweb SA · Part of AVIV Group · Courtier en crédit agréé FSMA</div>
+    <div class="footer-bottom-l">© 2026 Immoweb SA · Part of AVIV Group · FSMA-erkende kredietmakelaar</div>
     <div class="footer-bottom-r"><span>FR</span><span>NL</span><span>EN</span></div>
   </div>
 </footer>
@@ -729,7 +730,7 @@
 <script>
   // ────────── Buyer tabs (sync Informations + Documents panels) ──────────
   // Placed at end-of-body so all .conf-btab buttons and [data-buyer-panel] panels
-  // are in the DOM by the time this runs — both Informations personnelles
+  // are in the DOM by the time this runs — both Persoonlijke gegevens
   // (in .left-col) and Documents envoyés (row-2 grid sibling).
   (function(){
     // Detect "à deux" from Mon Projet state
@@ -803,10 +804,10 @@
 
     // Required-document checklist — keywords to detect doc type from filename
     const REQUIRED_DOCS = {
-      cni:   ['identite','identité','eid','cni','carte_id','carte-id','carteid','passeport','passport'],
-      paie:  ['paie','salaire','payslip','bulletin','remuneration','rémunération'],
-      aer:   ['aer','fiscal','avertissement','extrait','tax','impot','impôt'],
-      gage:  ['gage','compromis','vente','achat','offre','adjudication','pv'],
+      cni:   ['identite','identité','identiteit','identiteitskaart','eid','cni','carte_id','carte-id','carteid','passeport','passport'],
+      paie:  ['paie','salaire','loon','loonfiche','loonbrief','payslip','bulletin','remuneration','rémunération'],
+      aer:   ['aer','fiscal','aanslag','aanslagbiljet','avertissement','extrait','tax','impot','impôt'],
+      gage:  ['gage','compromis','verkoop','vente','achat','offre','adjudication','pv'],
       pret:  ['pret','prêt','demande','credit','crédit','signe','signé','application']
     };
     function detectDocType(filename) {
@@ -822,7 +823,7 @@
       if (!item || item.classList.contains('done')) return false;
       item.classList.add('done');
       const status = item.querySelector('.ai-doc-status');
-      if (status) status.textContent = 'Reçu';
+      if (status) status.textContent = 'Ontvangen';
       return true;
     }
 
@@ -841,7 +842,7 @@
             <span class="ai-file-bar"><span class="ai-file-bar-fill" style="width:0%"></span></span>
           </span>
         </span>
-        <span class="ai-file-status">Analyse…</span>`;
+        <span class="ai-file-status">Analyseren…</span>`;
       row.querySelector('.ai-file-name').textContent = file.name;
       aiFilesEl.appendChild(row);
 
@@ -862,7 +863,7 @@
     }
   })();
 
-  // ────────── "Parler à mon courtier" → navigate to Rendez-vous courtier page ──────────
+  // ────────── "Praat met mijn kredietmakelaar" → navigate to Afspraak kredietmakelaar page ──────────
   document.querySelectorAll('.talk-btn').forEach(function(btn){
     btn.addEventListener('click', function(){
       window.location.href = 'Rendez-vous_courtier.html';
@@ -870,10 +871,17 @@
   });
 
   // ────────── Optional consent rows (e.g. send file to Belfius) — toggle on click ──────────
-  document.querySelectorAll('.consent-item-opt').forEach(function(item){
+  function updateSendState(){
+  const req = document.querySelectorAll('.consent-item-req');
+  const ok = Array.prototype.every.call(req, function(i){ return i.classList.contains('checked'); });
+  const btn = document.querySelector('.send-btn');
+  if (btn) btn.disabled = !ok;
+}
+document.querySelectorAll('.consent-item-opt, .consent-item-req').forEach(function(item){
     function toggle(){
       const on = item.classList.toggle('checked');
       item.setAttribute('aria-checked', on ? 'true' : 'false');
+      updateSendState();
     }
     item.addEventListener('click', toggle);
     item.addEventListener('keydown', function(e){

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="nl">
 <head>
 <script>(function(){try{if(sessionStorage.getItem('ur_ok')!=='1'){location.replace('index.html');}}catch(e){location.replace('index.html');}})();</script>
 <meta charset="UTF-8">
-<title>Immoweb — Simulation</title>
+<title>Immoweb — Mijn voorstellen</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -159,7 +159,7 @@ input, select { font-family: inherit; }
 .pref-card.selected[data-pref="all"] { background: var(--iw-surface); border-color: var(--iw-gray-d); }
 .pref-card.selected[data-pref="all"] .pref-ico { background: var(--iw-gray-d); border-color: var(--iw-gray-d); color: white; }
 
-/* Multi-card variant: a "Prévisibilité totale" container with two sub-options inside */
+/* Multi-card variant: a "Totale voorspelbaarheid" container with two sub-options inside */
 .pref-card.pref-card-multi { flex-direction: column; align-items: stretch; cursor: default; gap: 11px; }
 .pref-card.pref-card-multi:hover { background: var(--iw-surface); border-color: var(--iw-border-l); }
 .pref-card.pref-card-multi .pref-card-header { display: flex; align-items: center; gap: 11px; }
@@ -219,8 +219,8 @@ input, select { font-family: inherit; }
 /* ── DECISION SUPPORT PANEL ── */
 .decision { margin: 4px 0 22px; padding-top: 22px; border-top: 1px solid var(--iw-border-l); }
 /* Type explainer — a clickable title appears below the priority cards once a filter
-   is active. Clicking the title reveals the type-specific fit-grid (Idéal si /
-   Moins adapté si). Clicking outside the panel collapses the body. The outer
+   is active. Clicking the title reveals the type-specific fit-grid (Ideaal als /
+   Minder geschikt als). Clicking outside the panel collapses the body. The outer
    wrapper hides entirely until a filter is chosen. */
 .formula-explainer { margin-bottom: 16px; }
 .formula-explainer[hidden] { display: none !important; }
@@ -379,8 +379,8 @@ html.embed .shell {
 <div class="announce">
   <div></div>
   <div class="announce-right">
-    <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Courtier agréé FSMA</span>
-    <span>🇧🇪 Belgique</span>
+    <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>FSMA-erkende kredietmakelaar</span>
+    <span>🇧🇪 België</span>
   </div>
 </div>
 
@@ -393,14 +393,14 @@ html.embed .shell {
     </div>
     <nav class="hdr-nav">
       <a class="hdr-link active" href="Landing.html">HypoMatch</a>
-      <span class="hdr-link">Nos partenaires</span>
-      <a class="hdr-link" href="#">Notre modèle</a>
-      <a class="hdr-link" href="#">Courtier en crédit</a>
+      <span class="hdr-link">Onze partners</span>
+      <a class="hdr-link" role="link" aria-disabled="true">Ons model</a>
+      <a class="hdr-link" role="link" aria-disabled="true">Kredietmakelaar</a>
     </nav>
   </div>
   <div class="hdr-right">
-    <span class="hdr-lang on">FR</span>
-    <span class="hdr-lang">NL</span>
+    <span class="hdr-lang">FR</span>
+    <span class="hdr-lang on">NL</span>
     <span class="hdr-lang">EN</span>
     <button class="hdr-cta">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -411,15 +411,15 @@ html.embed .shell {
 
 <!-- PAGE HEADER + MACRO STEPPER -->
 <div class="page-top">
-  <div class="crumb">Votre simulation</div>
+  <div class="crumb">Jouw simulatie</div>
   <div class="macro-stepper">
-    <div class="macro done" data-href="Mon_Projet.html?phase=projet" onclick="location.href='Mon_Projet.html'"><span class="num">✓</span>Mon projet</div>
+    <div class="macro done" data-href="Mon_Projet.html?phase=projet" onclick="location.href='Mon_Projet.html'"><span class="num">✓</span>Mijn project</div>
     <span class="macro-sep done"></span>
-    <div class="macro done" data-href="Mon_Projet.html?phase=infos" onclick="location.href='Mon_Projet.html'"><span class="num">✓</span>Mes informations</div>
+    <div class="macro done" data-href="Mon_Projet.html?phase=infos" onclick="location.href='Mon_Projet.html'"><span class="num">✓</span>Mijn gegevens</div>
     <span class="macro-sep done"></span>
-    <div class="macro active"><span class="num">3</span>Simulation</div>
+    <div class="macro active"><span class="num">3</span>Mijn voorstellen</div>
     <span class="macro-sep"></span>
-    <div class="macro"><span class="num">4</span>Confirmation</div>
+    <div class="macro"><span class="num">4</span>Bevestiging</div>
   </div>
 </div>
 
@@ -428,24 +428,24 @@ html.embed .shell {
 
   <!-- EDIT PANEL -->
   <aside class="edit">
-    <h2>Modifier la simulation</h2>
-    <div class="edit-sub">Ajustez les paramètres pour affiner vos résultats</div>
+    <h2>Simulatie aanpassen</h2>
+    <div class="edit-sub">Pas de parameters aan om je resultaten te verfijnen</div>
 
     <div class="field">
       <div class="field-row">
-        <span class="field-lbl">Durée du prêt</span>
-        <span class="field-val"><span id="duree-val">20</span> ans</span>
+        <span class="field-lbl">Looptijd van het krediet</span>
+        <span class="field-val"><span id="duree-val">20</span> jaar</span>
       </div>
       <div class="range-wrap">
         <div class="range-track" id="duree-track"></div>
         <input type="range" min="5" max="30" value="20" step="1" class="range" id="duree">
       </div>
-      <div class="range-ends"><span>5 ans</span><span>30 ans</span></div>
+      <div class="range-ends"><span>5 jaar</span><span>30 jaar</span></div>
     </div>
 
     <div class="field">
       <div class="field-row">
-        <span class="field-lbl">Votre apport personnel</span>
+        <span class="field-lbl">Jouw eigen inbreng</span>
       </div>
       <div class="cur-input">
         <input type="text" id="apport" value="200 000" inputmode="numeric">
@@ -456,20 +456,20 @@ html.embed .shell {
     <div class="divider"></div>
 
     <div class="sum-row">
-      <span class="lbl">Prix d'achat du bien</span>
+      <span class="lbl">Aankoopprijs van de woning</span>
       <span class="val">400 000,00 €</span>
     </div>
     <div class="sum-row">
-      <span class="lbl">Frais <span class="detail">▾ détail</span></span>
+      <span class="lbl">Kosten <span class="detail">▾ detail</span></span>
       <span class="val">35 935,00 €</span>
     </div>
     <div class="sum-row neg">
-      <span class="lbl">Apport personnel</span>
+      <span class="lbl">Eigen inbreng</span>
       <span class="val">− <span id="apport-sum">200 000,00</span> €</span>
     </div>
 
     <div class="capital">
-      <span class="lbl">Capital emprunté</span>
+      <span class="lbl">Geleend kapitaal</span>
       <span class="val"><span id="capital-val">235 935,00</span> €</span>
     </div>
   </aside>
@@ -479,15 +479,15 @@ html.embed .shell {
     <div class="offers-head">
       <div class="offers-title">
         Solutions
-        <span class="offers-count">Taux actuels du marché<span class="info-tip">i<span class="tip">Ces taux reflètent les conditions actuelles du marché. Votre taux définitif sera confirmé par la banque après examen de votre dossier complet — il peut donc varier légèrement.</span></span></span>
+        <span class="offers-count">Actuele marktrentevoeten<span class="info-tip">i<span class="tip">Deze rentevoeten weerspiegelen de huidige marktomstandigheden. Je definitieve rentevoet wordt door de bank bevestigd na onderzoek van je volledige dossier — hij kan dus licht afwijken.</span></span></span>
       </div>
     </div>
 
     <!-- PREFERENCE MINI-DASHBOARD -->
-    <div class="preferences" role="radiogroup" aria-label="Vos priorités">
+    <div class="preferences" role="radiogroup" aria-label="Jouw prioriteiten">
       <div class="pref-q">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
-        Quelle est votre priorité&nbsp;? <span class="pref-q-sub">Nous trions les offres selon ce qui compte le plus pour vous</span>
+        Wat is jouw prioriteit&nbsp;? <span class="pref-q-sub">We sorteren de voorstellen volgens wat voor jou het belangrijkst is</span>
       </div>
       <div class="pref-cards">
         <div class="pref-card pref-card-multi" data-pref="certain">
@@ -496,18 +496,18 @@ html.embed .shell {
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
             </span>
             <span class="pref-text">
-              <span class="pref-label">Prévisibilité totale</span>
-              <span class="pref-sub">Vous savez à l'avance ce que vous paierez</span>
+              <span class="pref-label">Totale voorspelbaarheid</span>
+              <span class="pref-sub">Je weet op voorhand wat je zal betalen</span>
             </span>
           </div>
           <div class="pref-suboptions" role="radiogroup" aria-label="Variantes de mensualité prévisible">
             <button class="pref-subopt" data-suboffer="2" type="button" role="radio" aria-checked="false">
-              <span class="pref-subopt-label">Mensualité fixe</span>
-              <span class="pref-subopt-sub">Vous payez la même chose chaque mois — zéro surprise, facile à budgéter</span>
+              <span class="pref-subopt-label">Vaste afbetaling</span>
+              <span class="pref-subopt-sub">Je betaalt elke maand hetzelfde — nul verrassingen, makkelijk te budgetteren</span>
             </button>
             <button class="pref-subopt" data-suboffer="3" type="button" role="radio" aria-checked="false">
-              <span class="pref-subopt-label">Mensualité progressive</span>
-              <span class="pref-subopt-sub">Commence plus bas, puis augmente chaque année selon un calendrier fixé à l'avance — idéal si vos revenus devraient aussi augmenter</span>
+              <span class="pref-subopt-label">Progressieve afbetaling</span>
+              <span class="pref-subopt-sub">Start lager en stijgt daarna elk jaar volgens een vooraf vastgelegd schema — ideaal als je inkomsten ook zouden moeten stijgen</span>
             </button>
           </div>
         </div>
@@ -516,8 +516,8 @@ html.embed .shell {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </span>
           <span class="pref-text">
-            <span class="pref-label">Mensualité protégée</span>
-            <span class="pref-sub">Votre paiement reste toujours le même — mais vous rembourserez peut-être quelques années de plus si les taux montent</span>
+            <span class="pref-label">Beschermde afbetaling</span>
+            <span class="pref-sub">Je betaling blijft altijd dezelfde — maar je betaalt misschien enkele jaren langer af als de rentevoeten stijgen</span>
           </span>
         </button>
         <button class="pref-card" data-pref="cheapest" role="radio" aria-checked="false">
@@ -525,8 +525,8 @@ html.embed .shell {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
           </span>
           <span class="pref-text">
-            <span class="pref-label">Mensualité variable</span>
-            <span class="pref-sub">Vous commencez avec le taux le plus bas — mais votre mensualité peut augmenter (ou baisser) chaque année selon les taux</span>
+            <span class="pref-label">Variabele afbetaling</span>
+            <span class="pref-sub">Je start met de laagste rentevoet — maar je maandelijkse afbetaling kan elk jaar stijgen (of dalen) volgens de rentevoeten</span>
           </span>
         </button>
         <button class="pref-card" data-pref="all" role="radio" aria-checked="false">
@@ -534,8 +534,8 @@ html.embed .shell {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
           </span>
           <span class="pref-text">
-            <span class="pref-label">Pas de préférence</span>
-            <span class="pref-sub">Comparer toutes les formules</span>
+            <span class="pref-label">Geen voorkeur</span>
+            <span class="pref-sub">Alle formules vergelijken</span>
           </span>
         </button>
       </div>
@@ -545,79 +545,79 @@ html.embed .shell {
     <aside class="formula-explainer" hidden>
       <button class="formula-explainer-trigger" type="button" aria-expanded="false" aria-controls="formula-explainer-body">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11H5a2 2 0 0 0-2 2v7h18v-7a2 2 0 0 0-2-2h-4"/><path d="M9 11V5a3 3 0 0 1 6 0v6"/></svg>
-        <span>Cette formule, est-elle faite pour vous&nbsp;?</span>
+        <span>Is deze formule iets voor jou&nbsp;?</span>
         <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
       <div class="formula-explainer-body" id="formula-explainer-body" hidden>
         <div class="fit-grid" data-explainer-for="variable" hidden>
           <div class="fit-card good">
-            <div class="fit-head">Idéal si</div>
+            <div class="fit-head">Ideaal als</div>
             <ul class="fit-list">
-              <li>Vous prévoyez de revendre ou refinancer dans 5 à 7 ans</li>
-              <li>Vos revenus sont en croissance et peuvent absorber une hausse</li>
-              <li>Vous anticipez une stabilité ou une baisse des taux</li>
+              <li>Je van plan bent om binnen 5 à 7 jaar te verkopen of te herfinancieren</li>
+              <li>Je inkomsten groeien en een stijging kunnen opvangen</li>
+              <li>Je stabiele of dalende rentevoeten verwacht</li>
             </ul>
           </div>
           <div class="fit-card warn">
-            <div class="fit-head">Prudence si</div>
+            <div class="fit-head">Opgepast als</div>
             <ul class="fit-list">
-              <li>Vos revenus sont fixes ou votre budget est serré</li>
-              <li>Vous voulez une mensualité prévisible à l'euro près</li>
-              <li>Vous comptez garder ce prêt jusqu'à son terme</li>
+              <li>Je inkomsten vast zijn of je budget krap is</li>
+              <li>Je een afbetaling wil die tot op de euro voorspelbaar is</li>
+              <li>Je dit krediet tot het einde wil aanhouden</li>
             </ul>
           </div>
         </div>
         <div class="fit-grid" data-explainer-for="accordion" hidden>
           <div class="fit-card good">
-            <div class="fit-head">Idéal si</div>
+            <div class="fit-head">Ideaal als</div>
             <ul class="fit-list">
-              <li>Votre priorité absolue est la stabilité de votre budget mensuel</li>
-              <li>Vos revenus sont fixes — un saut de mensualité serait difficile à absorber</li>
-              <li>Vous acceptez de potentiellement rembourser plus longtemps en échange de cette protection</li>
+              <li>De stabiliteit van je maandbudget je absolute prioriteit is</li>
+              <li>Je inkomsten vast zijn — een sprong in de afbetaling zou moeilijk op te vangen zijn</li>
+              <li>Je aanvaardt dat je mogelijk langer afbetaalt in ruil voor die bescherming</li>
             </ul>
           </div>
           <div class="fit-card warn">
-            <div class="fit-head">Moins adapté si</div>
+            <div class="fit-head">Minder geschikt als</div>
             <ul class="fit-list">
-              <li>Vous voulez minimiser le coût total du crédit</li>
-              <li>Vos revenus permettent d'absorber une hausse de mensualité</li>
-              <li>Vous prévoyez de revendre dans 5 à 7 ans</li>
+              <li>Je de totale kostprijs van het krediet wil beperken</li>
+              <li>Je inkomsten een hogere afbetaling kunnen opvangen</li>
+              <li>Je van plan bent om binnen 5 à 7 jaar te verkopen</li>
             </ul>
           </div>
         </div>
         <div class="fit-grid" data-explainer-for="fixe" hidden>
           <div class="fit-card good">
-            <div class="fit-head">Idéal si</div>
+            <div class="fit-head">Ideaal als</div>
             <ul class="fit-list">
-              <li>Vous gardez ce bien sur le long terme (résidence principale durable)</li>
-              <li>Vos revenus sont fixes — vous voulez budgéter à l'euro près</li>
-              <li>Vous anticipez une hausse des taux ou une période d'incertitude</li>
+              <li>Je deze woning op lange termijn houdt (duurzame hoofdverblijfplaats)</li>
+              <li>Je inkomsten vast zijn — je wil tot op de euro budgetteren</li>
+              <li>Je stijgende rentevoeten of een onzekere periode verwacht</li>
             </ul>
           </div>
           <div class="fit-card warn">
-            <div class="fit-head">Moins adapté si</div>
+            <div class="fit-head">Minder geschikt als</div>
             <ul class="fit-list">
-              <li>Vous prévoyez de revendre ou refinancer dans 5 à 7 ans</li>
-              <li>Vous anticipez une baisse significative et durable des taux</li>
-              <li>Vous voulez maximiser l'optimisation financière, quitte à prendre un risque</li>
+              <li>Je van plan bent om binnen 5 à 7 jaar te verkopen of te herfinancieren</li>
+              <li>Je een aanzienlijke en duurzame rentedaling verwacht</li>
+              <li>Je maximaal financieel wil optimaliseren, ook al neem je een risico</li>
             </ul>
           </div>
         </div>
         <div class="fit-grid" data-explainer-for="progressif" hidden>
           <div class="fit-card good">
-            <div class="fit-head">Idéal si</div>
+            <div class="fit-head">Ideaal als</div>
             <ul class="fit-list">
-              <li>Vous démarrez votre carrière et vos revenus vont progresser (CDI, jeune cadre, fonction publique avec ancienneté courte)</li>
-              <li>Votre capacité d'emprunt actuelle limite votre projet — la mensualité initiale réduite vous donne accès à un bien plus ambitieux</li>
-              <li>Vous voulez préserver du budget les premières années (frais d'installation, jeune famille, travaux à financer)</li>
+              <li>Je aan het begin van je carrière staat en je inkomsten zullen stijgen (vast contract, jonge kaderfunctie, openbare sector met korte anciënniteit)</li>
+              <li>Je huidige leencapaciteit je project beperkt — de lagere startafbetaling geeft je toegang tot een ambitieuzere woning</li>
+              <li>Je de eerste jaren budget wil vrijhouden (installatiekosten, jong gezin, werken te financieren)</li>
             </ul>
           </div>
           <div class="fit-card warn">
-            <div class="fit-head">Moins adapté si</div>
+            <div class="fit-head">Minder geschikt als</div>
             <ul class="fit-list">
-              <li>Vos revenus sont déjà stabilisés ou en seconde partie de carrière</li>
-              <li>Votre revenu est volatil (indépendant, freelance) — la mensualité augmente automatiquement chaque année, que vos revenus suivent ou non.</li>
-              <li>Vous voulez minimiser le coût total du crédit (le progressif est presque toujours plus cher au total qu'un fixe classique)</li>
+              <li>Je inkomsten al gestabiliseerd zijn of je in de tweede helft van je carrière zit</li>
+              <li>Je inkomen schommelt (zelfstandige, freelancer) — de afbetaling stijgt elk jaar automatisch, of je inkomsten nu volgen of niet.</li>
+              <li>Je de totale kostprijs van het krediet wil beperken (de progressieve formule is in totaal bijna altijd duurder dan een klassieke vaste)</li>
             </ul>
           </div>
         </div>
@@ -632,18 +632,18 @@ html.embed .shell {
       <div class="offer-head" data-toggle>
         <div class="rate-block">
           <div class="rate">3,25<small>&nbsp;%</small></div>
-          <div class="monthly"><strong>1 330,74 €</strong> / mois</div>
+          <div class="monthly"><strong>1 330,74 €</strong> / maand</div>
         </div>
         <div class="bank">
           <div class="bank-logo">B</div>
           <div class="bank-info">
-            <div class="bank-name">BNPPF Credit Brokers · <span class="formula">1+1 (+ 3 %)<span class="tip">Votre taux est fixé pour 1 an, puis ajusté chaque année selon le marché — mais il ne peut jamais dépasser votre taux initial + 3%.</span></span></div>
+            <div class="bank-name">BNPPF Credit Brokers · <span class="formula">1+1 (+ 3 %)<span class="tip">Je rentevoet ligt 1 jaar vast en wordt daarna jaarlijks aangepast volgens de markt — maar hij kan nooit hoger worden dan je startrentevoet + 3%.</span></span></div>
             <div class="bank-tags">
               <span class="tag best">
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.6 6.4L21 9l-5 4.4L17.6 21 12 17.3 6.4 21 8 13.4 3 9l6.4-.6z"/></svg>
-                Meilleure offre
+                Beste voorstel
               </span>
-              <span class="tag type">Taux variable</span>
+              <span class="tag type">Variabele rentevoet</span>
             </div>
           </div>
         </div>
@@ -654,96 +654,96 @@ html.embed .shell {
       <div class="offer-body">
         <div class="detail-grid">
           <div class="detail-card">
-            <div class="dlbl">Première mensualité</div>
+            <div class="dlbl">Eerste maandelijkse afbetaling</div>
             <div class="dval">1 330,74 €</div>
-            <div class="dsub">Ce que vous paierez la 1ère année</div>
+            <div class="dsub">Wat je het 1ste jaar zal betalen</div>
           </div>
           <div class="detail-card">
-            <div class="dlbl">Mensualité maximum</div>
+            <div class="dlbl">Maximale maandelijkse afbetaling</div>
             <div class="dval">1 676,00 €</div>
-            <div class="dsub">Maximum garanti par contrat</div>
+            <div class="dsub">Contractueel gegarandeerd maximum</div>
           </div>
         </div>
 
         <div class="detail-rows">
-          <div class="drow"><span class="lbl">Amortissement</span><span class="val">Versement constant<span class="info-tip">i<span class="tip">Vous payez la même somme chaque mois, avec différentes révisions prévues dans le contrat</span></span></span></div>
-          <div class="drow"><span class="lbl">Durée totale</span><span class="val">20 ans</span></div>
-          <div class="drow"><span class="lbl">Coût total du crédit<span class="info-tip">i<span class="tip">Le coût total du crédit représente la somme totale que vous rembourserez sur toute la durée du prêt : capital emprunté, intérêts, frais de dossier et primes d'assurance.</span></span></span><span class="val">319 377,60 €</span></div>
-          <div class="drow hl"><span class="lbl">TAEG<span class="info-tip">i<span class="tip">Le TAEG (Taux Annuel Effectif Global) intègre l'ensemble des coûts du crédit — taux nominal, frais de dossier, assurances obligatoires. C'est l'indicateur standard pour comparer plusieurs offres.</span></span></span><span class="val">3,41 %</span></div>
+          <div class="drow"><span class="lbl">Aflossing</span><span class="val">Constante betaling<span class="info-tip">i<span class="tip">Je betaalt elke maand hetzelfde bedrag, met verschillende herzieningen voorzien in het contract</span></span></span></div>
+          <div class="drow"><span class="lbl">Totale looptijd</span><span class="val">20 jaar</span></div>
+          <div class="drow"><span class="lbl">Totale kostprijs van het krediet<span class="info-tip">i<span class="tip">De totale kostprijs van het krediet is het totale bedrag dat je over de hele looptijd terugbetaalt: geleend kapitaal, interesten, dossierkosten en verzekeringspremies.</span></span></span><span class="val">319 377,60 €</span></div>
+          <div class="drow hl"><span class="lbl">JKP<span class="info-tip">i<span class="tip">Het JKP (jaarlijks kostenpercentage) omvat alle kosten van het krediet — nominale rentevoet, dossierkosten, verplichte verzekeringen. Het is de standaardindicator om meerdere voorstellen te vergelijken.</span></span></span><span class="val">3,41 %</span></div>
         </div>
 
         <!-- DECISION SUPPORT -->
         <div class="decision">
           <div class="scenarios">
-            <div class="scenarios-head">3 scénarios pour votre prêt de <strong>235 935 €</strong> sur <strong>20 ans</strong></div>
+            <div class="scenarios-head">3 scenario's voor jouw krediet van <strong>235 935 €</strong> over <strong>20 jaar</strong></div>
 
             <div class="scenario optimistic">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Si les taux baissent ou restent stables</div>
-                <div class="scenario-amt">1 330,74 € / mois</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Als de rentevoeten dalen of stabiel blijven</div>
+                <div class="scenario-amt">1 330,74 € / maand</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:55%"></div></div>
-              <div class="scenario-cost">Coût total : <strong>319 378 €</strong></div>
+              <div class="scenario-cost">Totale kostprijs: <strong>319 378 €</strong></div>
             </div>
 
             <div class="scenario probable">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Scénario probable (révisions ~ +1 % en moyenne)</div>
-                <div class="scenario-amt">~ 1 462 € / mois</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Waarschijnlijk scenario (herzieningen ~ +1 % gemiddeld)</div>
+                <div class="scenario-amt">~ 1 462 € / maand</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:75%"></div></div>
-              <div class="scenario-cost">Coût total estimé : <strong>~ 334 000 €</strong></div>
+              <div class="scenario-cost">Geschatte totale kostprijs: <strong>~ 334 000 €</strong></div>
             </div>
 
             <div class="scenario stress">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Scénario défavorable (limite de +3 % atteint)</div>
-                <div class="scenario-amt">jusqu'à 1 676 € / mois</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Ongunstig scenario (limiet van +3 % bereikt)</div>
+                <div class="scenario-amt">tot 1 676 € / maand</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:100%"></div></div>
-              <div class="scenario-cost">Coût total maximum : <strong>~ 360 000 €</strong></div>
+              <div class="scenario-cost">Maximale totale kostprijs: <strong>~ 360 000 €</strong></div>
             </div>
           </div>
 
           <div class="compare-box">
             <div class="compare-head">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6l1.5 1.5L7 5"/><path d="M3 12l1.5 1.5L7 11"/><path d="M3 18l1.5 1.5L7 17"/></svg>
-              Comparé à l'offre Fixe (3,90 % — 1 406 €/mois)
+              Vergeleken met het vaste voorstel (3,90 % — 1 406 €/maand)
             </div>
             <div class="compare-list">
-              <div class="compare-item save"><span class="ico">↓</span><span>Économie potentielle&nbsp;: <strong>jusqu'à 18 144 €</strong> sur 20 ans (taux stables ou en baisse)</span></div>
-              <div class="compare-item cost"><span class="ico">↑</span><span>Surcoût maximum&nbsp;: <strong>jusqu'à 22 478 €</strong> si le maximum de +3 % est atteint sur la durée</span></div>
-              <div class="compare-item flip"><span class="ico">⚖</span><span>Point de bascule&nbsp;: la formule Fixe devient plus avantageuse si les taux moyens augmentent de <strong>plus de 1,3 %</strong> sur la durée du prêt</span></div>
+              <div class="compare-item save"><span class="ico">↓</span><span>Mogelijke besparing&nbsp;: <strong>tot 18 144 €</strong> over 20 jaar (stabiele of dalende rentevoeten)</span></div>
+              <div class="compare-item cost"><span class="ico">↑</span><span>Maximale meerkost&nbsp;: <strong>tot 22 478 €</strong> als het maximum van +3 % over de looptijd wordt bereikt</span></div>
+              <div class="compare-item flip"><span class="ico">⚖</span><span>Kantelpunt&nbsp;: de vaste formule wordt voordeliger als de gemiddelde rentevoeten stijgen met <strong>meer dan 1,3 %</strong> over de looptijd van het krediet</span></div>
             </div>
           </div>
         </div>
 
         <div class="choose-row">
           <button class="choose">
-            Choisir cette offre et soumettre mon dossier
+            Verdergaan met dit voorstel
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
           <button class="choose-talk">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            Parler à un courtier
+            Praat met een kredietmakelaar
           </button>
         </div>
       </div>
     </article>
 
-    <!-- Offer 2: Accordéon -->
+    <!-- Offer 2: Accordeon -->
     <article class="offer" data-offer="1" data-type="accordion">
       <div class="offer-head" data-toggle>
         <div class="rate-block">
           <div class="rate">3,55<small>&nbsp;%</small></div>
-          <div class="monthly"><strong>1 374,72 €</strong> / mois</div>
+          <div class="monthly"><strong>1 374,72 €</strong> / maand</div>
         </div>
         <div class="bank">
           <div class="bank-logo">B</div>
           <div class="bank-info">
-            <div class="bank-name">BNPPF Credit Brokers · <span class="formula">Accordéon (1+1)<span class="tip">Mensualité protégée : votre paiement mensuel reste stable même quand les taux montent. C'est la durée du prêt qui s'allonge (jusqu'à un plafond de +5 ans) pour absorber les hausses. Le taux est révisé chaque année.</span></span></div>
+            <div class="bank-name">BNPPF Credit Brokers · <span class="formula">Accordeon (1+1)<span class="tip">Beschermde afbetaling: je maandelijkse betaling blijft stabiel, ook als de rentevoeten stijgen. Het is de looptijd van het krediet die langer wordt (tot een plafond van +5 jaar) om de stijgingen op te vangen. De rentevoet wordt jaarlijks herzien.</span></span></div>
             <div class="bank-tags">
-              <span class="tag type accordion">Taux accordéon</span>
+              <span class="tag type accordion">Accordeonrentevoet</span>
             </div>
           </div>
         </div>
@@ -753,62 +753,62 @@ html.embed .shell {
       </div>
       <div class="offer-body">
         <div class="detail-grid">
-          <div class="detail-card"><div class="dlbl">Mensualité protégée</div><div class="dval">1 374,72 €</div><div class="dsub">Stable sur toute la durée</div></div>
-          <div class="detail-card"><div class="dlbl">Durée maximale</div><div class="dval">25 ans</div><div class="dsub">Plafond d'allongement (+5 ans max)</div></div>
+          <div class="detail-card"><div class="dlbl">Beschermde afbetaling</div><div class="dval">1 374,72 €</div><div class="dsub">Stabiel over de hele looptijd</div></div>
+          <div class="detail-card"><div class="dlbl">Maximale looptijd</div><div class="dval">25 jaar</div><div class="dsub">Verlengingsplafond (max. +5 jaar)</div></div>
         </div>
         <div class="detail-rows">
-          <div class="drow"><span class="lbl">Amortissement</span><span class="val">Mensualité stable, durée extensible</span></div>
-          <div class="drow"><span class="lbl">Durée</span><span class="val">20 ans (extensible jusqu'à 25 ans)</span></div>
-          <div class="drow"><span class="lbl">Coût total du crédit<span class="info-tip">i<span class="tip">Le coût total du crédit représente la somme totale que vous rembourserez sur toute la durée du prêt : capital emprunté, intérêts, frais de dossier et primes d'assurance. Pour un taux accordéon, ce coût varie en fonction de la durée effective (la mensualité, elle, reste stable).</span></span></span><span class="val">329 932,80 € (à durée initiale)</span></div>
-          <div class="drow hl"><span class="lbl">TAEG<span class="info-tip">i<span class="tip">Le TAEG (Taux Annuel Effectif Global) intègre l'ensemble des coûts du crédit — taux nominal, frais de dossier, assurances obligatoires. C'est l'indicateur standard pour comparer plusieurs offres.</span></span></span><span class="val">3,72 %</span></div>
+          <div class="drow"><span class="lbl">Aflossing</span><span class="val">Stabiele afbetaling, verlengbare looptijd</span></div>
+          <div class="drow"><span class="lbl">Looptijd</span><span class="val">20 jaar (verlengbaar tot 25 jaar)</span></div>
+          <div class="drow"><span class="lbl">Totale kostprijs van het krediet<span class="info-tip">i<span class="tip">De totale kostprijs van het krediet is het totale bedrag dat je over de hele looptijd terugbetaalt: geleend kapitaal, interesten, dossierkosten en verzekeringspremies. Bij een accordeonrentevoet varieert die kostprijs volgens de effectieve looptijd (de maandelijkse afbetaling blijft wel stabiel).</span></span></span><span class="val">329 932,80 € (bij initiële looptijd)</span></div>
+          <div class="drow hl"><span class="lbl">JKP<span class="info-tip">i<span class="tip">Het JKP (jaarlijks kostenpercentage) omvat alle kosten van het krediet — nominale rentevoet, dossierkosten, verplichte verzekeringen. Het is de standaardindicator om meerdere voorstellen te vergelijken.</span></span></span><span class="val">3,72 %</span></div>
         </div>
 
         <!-- DECISION SUPPORT -->
         <div class="decision">
           <div class="scenarios">
-            <div class="scenarios-head">3 scénarios pour votre prêt de <strong>235 935 €</strong> sur <strong>20 ans</strong></div>
+            <div class="scenarios-head">3 scenario's voor jouw krediet van <strong>235 935 €</strong> over <strong>20 jaar</strong></div>
 
             <div class="scenario optimistic">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Si les taux baissent ou restent stables</div>
-                <div class="scenario-amt">1 374,72 € / mois</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Als de rentevoeten dalen of stabiel blijven</div>
+                <div class="scenario-amt">1 374,72 € / maand</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:60%"></div></div>
-              <div class="scenario-cost">Durée 20 ans · Coût total : <strong>329 933 €</strong></div>
+              <div class="scenario-cost">Looptijd 20 jaar · Totale kostprijs: <strong>329 933 €</strong></div>
             </div>
 
             <div class="scenario probable">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Hausse modérée des taux (~ +1 % en moyenne)</div>
-                <div class="scenario-amt">1 374,72 € / mois (stable)</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Gematigde rentestijging (~ +1 % gemiddeld)</div>
+                <div class="scenario-amt">1 374,72 € / maand (stabiel)</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:80%"></div></div>
-              <div class="scenario-cost">Durée allongée à <strong>~ 22 ans</strong> · Coût total estimé : <strong>~ 363 000 €</strong></div>
+              <div class="scenario-cost">Looptijd verlengd tot <strong>~ 22 jaar</strong> · Geschatte totale kostprijs: <strong>~ 363 000 €</strong></div>
             </div>
 
             <div class="scenario stress">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Hausse forte des taux (limite de durée atteinte)</div>
-                <div class="scenario-amt">1 374,72 € / mois (stable)</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Sterke rentestijging (looptijdlimiet bereikt)</div>
+                <div class="scenario-amt">1 374,72 € / maand (stabiel)</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:100%"></div></div>
-              <div class="scenario-cost">Durée <strong>25 ans (limite atteinte)</strong> · Coût total estimé : <strong>~ 412 000 €</strong></div>
+              <div class="scenario-cost">Looptijd <strong>25 jaar (limiet bereikt)</strong> · Geschatte totale kostprijs: <strong>~ 412 000 €</strong></div>
             </div>
           </div>
 
           <div class="compare-box">
             <div class="compare-head">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6l1.5 1.5L7 5"/><path d="M3 12l1.5 1.5L7 11"/><path d="M3 18l1.5 1.5L7 17"/></svg>
-              Comparé à l'offre Fixe (3,90 % — 1 406 €/mois)
+              Vergeleken met het vaste voorstel (3,90 % — 1 406 €/maand)
             </div>
             <div class="compare-list">
-              <div class="compare-item save"><span class="ico">↓</span><span>Mensualité immédiatement plus basse&nbsp;: <strong>− 31,62 €/mois</strong> vs Fixe — économie potentielle de <strong>~ 7 590 €</strong> sur 20 ans si les taux restent stables</span></div>
-              <div class="compare-item cost"><span class="ico">↑</span><span>Risque sur le coût total&nbsp;: si les taux montent fortement, la durée s'allonge (jusqu'à 25 ans) et le coût total peut atteindre <strong>~ 412 000 €</strong> (vs 337 522 € pour le Fixe)</span></div>
+              <div class="compare-item save"><span class="ico">↓</span><span>Meteen lagere afbetaling&nbsp;: <strong>− 31,62 €/maand</strong> vs vast — mogelijke besparing van <strong>~ 7 590 €</strong> over 20 jaar als de rentevoeten stabiel blijven</span></div>
+              <div class="compare-item cost"><span class="ico">↑</span><span>Risico op de totale kostprijs&nbsp;: als de rentevoeten sterk stijgen, wordt de looptijd langer (tot 25 jaar) en kan de totale kostprijs oplopen tot <strong>~ 412 000 €</strong> (vs 337 522 € voor de vaste formule)</span></div>
             </div>
           </div>
         </div>
 
-        <div class="choose-row"><button class="choose">Choisir cette offre et soumettre mon dossier<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Parler à un courtier</button></div>
+        <div class="choose-row"><button class="choose">Verdergaan met dit voorstel<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Praat met een kredietmakelaar</button></div>
       </div>
     </article>
 
@@ -817,14 +817,14 @@ html.embed .shell {
       <div class="offer-head" data-toggle>
         <div class="rate-block">
           <div class="rate">3,90<small>&nbsp;%</small></div>
-          <div class="monthly"><strong>1 406,34 €</strong> / mois</div>
+          <div class="monthly"><strong>1 406,34 €</strong> / maand</div>
         </div>
         <div class="bank">
           <div class="bank-logo">B</div>
           <div class="bank-info">
-            <div class="bank-name">BNPPF Credit Brokers · <span class="formula">Fixe<span class="tip">Taux fixe pendant toute la durée du prêt. Vos mensualités restent identiques, indépendamment de l'évolution des taux du marché.</span></span></div>
+            <div class="bank-name">BNPPF Credit Brokers · <span class="formula">Vast<span class="tip">Vaste rentevoet gedurende de hele looptijd van het krediet. Je maandelijkse afbetalingen blijven identiek, los van de evolutie van de marktrentevoeten.</span></span></div>
             <div class="bank-tags">
-              <span class="tag type fixe">Taux fixe</span>
+              <span class="tag type fixe">Vaste rentevoet</span>
             </div>
           </div>
         </div>
@@ -834,17 +834,17 @@ html.embed .shell {
       </div>
       <div class="offer-body">
         <div class="detail-grid">
-          <div class="detail-card"><div class="dlbl">Mensualité fixe</div><div class="dval">1 406,34 €</div><div class="dsub">Pendant toute la durée</div></div>
-          <div class="detail-card"><div class="dlbl">Taux garanti</div><div class="dval">3,90 %</div><div class="dsub">Non révisable</div></div>
+          <div class="detail-card"><div class="dlbl">Vaste afbetaling</div><div class="dval">1 406,34 €</div><div class="dsub">Gedurende de hele looptijd</div></div>
+          <div class="detail-card"><div class="dlbl">Gegarandeerde rentevoet</div><div class="dval">3,90 %</div><div class="dsub">Niet herzienbaar</div></div>
         </div>
         <div class="detail-rows">
-          <div class="drow"><span class="lbl">Amortissement</span><span class="val">Vous payez la même somme chaque mois</span></div>
-          <div class="drow"><span class="lbl">Durée totale</span><span class="val">20 ans</span></div>
-          <div class="drow"><span class="lbl">Coût total du crédit<span class="info-tip">i<span class="tip">Le coût total du crédit représente la somme totale que vous rembourserez sur toute la durée du prêt : capital emprunté, intérêts, frais de dossier et primes d'assurance.</span></span></span><span class="val">337 521,60 €</span></div>
-          <div class="drow hl"><span class="lbl">TAEG<span class="info-tip">i<span class="tip">Le TAEG (Taux Annuel Effectif Global) intègre l'ensemble des coûts du crédit — taux nominal, frais de dossier, assurances obligatoires. C'est l'indicateur standard pour comparer plusieurs offres.</span></span></span><span class="val">4,07 %</span></div>
+          <div class="drow"><span class="lbl">Aflossing</span><span class="val">Je betaalt elke maand hetzelfde bedrag</span></div>
+          <div class="drow"><span class="lbl">Totale looptijd</span><span class="val">20 jaar</span></div>
+          <div class="drow"><span class="lbl">Totale kostprijs van het krediet<span class="info-tip">i<span class="tip">De totale kostprijs van het krediet is het totale bedrag dat je over de hele looptijd terugbetaalt: geleend kapitaal, interesten, dossierkosten en verzekeringspremies.</span></span></span><span class="val">337 521,60 €</span></div>
+          <div class="drow hl"><span class="lbl">JKP<span class="info-tip">i<span class="tip">Het JKP (jaarlijks kostenpercentage) omvat alle kosten van het krediet — nominale rentevoet, dossierkosten, verplichte verzekeringen. Het is de standaardindicator om meerdere voorstellen te vergelijken.</span></span></span><span class="val">4,07 %</span></div>
         </div>
 
-        <div class="choose-row"><button class="choose">Choisir cette offre et soumettre mon dossier<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Parler à un courtier</button></div>
+        <div class="choose-row"><button class="choose">Verdergaan met dit voorstel<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Praat met een kredietmakelaar</button></div>
       </div>
     </article>
 
@@ -853,14 +853,14 @@ html.embed .shell {
       <div class="offer-head" data-toggle>
         <div class="rate-block">
           <div class="rate">4,00<small>&nbsp;%</small></div>
-          <div class="monthly"><strong>1 210,30 €</strong> / mois en année 1</div>
+          <div class="monthly"><strong>1 210,30 €</strong> / maand in jaar 1</div>
         </div>
         <div class="bank">
           <div class="bank-logo">B</div>
           <div class="bank-info">
-            <div class="bank-name">BNPPF Credit Brokers · <span class="formula">Fixe progressif (+ 2 %/an)<span class="tip">Vos mensualités augmentent progressivement chaque année selon un calendrier contractuel — dans ce cas de +2 %/an. Conçu pour les profils dont les revenus vont progresser dans le temps.</span></span></div>
+            <div class="bank-name">BNPPF Credit Brokers · <span class="formula">Vast progressief (+ 2 %/jaar)<span class="tip">Je maandelijkse afbetalingen stijgen elk jaar geleidelijk volgens een contractueel schema — in dit geval +2 %/jaar. Ontworpen voor profielen waarvan de inkomsten in de tijd zullen stijgen.</span></span></div>
             <div class="bank-tags">
-              <span class="tag type progressif">Taux progressif</span>
+              <span class="tag type progressif">Progressieve rentevoet</span>
             </div>
           </div>
         </div>
@@ -870,63 +870,63 @@ html.embed .shell {
       </div>
       <div class="offer-body">
         <div class="detail-grid">
-          <div class="detail-card"><div class="dlbl">Mensualité année 1</div><div class="dval">1 210,30 €</div><div class="dsub">Charge initiale réduite</div></div>
-          <div class="detail-card"><div class="dlbl">Mensualité année 20</div><div class="dval">~ 1 763 €</div><div class="dsub">Augmentation prévue dans votre contrat : +2%/an</div></div>
+          <div class="detail-card"><div class="dlbl">Afbetaling jaar 1</div><div class="dval">1 210,30 €</div><div class="dsub">Lagere startlast</div></div>
+          <div class="detail-card"><div class="dlbl">Afbetaling jaar 20</div><div class="dval">~ 1 763 €</div><div class="dsub">Stijging voorzien in je contract: +2%/jaar</div></div>
         </div>
         <div class="detail-rows">
-          <div class="drow"><span class="lbl">Amortissement</span><span class="val">Versement progressif (+2 %/an)</span></div>
-          <div class="drow"><span class="lbl">Durée totale</span><span class="val">20 ans</span></div>
-          <div class="drow"><span class="lbl">Coût total du crédit<span class="info-tip">i<span class="tip">Le coût total du crédit représente la somme totale que vous rembourserez sur toute la durée du prêt : capital emprunté, intérêts, frais de dossier et primes d'assurance. Le coût d'un prêt progressif est calculé sur l'ensemble des mensualités prévues au contrat.</span></span></span><span class="val">~ 352 800 €</span></div>
-          <div class="drow hl"><span class="lbl">TAEG<span class="info-tip">i<span class="tip">Le TAEG (Taux Annuel Effectif Global) intègre l'ensemble des coûts du crédit — taux nominal, frais de dossier, assurances obligatoires. C'est l'indicateur standard pour comparer plusieurs offres.</span></span></span><span class="val">4,17 %</span></div>
+          <div class="drow"><span class="lbl">Aflossing</span><span class="val">Progressieve betaling (+2 %/jaar)</span></div>
+          <div class="drow"><span class="lbl">Totale looptijd</span><span class="val">20 jaar</span></div>
+          <div class="drow"><span class="lbl">Totale kostprijs van het krediet<span class="info-tip">i<span class="tip">De totale kostprijs van het krediet is het totale bedrag dat je over de hele looptijd terugbetaalt: geleend kapitaal, interesten, dossierkosten en verzekeringspremies. De kostprijs van een progressief krediet wordt berekend op alle contractueel voorziene afbetalingen.</span></span></span><span class="val">~ 352 800 €</span></div>
+          <div class="drow hl"><span class="lbl">JKP<span class="info-tip">i<span class="tip">Het JKP (jaarlijks kostenpercentage) omvat alle kosten van het krediet — nominale rentevoet, dossierkosten, verplichte verzekeringen. Het is de standaardindicator om meerdere voorstellen te vergelijken.</span></span></span><span class="val">4,17 %</span></div>
         </div>
 
         <!-- DECISION SUPPORT -->
         <div class="decision">
           <div class="scenarios progression">
-            <div class="scenarios-head">Évolution prévue de votre mensualité — progression contractuelle de <strong>+2 %/an</strong></div>
+            <div class="scenarios-head">Voorziene evolutie van je maandelijkse afbetaling — contractuele stijging van <strong>+2 %/jaar</strong></div>
 
             <div class="scenario optimistic">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Année 1 — Charge initiale réduite</div>
-                <div class="scenario-amt">1 210,30 € / mois</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Jaar 1 — Lagere startlast</div>
+                <div class="scenario-amt">1 210,30 € / maand</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:55%"></div></div>
-              <div class="scenario-cost">Mensualité de départ — <strong>~14 % sous</strong> le fixe classique</div>
+              <div class="scenario-cost">Startafbetaling — <strong>~14 % onder</strong> de klassieke vaste formule</div>
             </div>
 
             <div class="scenario probable">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Année 10 — Mi-parcours</div>
-                <div class="scenario-amt">~ 1 446 € / mois</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Jaar 10 — Halfweg</div>
+                <div class="scenario-amt">~ 1 446 € / maand</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:78%"></div></div>
-              <div class="scenario-cost"><strong>+ 19,5 %</strong> vs mensualité de départ</div>
+              <div class="scenario-cost"><strong>+ 19,5 %</strong> vs startafbetaling</div>
             </div>
 
             <div class="scenario stress">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Année 20 — Fin du prêt</div>
-                <div class="scenario-amt">~ 1 763 € / mois</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Jaar 20 — Einde van het krediet</div>
+                <div class="scenario-amt">~ 1 763 € / maand</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:100%"></div></div>
-              <div class="scenario-cost"><strong>+ 45,7 %</strong> vs mensualité de départ</div>
+              <div class="scenario-cost"><strong>+ 45,7 %</strong> vs startafbetaling</div>
             </div>
           </div>
 
           <div class="compare-box">
             <div class="compare-head">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6l1.5 1.5L7 5"/><path d="M3 12l1.5 1.5L7 11"/><path d="M3 18l1.5 1.5L7 17"/></svg>
-              Comparé à l'offre Fixe classique (3,90 % — 1 406 €/mois)
+              Vergeleken met het klassieke vaste voorstel (3,90 % — 1 406 €/maand)
             </div>
             <div class="compare-list">
-              <div class="compare-item save"><span class="ico">↓</span><span>Charge initiale réduite&nbsp;: <strong>~ 196 €/mois économisés</strong> la 1<sup>re</sup> année (1 210 € vs 1 406 €) — utile au moment où votre budget est le plus tendu</span></div>
-              <div class="compare-item cost"><span class="ico">↑</span><span>Engagement futur&nbsp;: la mensualité atteint <strong>~ 1 763 €</strong> en année 20 (+25 % vs le fixe classique) — à anticiper dans votre plan de carrière</span></div>
-              <div class="compare-item flip"><span class="ico">⚖</span><span>Surcoût total&nbsp;: <strong>~ 15 300 €</strong> sur 20 ans — c'est le « prix » d'une charge initiale plus légère, à arbitrer selon votre confiance en votre progression de revenus</span></div>
+              <div class="compare-item save"><span class="ico">↓</span><span>Lagere startlast&nbsp;: <strong>~ 196 €/maand bespaard</strong> la 1<sup>ste</sup> jaar (1 210 € vs 1 406 €) — nuttig op het moment dat je budget het krapst is</span></div>
+              <div class="compare-item cost"><span class="ico">↑</span><span>Toekomstig engagement&nbsp;: de afbetaling loopt op tot <strong>~ 1 763 €</strong> in jaar 20 (+25 % vs de klassieke vaste formule) — om in te calculeren in je carrièreplan</span></div>
+              <div class="compare-item flip"><span class="ico">⚖</span><span>Totale meerkost&nbsp;: <strong>~ 15 300 €</strong> over 20 jaar — dat is de « prijs » van een lichtere startlast, af te wegen tegen je vertrouwen in je inkomensgroei</span></div>
             </div>
           </div>
         </div>
 
-        <div class="choose-row"><button class="choose">Choisir cette offre et soumettre mon dossier<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Parler à un courtier</button></div>
+        <div class="choose-row"><button class="choose">Verdergaan met dit voorstel<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Praat met een kredietmakelaar</button></div>
       </div>
     </article>
     <!-- ALT Offer: Record Bank · 5+5 (+ 3 %) -->
@@ -934,14 +934,14 @@ html.embed .shell {
       <div class="offer-head" data-toggle>
         <div class="rate-block">
           <div class="rate">3,40<small>&nbsp;%</small></div>
-          <div class="monthly"><strong>1 357,82 €</strong> / mois</div>
+          <div class="monthly"><strong>1 357,82 €</strong> / maand</div>
         </div>
         <div class="bank">
           <div class="bank-logo" style="background: linear-gradient(135deg, #1A5E5E 0%, #0F3F3F 100%);">R</div>
           <div class="bank-info">
-            <div class="bank-name">Record Bank · <span class="formula">5+5 (+ 3 %)<span class="tip">Votre taux est fixé pour 5 ans, puis ajusté tous les 5 ans selon le marché — mais il ne peut jamais dépasser votre taux initial + 3%.</span></span></div>
+            <div class="bank-name">Record Bank · <span class="formula">5+5 (+ 3 %)<span class="tip">Je rentevoet ligt 5 jaar vast en wordt daarna om de 5 jaar aangepast volgens de markt — maar hij kan nooit hoger worden dan je startrentevoet + 3%.</span></span></div>
             <div class="bank-tags">
-              <span class="tag type ">Taux variable</span>
+              <span class="tag type ">Variabele rentevoet</span>
             </div>
           </div>
         </div>
@@ -949,58 +949,58 @@ html.embed .shell {
       </div>
       <div class="offer-body">
         <div class="detail-grid">
-          <div class="detail-card"><div class="dlbl">Première mensualité</div><div class="dval">1 357,82 €</div><div class="dsub">Fixée pendant 5 ans</div></div>
-          <div class="detail-card"><div class="dlbl">Mensualité maximum</div><div class="dval">1 703 €</div><div class="dsub">Maximum garanti par contrat (+3 pts)</div></div>
+          <div class="detail-card"><div class="dlbl">Eerste maandelijkse afbetaling</div><div class="dval">1 357,82 €</div><div class="dsub">5 jaar vast</div></div>
+          <div class="detail-card"><div class="dlbl">Maximale maandelijkse afbetaling</div><div class="dval">1 703 €</div><div class="dsub">Contractueel gegarandeerd maximum (+3 ptn)</div></div>
         </div>
         <div class="detail-rows">
-          <div class="drow"><span class="lbl">Amortissement</span><span class="val">Versement constant<span class="info-tip">i<span class="tip">Vous payez la même somme chaque mois, avec différentes révisions prévues dans le contrat</span></span></span></div>
-          <div class="drow"><span class="lbl">Durée totale</span><span class="val">20 ans</span></div>
-          <div class="drow"><span class="lbl">Coût total du crédit<span class="info-tip">i<span class="tip">Le coût total du crédit représente la somme totale que vous rembourserez sur toute la durée du prêt : capital emprunté, intérêts, frais de dossier et primes d'assurance.</span></span></span><span class="val">325 877 €</span></div>
-          <div class="drow hl"><span class="lbl">TAEG<span class="info-tip">i<span class="tip">Le TAEG (Taux Annuel Effectif Global) intègre l'ensemble des coûts du crédit — taux nominal, frais de dossier, assurances obligatoires. C'est l'indicateur standard pour comparer plusieurs offres.</span></span></span><span class="val">3,57 %</span></div>
+          <div class="drow"><span class="lbl">Aflossing</span><span class="val">Constante betaling<span class="info-tip">i<span class="tip">Je betaalt elke maand hetzelfde bedrag, met verschillende herzieningen voorzien in het contract</span></span></span></div>
+          <div class="drow"><span class="lbl">Totale looptijd</span><span class="val">20 jaar</span></div>
+          <div class="drow"><span class="lbl">Totale kostprijs van het krediet<span class="info-tip">i<span class="tip">De totale kostprijs van het krediet is het totale bedrag dat je over de hele looptijd terugbetaalt: geleend kapitaal, interesten, dossierkosten en verzekeringspremies.</span></span></span><span class="val">325 877 €</span></div>
+          <div class="drow hl"><span class="lbl">JKP<span class="info-tip">i<span class="tip">Het JKP (jaarlijks kostenpercentage) omvat alle kosten van het krediet — nominale rentevoet, dossierkosten, verplichte verzekeringen. Het is de standaardindicator om meerdere voorstellen te vergelijken.</span></span></span><span class="val">3,57 %</span></div>
         </div>
         <div class="decision">
           <div class="scenarios">
-            <div class="scenarios-head">3 scénarios pour votre prêt de <strong>235 935 €</strong> sur <strong>20 ans</strong></div>
+            <div class="scenarios-head">3 scenario's voor jouw krediet van <strong>235 935 €</strong> over <strong>20 jaar</strong></div>
             <div class="scenario optimistic">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Si les taux baissent ou restent stables (fixés 5 ans, révisés tous les 5 ans)</div>
-                <div class="scenario-amt">1 357,82 € / mois</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Als de rentevoeten dalen of stabiel blijven (5 jaar vast, om de 5 jaar herzien)</div>
+                <div class="scenario-amt">1 357,82 € / maand</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:55%"></div></div>
-              <div class="scenario-cost">Coût total : <strong>325 877 €</strong></div>
+              <div class="scenario-cost">Totale kostprijs: <strong>325 877 €</strong></div>
             </div>
 
             <div class="scenario probable">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Scénario probable (révisions ~ +1 % en moyenne après l'année 6)</div>
-                <div class="scenario-amt">~ 1 467 € / mois</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Waarschijnlijk scenario (herzieningen ~ +1 % gemiddeld na jaar 6)</div>
+                <div class="scenario-amt">~ 1 467 € / maand</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:75%"></div></div>
-              <div class="scenario-cost">Coût total estimé : <strong>~ 338 500 €</strong></div>
+              <div class="scenario-cost">Geschatte totale kostprijs: <strong>~ 338 500 €</strong></div>
             </div>
 
             <div class="scenario stress">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Scénario défavorable (limite de +3 % atteint dès la 1<sup>re</sup> révision)</div>
-                <div class="scenario-amt">jusqu'à 1 700 € / mois</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Ongunstig scenario (limiet van +3 % bereikt vanaf de 1<sup>ste</sup> herziening)</div>
+                <div class="scenario-amt">tot 1 700 € / maand</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:100%"></div></div>
-              <div class="scenario-cost">Coût total maximum : <strong>~ 358 500 €</strong></div>
+              <div class="scenario-cost">Maximale totale kostprijs: <strong>~ 358 500 €</strong></div>
             </div>
           </div>
           <div class="compare-box">
             <div class="compare-head">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6l1.5 1.5L7 5"/><path d="M3 12l1.5 1.5L7 11"/><path d="M3 18l1.5 1.5L7 17"/></svg>
-              Comparé à l'offre Fixe (3,90 % — 1 406 €/mois)
+              Vergeleken met het vaste voorstel (3,90 % — 1 406 €/maand)
             </div>
             <div class="compare-list">
-              <div class="compare-item save"><span class="ico">↓</span><span>Économie potentielle&nbsp;: <strong>− 48 €/mois</strong> vs Fixe — soit <strong>~ 11 645 €</strong> sur 20 ans si les taux restent stables</span></div>
-              <div class="compare-item cost"><span class="ico">↑</span><span>Surcoût maximum&nbsp;: <strong>jusqu'à 24 000 €</strong> si le maximum de +3 % est atteint après la révision de l'année 6</span></div>
-              <div class="compare-item flip"><span class="ico">⚖</span><span>Point de bascule&nbsp;: le Fixe devient plus avantageux si les taux moyens augmentent de <strong>plus de 1,4 %</strong> sur la durée</span></div>
+              <div class="compare-item save"><span class="ico">↓</span><span>Mogelijke besparing&nbsp;: <strong>− 48 €/maand</strong> vs vast — dat is <strong>~ 11 645 €</strong> over 20 jaar als de rentevoeten stabiel blijven</span></div>
+              <div class="compare-item cost"><span class="ico">↑</span><span>Maximale meerkost&nbsp;: <strong>tot 24 000 €</strong> als het maximum van +3 % wordt bereikt na de herziening van jaar 6</span></div>
+              <div class="compare-item flip"><span class="ico">⚖</span><span>Kantelpunt&nbsp;: de vaste formule wordt voordeliger als de gemiddelde rentevoeten stijgen met <strong>meer dan 1,4 %</strong> over de looptijd</span></div>
             </div>
           </div>
         </div>
-        <div class="choose-row"><button class="choose">Choisir cette offre et soumettre mon dossier<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Parler à un courtier</button></div>
+        <div class="choose-row"><button class="choose">Verdergaan met dit voorstel<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Praat met een kredietmakelaar</button></div>
       </div>
     </article>
 
@@ -1009,14 +1009,14 @@ html.embed .shell {
       <div class="offer-head" data-toggle>
         <div class="rate-block">
           <div class="rate">3,55<small>&nbsp;%</small></div>
-          <div class="monthly"><strong>1 374,72 €</strong> / mois</div>
+          <div class="monthly"><strong>1 374,72 €</strong> / maand</div>
         </div>
         <div class="bank">
           <div class="bank-logo" style="background: linear-gradient(135deg, #1554B5 0%, #0A3A8C 100%);">E</div>
           <div class="bank-info">
-            <div class="bank-name">Elantis · <span class="formula">10+5 (+ 2 %)<span class="tip">Votre taux est fixé pour 10 ans, puis ajusté tous les 5 ans selon le marché — mais il ne peut jamais dépasser votre taux initial + 2%.</span></span></div>
+            <div class="bank-name">Elantis · <span class="formula">10+5 (+ 2 %)<span class="tip">Je rentevoet ligt 10 jaar vast en wordt daarna om de 5 jaar aangepast volgens de markt — maar hij kan nooit hoger worden dan je startrentevoet + 2%.</span></span></div>
             <div class="bank-tags">
-              <span class="tag type ">Taux variable</span>
+              <span class="tag type ">Variabele rentevoet</span>
             </div>
           </div>
         </div>
@@ -1024,74 +1024,74 @@ html.embed .shell {
       </div>
       <div class="offer-body">
         <div class="detail-grid">
-          <div class="detail-card"><div class="dlbl">Première mensualité</div><div class="dval">1 374,72 €</div><div class="dsub">Fixée pendant 10 ans</div></div>
-          <div class="detail-card"><div class="dlbl">Mensualité maximum</div><div class="dval">1 538 €</div><div class="dsub">Maximum garanti par contrat (+2 pts)</div></div>
+          <div class="detail-card"><div class="dlbl">Eerste maandelijkse afbetaling</div><div class="dval">1 374,72 €</div><div class="dsub">10 jaar vast</div></div>
+          <div class="detail-card"><div class="dlbl">Maximale maandelijkse afbetaling</div><div class="dval">1 538 €</div><div class="dsub">Contractueel gegarandeerd maximum (+2 ptn)</div></div>
         </div>
         <div class="detail-rows">
-          <div class="drow"><span class="lbl">Amortissement</span><span class="val">Versement constant<span class="info-tip">i<span class="tip">Vous payez la même somme chaque mois, avec différentes révisions prévues dans le contrat</span></span></span></div>
-          <div class="drow"><span class="lbl">Durée totale</span><span class="val">20 ans</span></div>
-          <div class="drow"><span class="lbl">Coût total du crédit<span class="info-tip">i<span class="tip">Le coût total du crédit représente la somme totale que vous rembourserez sur toute la durée du prêt : capital emprunté, intérêts, frais de dossier et primes d'assurance.</span></span></span><span class="val">329 933 €</span></div>
-          <div class="drow hl"><span class="lbl">TAEG<span class="info-tip">i<span class="tip">Le TAEG (Taux Annuel Effectif Global) intègre l'ensemble des coûts du crédit — taux nominal, frais de dossier, assurances obligatoires. C'est l'indicateur standard pour comparer plusieurs offres.</span></span></span><span class="val">3,72 %</span></div>
+          <div class="drow"><span class="lbl">Aflossing</span><span class="val">Constante betaling<span class="info-tip">i<span class="tip">Je betaalt elke maand hetzelfde bedrag, met verschillende herzieningen voorzien in het contract</span></span></span></div>
+          <div class="drow"><span class="lbl">Totale looptijd</span><span class="val">20 jaar</span></div>
+          <div class="drow"><span class="lbl">Totale kostprijs van het krediet<span class="info-tip">i<span class="tip">De totale kostprijs van het krediet is het totale bedrag dat je over de hele looptijd terugbetaalt: geleend kapitaal, interesten, dossierkosten en verzekeringspremies.</span></span></span><span class="val">329 933 €</span></div>
+          <div class="drow hl"><span class="lbl">JKP<span class="info-tip">i<span class="tip">Het JKP (jaarlijks kostenpercentage) omvat alle kosten van het krediet — nominale rentevoet, dossierkosten, verplichte verzekeringen. Het is de standaardindicator om meerdere voorstellen te vergelijken.</span></span></span><span class="val">3,72 %</span></div>
         </div>
         <div class="decision">
           <div class="scenarios">
-            <div class="scenarios-head">3 scénarios pour votre prêt de <strong>235 935 €</strong> sur <strong>20 ans</strong></div>
+            <div class="scenarios-head">3 scenario's voor jouw krediet van <strong>235 935 €</strong> over <strong>20 jaar</strong></div>
             <div class="scenario optimistic">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Si les taux baissent ou restent stables (fixés 10 ans, révisés tous les 5 ans)</div>
-                <div class="scenario-amt">1 374,72 € / mois</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Als de rentevoeten dalen of stabiel blijven (10 jaar vast, om de 5 jaar herzien)</div>
+                <div class="scenario-amt">1 374,72 € / maand</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:55%"></div></div>
-              <div class="scenario-cost">Coût total : <strong>329 933 €</strong></div>
+              <div class="scenario-cost">Totale kostprijs: <strong>329 933 €</strong></div>
             </div>
 
             <div class="scenario probable">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Scénario probable (révision ~ +1 % à l'année 11)</div>
-                <div class="scenario-amt">~ 1 432 € / mois (à partir de l'an 11)</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Waarschijnlijk scenario (herziening ~ +1 % in jaar 11)</div>
+                <div class="scenario-amt">~ 1 432 € / maand (vanaf jaar 11)</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:75%"></div></div>
-              <div class="scenario-cost">Coût total estimé : <strong>~ 336 000 €</strong></div>
+              <div class="scenario-cost">Geschatte totale kostprijs: <strong>~ 336 000 €</strong></div>
             </div>
 
             <div class="scenario stress">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Scénario défavorable (limite de +2 % atteint à l'année 11)</div>
-                <div class="scenario-amt">jusqu'à 1 538 € / mois</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Ongunstig scenario (limiet van +2 % bereikt in jaar 11)</div>
+                <div class="scenario-amt">tot 1 538 € / maand</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:100%"></div></div>
-              <div class="scenario-cost">Coût total maximum : <strong>~ 343 000 €</strong></div>
+              <div class="scenario-cost">Maximale totale kostprijs: <strong>~ 343 000 €</strong></div>
             </div>
           </div>
           <div class="compare-box">
             <div class="compare-head">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6l1.5 1.5L7 5"/><path d="M3 12l1.5 1.5L7 11"/><path d="M3 18l1.5 1.5L7 17"/></svg>
-              Comparé à l'offre Fixe (3,90 % — 1 406 €/mois)
+              Vergeleken met het vaste voorstel (3,90 % — 1 406 €/maand)
             </div>
             <div class="compare-list">
-              <div class="compare-item save"><span class="ico">↓</span><span>Économie potentielle&nbsp;: <strong>− 31 €/mois</strong> vs Fixe — soit <strong>~ 7 588 €</strong> sur 20 ans si les taux restent stables</span></div>
-              <div class="compare-item cost"><span class="ico">↑</span><span>Surcoût maximum&nbsp;: <strong>jusqu'à 13 500 €</strong> si le maximum de +2 % est atteint après la révision de l'année 11</span></div>
-              <div class="compare-item flip"><span class="ico">⚖</span><span>Point de bascule&nbsp;: le Fixe devient plus avantageux si les taux moyens augmentent de <strong>plus de 1,1 %</strong> sur la durée</span></div>
+              <div class="compare-item save"><span class="ico">↓</span><span>Mogelijke besparing&nbsp;: <strong>− 31 €/maand</strong> vs vast — dat is <strong>~ 7 588 €</strong> over 20 jaar als de rentevoeten stabiel blijven</span></div>
+              <div class="compare-item cost"><span class="ico">↑</span><span>Maximale meerkost&nbsp;: <strong>tot 13 500 €</strong> als het maximum van +2 % wordt bereikt na de herziening van jaar 11</span></div>
+              <div class="compare-item flip"><span class="ico">⚖</span><span>Kantelpunt&nbsp;: de vaste formule wordt voordeliger als de gemiddelde rentevoeten stijgen met <strong>meer dan 1,1 %</strong> over de looptijd</span></div>
             </div>
           </div>
         </div>
-        <div class="choose-row"><button class="choose">Choisir cette offre et soumettre mon dossier<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Parler à un courtier</button></div>
+        <div class="choose-row"><button class="choose">Verdergaan met dit voorstel<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Praat met een kredietmakelaar</button></div>
       </div>
     </article>
 
-    <!-- ALT Offer: Record Bank · Accordéon (5+5) -->
+    <!-- ALT Offer: Record Bank · Accordeon (5+5) -->
     <article class="offer alt-offer" data-offer="6" data-type="accordion">
       <div class="offer-head" data-toggle>
         <div class="rate-block">
           <div class="rate">3,65<small>&nbsp;%</small></div>
-          <div class="monthly"><strong>1 385,67 €</strong> / mois</div>
+          <div class="monthly"><strong>1 385,67 €</strong> / maand</div>
         </div>
         <div class="bank">
           <div class="bank-logo" style="background: linear-gradient(135deg, #1A5E5E 0%, #0F3F3F 100%);">R</div>
           <div class="bank-info">
-            <div class="bank-name">Record Bank · <span class="formula">Accordéon (5+5)<span class="tip">Mensualité protégée : votre paiement mensuel reste stable même quand les taux montent. C'est la durée du prêt qui s'allonge (jusqu'à un plafond de +5 ans) pour absorber les hausses. Le taux est révisé périodiquement.</span></span></div>
+            <div class="bank-name">Record Bank · <span class="formula">Accordeon (5+5)<span class="tip">Beschermde afbetaling: je maandelijkse betaling blijft stabiel, ook als de rentevoeten stijgen. Het is de looptijd van het krediet die langer wordt (tot een plafond van +5 jaar) om de stijgingen op te vangen. De rentevoet wordt periodiek herzien.</span></span></div>
             <div class="bank-tags">
-              <span class="tag type accordion">Taux accordéon</span>
+              <span class="tag type accordion">Accordeonrentevoet</span>
             </div>
           </div>
         </div>
@@ -1099,74 +1099,74 @@ html.embed .shell {
       </div>
       <div class="offer-body">
         <div class="detail-grid">
-          <div class="detail-card"><div class="dlbl">Mensualité protégée</div><div class="dval">1 385,67 €</div><div class="dsub">Stable sur toute la durée</div></div>
-          <div class="detail-card"><div class="dlbl">Durée maximale</div><div class="dval">25 ans</div><div class="dsub">Plafond d'allongement (+5 ans max)</div></div>
+          <div class="detail-card"><div class="dlbl">Beschermde afbetaling</div><div class="dval">1 385,67 €</div><div class="dsub">Stabiel over de hele looptijd</div></div>
+          <div class="detail-card"><div class="dlbl">Maximale looptijd</div><div class="dval">25 jaar</div><div class="dsub">Verlengingsplafond (max. +5 jaar)</div></div>
         </div>
         <div class="detail-rows">
-          <div class="drow"><span class="lbl">Amortissement</span><span class="val">Mensualité stable, durée extensible</span></div>
-          <div class="drow"><span class="lbl">Durée totale</span><span class="val">20 ans (extensible jusqu'à 25 ans)</span></div>
-          <div class="drow"><span class="lbl">Coût total du crédit<span class="info-tip">i<span class="tip">Le coût total du crédit représente la somme totale que vous rembourserez sur toute la durée du prêt : capital emprunté, intérêts, frais de dossier et primes d'assurance. Pour un taux accordéon, ce coût varie en fonction de la durée effective (la mensualité, elle, reste stable).</span></span></span><span class="val">332 561 € (à durée initiale)</span></div>
-          <div class="drow hl"><span class="lbl">TAEG<span class="info-tip">i<span class="tip">Le TAEG (Taux Annuel Effectif Global) intègre l'ensemble des coûts du crédit — taux nominal, frais de dossier, assurances obligatoires. C'est l'indicateur standard pour comparer plusieurs offres.</span></span></span><span class="val">3,82 %</span></div>
+          <div class="drow"><span class="lbl">Aflossing</span><span class="val">Stabiele afbetaling, verlengbare looptijd</span></div>
+          <div class="drow"><span class="lbl">Totale looptijd</span><span class="val">20 jaar (verlengbaar tot 25 jaar)</span></div>
+          <div class="drow"><span class="lbl">Totale kostprijs van het krediet<span class="info-tip">i<span class="tip">De totale kostprijs van het krediet is het totale bedrag dat je over de hele looptijd terugbetaalt: geleend kapitaal, interesten, dossierkosten en verzekeringspremies. Bij een accordeonrentevoet varieert die kostprijs volgens de effectieve looptijd (de maandelijkse afbetaling blijft wel stabiel).</span></span></span><span class="val">332 561 € (bij initiële looptijd)</span></div>
+          <div class="drow hl"><span class="lbl">JKP<span class="info-tip">i<span class="tip">Het JKP (jaarlijks kostenpercentage) omvat alle kosten van het krediet — nominale rentevoet, dossierkosten, verplichte verzekeringen. Het is de standaardindicator om meerdere voorstellen te vergelijken.</span></span></span><span class="val">3,82 %</span></div>
         </div>
         <div class="decision">
           <div class="scenarios">
-            <div class="scenarios-head">3 scénarios pour votre prêt de <strong>235 935 €</strong> sur <strong>20 ans</strong></div>
+            <div class="scenarios-head">3 scenario's voor jouw krediet van <strong>235 935 €</strong> over <strong>20 jaar</strong></div>
             <div class="scenario optimistic">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Si les taux baissent ou restent stables</div>
-                <div class="scenario-amt">1 385,67 € / mois</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Als de rentevoeten dalen of stabiel blijven</div>
+                <div class="scenario-amt">1 385,67 € / maand</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:60%"></div></div>
-              <div class="scenario-cost">Durée 20 ans · Coût total : <strong>332 561 €</strong></div>
+              <div class="scenario-cost">Looptijd 20 jaar · Totale kostprijs: <strong>332 561 €</strong></div>
             </div>
 
             <div class="scenario probable">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Hausse modérée des taux (~ +1 % en moyenne)</div>
-                <div class="scenario-amt">1 385,67 € / mois (stable)</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Gematigde rentestijging (~ +1 % gemiddeld)</div>
+                <div class="scenario-amt">1 385,67 € / maand (stabiel)</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:80%"></div></div>
-              <div class="scenario-cost">Durée allongée à <strong>~ 22 ans</strong> · Coût total estimé : <strong>~ 366 000 €</strong></div>
+              <div class="scenario-cost">Looptijd verlengd tot <strong>~ 22 jaar</strong> · Geschatte totale kostprijs: <strong>~ 366 000 €</strong></div>
             </div>
 
             <div class="scenario stress">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Hausse forte des taux (limite de durée atteinte)</div>
-                <div class="scenario-amt">1 385,67 € / mois (stable)</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Sterke rentestijging (looptijdlimiet bereikt)</div>
+                <div class="scenario-amt">1 385,67 € / maand (stabiel)</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:100%"></div></div>
-              <div class="scenario-cost">Durée <strong>25 ans (limite atteinte)</strong> · Coût total estimé : <strong>~ 415 700 €</strong></div>
+              <div class="scenario-cost">Looptijd <strong>25 jaar (limiet bereikt)</strong> · Geschatte totale kostprijs: <strong>~ 415 700 €</strong></div>
             </div>
           </div>
           <div class="compare-box">
             <div class="compare-head">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6l1.5 1.5L7 5"/><path d="M3 12l1.5 1.5L7 11"/><path d="M3 18l1.5 1.5L7 17"/></svg>
-              Comparé à l'offre Fixe (3,90 % — 1 406 €/mois)
+              Vergeleken met het vaste voorstel (3,90 % — 1 406 €/maand)
             </div>
             <div class="compare-list">
-              <div class="compare-item save"><span class="ico">↓</span><span>Mensualité immédiatement plus basse&nbsp;: <strong>− 20,67 €/mois</strong> vs Fixe — économie potentielle de <strong>~ 4 960 €</strong> sur 20 ans si les taux restent stables</span></div>
-              <div class="compare-item cost"><span class="ico">↑</span><span>Risque sur le coût total&nbsp;: en cas de hausse forte, la durée s'allonge (jusqu'à 25 ans), coût total potentiel <strong>~ 415 700 €</strong></span></div>
-              <div class="compare-item flip"><span class="ico">⚖</span><span>Devient préférable au Fixe si vous valorisez plus la <strong>stabilité du paiement mensuel</strong> que la maîtrise du coût total</span></div>
+              <div class="compare-item save"><span class="ico">↓</span><span>Meteen lagere afbetaling&nbsp;: <strong>− 20,67 €/maand</strong> vs vast — mogelijke besparing van <strong>~ 4 960 €</strong> over 20 jaar als de rentevoeten stabiel blijven</span></div>
+              <div class="compare-item cost"><span class="ico">↑</span><span>Risico op de totale kostprijs&nbsp;: bij een sterke stijging wordt de looptijd langer (tot 25 jaar), mogelijke totale kostprijs <strong>~ 415 700 €</strong></span></div>
+              <div class="compare-item flip"><span class="ico">⚖</span><span>Wordt te verkiezen boven de vaste formule als je meer belang hecht aan de <strong>stabiliteit van de maandelijkse betaling</strong> dan aan de controle over de totale kostprijs</span></div>
             </div>
           </div>
         </div>
-        <div class="choose-row"><button class="choose">Choisir cette offre et soumettre mon dossier<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Parler à un courtier</button></div>
+        <div class="choose-row"><button class="choose">Verdergaan met dit voorstel<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Praat met een kredietmakelaar</button></div>
       </div>
     </article>
 
-    <!-- ALT Offer: Record Bank · Accordéon (1+1) -->
+    <!-- ALT Offer: Record Bank · Accordeon (1+1) -->
     <article class="offer alt-offer" data-offer="7" data-type="accordion">
       <div class="offer-head" data-toggle>
         <div class="rate-block">
           <div class="rate">3,70<small>&nbsp;%</small></div>
-          <div class="monthly"><strong>1 391,15 €</strong> / mois</div>
+          <div class="monthly"><strong>1 391,15 €</strong> / maand</div>
         </div>
         <div class="bank">
           <div class="bank-logo" style="background: linear-gradient(135deg, #1A5E5E 0%, #0F3F3F 100%);">R</div>
           <div class="bank-info">
-            <div class="bank-name">Record Bank · <span class="formula">Accordéon (1+1)<span class="tip">Mensualité protégée : votre paiement mensuel reste stable même quand les taux montent. C'est la durée du prêt qui s'allonge (jusqu'à un plafond de +5 ans) pour absorber les hausses. Le taux est révisé périodiquement.</span></span></div>
+            <div class="bank-name">Record Bank · <span class="formula">Accordeon (1+1)<span class="tip">Beschermde afbetaling: je maandelijkse betaling blijft stabiel, ook als de rentevoeten stijgen. Het is de looptijd van het krediet die langer wordt (tot een plafond van +5 jaar) om de stijgingen op te vangen. De rentevoet wordt periodiek herzien.</span></span></div>
             <div class="bank-tags">
-              <span class="tag type accordion">Taux accordéon</span>
+              <span class="tag type accordion">Accordeonrentevoet</span>
             </div>
           </div>
         </div>
@@ -1174,58 +1174,58 @@ html.embed .shell {
       </div>
       <div class="offer-body">
         <div class="detail-grid">
-          <div class="detail-card"><div class="dlbl">Mensualité protégée</div><div class="dval">1 391,15 €</div><div class="dsub">Stable sur toute la durée</div></div>
-          <div class="detail-card"><div class="dlbl">Durée maximale</div><div class="dval">25 ans</div><div class="dsub">Plafond d'allongement (+5 ans max)</div></div>
+          <div class="detail-card"><div class="dlbl">Beschermde afbetaling</div><div class="dval">1 391,15 €</div><div class="dsub">Stabiel over de hele looptijd</div></div>
+          <div class="detail-card"><div class="dlbl">Maximale looptijd</div><div class="dval">25 jaar</div><div class="dsub">Verlengingsplafond (max. +5 jaar)</div></div>
         </div>
         <div class="detail-rows">
-          <div class="drow"><span class="lbl">Amortissement</span><span class="val">Mensualité stable, durée extensible</span></div>
-          <div class="drow"><span class="lbl">Durée totale</span><span class="val">20 ans (extensible jusqu'à 25 ans)</span></div>
-          <div class="drow"><span class="lbl">Coût total du crédit<span class="info-tip">i<span class="tip">Le coût total du crédit représente la somme totale que vous rembourserez sur toute la durée du prêt : capital emprunté, intérêts, frais de dossier et primes d'assurance. Pour un taux accordéon, ce coût varie en fonction de la durée effective (la mensualité, elle, reste stable).</span></span></span><span class="val">333 876 € (à durée initiale)</span></div>
-          <div class="drow hl"><span class="lbl">TAEG<span class="info-tip">i<span class="tip">Le TAEG (Taux Annuel Effectif Global) intègre l'ensemble des coûts du crédit — taux nominal, frais de dossier, assurances obligatoires. C'est l'indicateur standard pour comparer plusieurs offres.</span></span></span><span class="val">3,87 %</span></div>
+          <div class="drow"><span class="lbl">Aflossing</span><span class="val">Stabiele afbetaling, verlengbare looptijd</span></div>
+          <div class="drow"><span class="lbl">Totale looptijd</span><span class="val">20 jaar (verlengbaar tot 25 jaar)</span></div>
+          <div class="drow"><span class="lbl">Totale kostprijs van het krediet<span class="info-tip">i<span class="tip">De totale kostprijs van het krediet is het totale bedrag dat je over de hele looptijd terugbetaalt: geleend kapitaal, interesten, dossierkosten en verzekeringspremies. Bij een accordeonrentevoet varieert die kostprijs volgens de effectieve looptijd (de maandelijkse afbetaling blijft wel stabiel).</span></span></span><span class="val">333 876 € (bij initiële looptijd)</span></div>
+          <div class="drow hl"><span class="lbl">JKP<span class="info-tip">i<span class="tip">Het JKP (jaarlijks kostenpercentage) omvat alle kosten van het krediet — nominale rentevoet, dossierkosten, verplichte verzekeringen. Het is de standaardindicator om meerdere voorstellen te vergelijken.</span></span></span><span class="val">3,87 %</span></div>
         </div>
         <div class="decision">
           <div class="scenarios">
-            <div class="scenarios-head">3 scénarios pour votre prêt de <strong>235 935 €</strong> sur <strong>20 ans</strong></div>
+            <div class="scenarios-head">3 scenario's voor jouw krediet van <strong>235 935 €</strong> over <strong>20 jaar</strong></div>
             <div class="scenario optimistic">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Si les taux baissent ou restent stables</div>
-                <div class="scenario-amt">1 391,15 € / mois</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Als de rentevoeten dalen of stabiel blijven</div>
+                <div class="scenario-amt">1 391,15 € / maand</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:60%"></div></div>
-              <div class="scenario-cost">Durée 20 ans · Coût total : <strong>333 876 €</strong></div>
+              <div class="scenario-cost">Looptijd 20 jaar · Totale kostprijs: <strong>333 876 €</strong></div>
             </div>
 
             <div class="scenario probable">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Hausse modérée des taux (~ +1 % en moyenne)</div>
-                <div class="scenario-amt">1 391,15 € / mois (stable)</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Gematigde rentestijging (~ +1 % gemiddeld)</div>
+                <div class="scenario-amt">1 391,15 € / maand (stabiel)</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:80%"></div></div>
-              <div class="scenario-cost">Durée allongée à <strong>~ 22 ans</strong> · Coût total estimé : <strong>~ 367 500 €</strong></div>
+              <div class="scenario-cost">Looptijd verlengd tot <strong>~ 22 jaar</strong> · Geschatte totale kostprijs: <strong>~ 367 500 €</strong></div>
             </div>
 
             <div class="scenario stress">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Hausse forte des taux (limite de durée atteinte)</div>
-                <div class="scenario-amt">1 391,15 € / mois (stable)</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Sterke rentestijging (looptijdlimiet bereikt)</div>
+                <div class="scenario-amt">1 391,15 € / maand (stabiel)</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:100%"></div></div>
-              <div class="scenario-cost">Durée <strong>25 ans (limite atteinte)</strong> · Coût total estimé : <strong>~ 417 300 €</strong></div>
+              <div class="scenario-cost">Looptijd <strong>25 jaar (limiet bereikt)</strong> · Geschatte totale kostprijs: <strong>~ 417 300 €</strong></div>
             </div>
           </div>
           <div class="compare-box">
             <div class="compare-head">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6l1.5 1.5L7 5"/><path d="M3 12l1.5 1.5L7 11"/><path d="M3 18l1.5 1.5L7 17"/></svg>
-              Comparé à l'offre Fixe (3,90 % — 1 406 €/mois)
+              Vergeleken met het vaste voorstel (3,90 % — 1 406 €/maand)
             </div>
             <div class="compare-list">
-              <div class="compare-item save"><span class="ico">↓</span><span>Mensualité immédiatement plus basse&nbsp;: <strong>− 15,19 €/mois</strong> vs Fixe — économie potentielle de <strong>~ 3 645 €</strong> sur 20 ans si les taux restent stables</span></div>
-              <div class="compare-item cost"><span class="ico">↑</span><span>Risque sur le coût total&nbsp;: en cas de hausse forte, la durée s'allonge (jusqu'à 25 ans), coût total potentiel <strong>~ 417 300 €</strong></span></div>
-              <div class="compare-item flip"><span class="ico">⚖</span><span>Devient préférable au Fixe si vous valorisez plus la <strong>stabilité du paiement mensuel</strong> que la maîtrise du coût total</span></div>
+              <div class="compare-item save"><span class="ico">↓</span><span>Meteen lagere afbetaling&nbsp;: <strong>− 15,19 €/maand</strong> vs vast — mogelijke besparing van <strong>~ 3 645 €</strong> over 20 jaar als de rentevoeten stabiel blijven</span></div>
+              <div class="compare-item cost"><span class="ico">↑</span><span>Risico op de totale kostprijs&nbsp;: bij een sterke stijging wordt de looptijd langer (tot 25 jaar), mogelijke totale kostprijs <strong>~ 417 300 €</strong></span></div>
+              <div class="compare-item flip"><span class="ico">⚖</span><span>Wordt te verkiezen boven de vaste formule als je meer belang hecht aan de <strong>stabiliteit van de maandelijkse betaling</strong> dan aan de controle over de totale kostprijs</span></div>
             </div>
           </div>
         </div>
-        <div class="choose-row"><button class="choose">Choisir cette offre et soumettre mon dossier<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Parler à un courtier</button></div>
+        <div class="choose-row"><button class="choose">Verdergaan met dit voorstel<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Praat met een kredietmakelaar</button></div>
       </div>
     </article>
 
@@ -1234,14 +1234,14 @@ html.embed .shell {
       <div class="offer-head" data-toggle>
         <div class="rate-block">
           <div class="rate">3,80<small>&nbsp;%</small></div>
-          <div class="monthly"><strong>1 402,07 €</strong> / mois</div>
+          <div class="monthly"><strong>1 402,07 €</strong> / maand</div>
         </div>
         <div class="bank">
           <div class="bank-logo">B</div>
           <div class="bank-info">
-            <div class="bank-name">BNPPF Credit Brokers · <span class="formula">Modulaire (5+5)<span class="tip">Mensualité protégée : votre paiement mensuel reste stable même quand les taux montent. C'est la durée du prêt qui s'allonge (jusqu'à un plafond de +5 ans) pour absorber les hausses. Le taux est révisé périodiquement.</span></span></div>
+            <div class="bank-name">BNPPF Credit Brokers · <span class="formula">Modulaire (5+5)<span class="tip">Beschermde afbetaling: je maandelijkse betaling blijft stabiel, ook als de rentevoeten stijgen. Het is de looptijd van het krediet die langer wordt (tot een plafond van +5 jaar) om de stijgingen op te vangen. De rentevoet wordt periodiek herzien.</span></span></div>
             <div class="bank-tags">
-              <span class="tag type accordion">Taux accordéon</span>
+              <span class="tag type accordion">Accordeonrentevoet</span>
             </div>
           </div>
         </div>
@@ -1249,58 +1249,58 @@ html.embed .shell {
       </div>
       <div class="offer-body">
         <div class="detail-grid">
-          <div class="detail-card"><div class="dlbl">Mensualité protégée</div><div class="dval">1 402,07 €</div><div class="dsub">Stable sur toute la durée</div></div>
-          <div class="detail-card"><div class="dlbl">Durée maximale</div><div class="dval">25 ans</div><div class="dsub">Plafond d'allongement (+5 ans max)</div></div>
+          <div class="detail-card"><div class="dlbl">Beschermde afbetaling</div><div class="dval">1 402,07 €</div><div class="dsub">Stabiel over de hele looptijd</div></div>
+          <div class="detail-card"><div class="dlbl">Maximale looptijd</div><div class="dval">25 jaar</div><div class="dsub">Verlengingsplafond (max. +5 jaar)</div></div>
         </div>
         <div class="detail-rows">
-          <div class="drow"><span class="lbl">Amortissement</span><span class="val">Mensualité stable, durée extensible</span></div>
-          <div class="drow"><span class="lbl">Durée totale</span><span class="val">20 ans (extensible jusqu'à 25 ans)</span></div>
-          <div class="drow"><span class="lbl">Coût total du crédit<span class="info-tip">i<span class="tip">Le coût total du crédit représente la somme totale que vous rembourserez sur toute la durée du prêt : capital emprunté, intérêts, frais de dossier et primes d'assurance. Pour un taux accordéon, ce coût varie en fonction de la durée effective (la mensualité, elle, reste stable).</span></span></span><span class="val">336 497 € (à durée initiale)</span></div>
-          <div class="drow hl"><span class="lbl">TAEG<span class="info-tip">i<span class="tip">Le TAEG (Taux Annuel Effectif Global) intègre l'ensemble des coûts du crédit — taux nominal, frais de dossier, assurances obligatoires. C'est l'indicateur standard pour comparer plusieurs offres.</span></span></span><span class="val">3,97 %</span></div>
+          <div class="drow"><span class="lbl">Aflossing</span><span class="val">Stabiele afbetaling, verlengbare looptijd</span></div>
+          <div class="drow"><span class="lbl">Totale looptijd</span><span class="val">20 jaar (verlengbaar tot 25 jaar)</span></div>
+          <div class="drow"><span class="lbl">Totale kostprijs van het krediet<span class="info-tip">i<span class="tip">De totale kostprijs van het krediet is het totale bedrag dat je over de hele looptijd terugbetaalt: geleend kapitaal, interesten, dossierkosten en verzekeringspremies. Bij een accordeonrentevoet varieert die kostprijs volgens de effectieve looptijd (de maandelijkse afbetaling blijft wel stabiel).</span></span></span><span class="val">336 497 € (bij initiële looptijd)</span></div>
+          <div class="drow hl"><span class="lbl">JKP<span class="info-tip">i<span class="tip">Het JKP (jaarlijks kostenpercentage) omvat alle kosten van het krediet — nominale rentevoet, dossierkosten, verplichte verzekeringen. Het is de standaardindicator om meerdere voorstellen te vergelijken.</span></span></span><span class="val">3,97 %</span></div>
         </div>
         <div class="decision">
           <div class="scenarios">
-            <div class="scenarios-head">3 scénarios pour votre prêt de <strong>235 935 €</strong> sur <strong>20 ans</strong></div>
+            <div class="scenarios-head">3 scenario's voor jouw krediet van <strong>235 935 €</strong> over <strong>20 jaar</strong></div>
             <div class="scenario optimistic">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Si les taux baissent ou restent stables</div>
-                <div class="scenario-amt">1 402,07 € / mois</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Als de rentevoeten dalen of stabiel blijven</div>
+                <div class="scenario-amt">1 402,07 € / maand</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:60%"></div></div>
-              <div class="scenario-cost">Durée 20 ans · Coût total : <strong>336 497 €</strong></div>
+              <div class="scenario-cost">Looptijd 20 jaar · Totale kostprijs: <strong>336 497 €</strong></div>
             </div>
 
             <div class="scenario probable">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Hausse modérée des taux (~ +1 % en moyenne)</div>
-                <div class="scenario-amt">1 402,07 € / mois (stable)</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Gematigde rentestijging (~ +1 % gemiddeld)</div>
+                <div class="scenario-amt">1 402,07 € / maand (stabiel)</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:80%"></div></div>
-              <div class="scenario-cost">Durée allongée à <strong>~ 22 ans</strong> · Coût total estimé : <strong>~ 370 500 €</strong></div>
+              <div class="scenario-cost">Looptijd verlengd tot <strong>~ 22 jaar</strong> · Geschatte totale kostprijs: <strong>~ 370 500 €</strong></div>
             </div>
 
             <div class="scenario stress">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Hausse forte des taux (limite de durée atteinte)</div>
-                <div class="scenario-amt">1 402,07 € / mois (stable)</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Sterke rentestijging (looptijdlimiet bereikt)</div>
+                <div class="scenario-amt">1 402,07 € / maand (stabiel)</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:100%"></div></div>
-              <div class="scenario-cost">Durée <strong>25 ans (limite atteinte)</strong> · Coût total estimé : <strong>~ 420 600 €</strong></div>
+              <div class="scenario-cost">Looptijd <strong>25 jaar (limiet bereikt)</strong> · Geschatte totale kostprijs: <strong>~ 420 600 €</strong></div>
             </div>
           </div>
           <div class="compare-box">
             <div class="compare-head">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6l1.5 1.5L7 5"/><path d="M3 12l1.5 1.5L7 11"/><path d="M3 18l1.5 1.5L7 17"/></svg>
-              Comparé à l'offre Fixe (3,90 % — 1 406 €/mois)
+              Vergeleken met het vaste voorstel (3,90 % — 1 406 €/maand)
             </div>
             <div class="compare-list">
-              <div class="compare-item save"><span class="ico">↓</span><span>Mensualité légèrement plus basse&nbsp;: <strong>− 4,27 €/mois</strong> vs Fixe — économie marginale sur 20 ans si les taux restent stables</span></div>
-              <div class="compare-item cost"><span class="ico">↑</span><span>Risque sur le coût total&nbsp;: en cas de hausse forte, la durée s'allonge (jusqu'à 25 ans), coût total potentiel <strong>~ 420 600 €</strong></span></div>
-              <div class="compare-item flip"><span class="ico">⚖</span><span>Le bénéfice mensuel est mince — pertinent surtout si la <strong>stabilité du paiement</strong> prime sur l'optimisation du coût</span></div>
+              <div class="compare-item save"><span class="ico">↓</span><span>Iets lagere afbetaling&nbsp;: <strong>− 4,27 €/maand</strong> vs vast — marginale besparing over 20 jaar als de rentevoeten stabiel blijven</span></div>
+              <div class="compare-item cost"><span class="ico">↑</span><span>Risico op de totale kostprijs&nbsp;: bij een sterke stijging wordt de looptijd langer (tot 25 jaar), mogelijke totale kostprijs <strong>~ 420 600 €</strong></span></div>
+              <div class="compare-item flip"><span class="ico">⚖</span><span>Het maandelijkse voordeel is klein — vooral relevant als de <strong>stabiliteit van de betaling</strong> belangrijker is dan kostenoptimalisatie</span></div>
             </div>
           </div>
         </div>
-        <div class="choose-row"><button class="choose">Choisir cette offre et soumettre mon dossier<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Parler à un courtier</button></div>
+        <div class="choose-row"><button class="choose">Verdergaan met dit voorstel<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Praat met een kredietmakelaar</button></div>
       </div>
     </article>
 
@@ -1309,14 +1309,14 @@ html.embed .shell {
       <div class="offer-head" data-toggle>
         <div class="rate-block">
           <div class="rate">4,00<small>&nbsp;%</small></div>
-          <div class="monthly"><strong>1 421,50 €</strong> / mois</div>
+          <div class="monthly"><strong>1 421,50 €</strong> / maand</div>
         </div>
         <div class="bank">
           <div class="bank-logo" style="background: linear-gradient(135deg, #1554B5 0%, #0A3A8C 100%);">E</div>
           <div class="bank-info">
-            <div class="bank-name">Elantis · <span class="formula">Fixe<span class="tip">Taux fixe pendant toute la durée du prêt. Vos mensualités restent identiques, indépendamment de l'évolution des taux du marché.</span></span></div>
+            <div class="bank-name">Elantis · <span class="formula">Vast<span class="tip">Vaste rentevoet gedurende de hele looptijd van het krediet. Je maandelijkse afbetalingen blijven identiek, los van de evolutie van de marktrentevoeten.</span></span></div>
             <div class="bank-tags">
-              <span class="tag type fixe">Taux fixe</span>
+              <span class="tag type fixe">Vaste rentevoet</span>
             </div>
           </div>
         </div>
@@ -1324,16 +1324,16 @@ html.embed .shell {
       </div>
       <div class="offer-body">
         <div class="detail-grid">
-          <div class="detail-card"><div class="dlbl">Mensualité fixe</div><div class="dval">1 421,50 €</div><div class="dsub">Pendant toute la durée</div></div>
-          <div class="detail-card"><div class="dlbl">Taux garanti</div><div class="dval">4,00 %</div><div class="dsub">Non révisable</div></div>
+          <div class="detail-card"><div class="dlbl">Vaste afbetaling</div><div class="dval">1 421,50 €</div><div class="dsub">Gedurende de hele looptijd</div></div>
+          <div class="detail-card"><div class="dlbl">Gegarandeerde rentevoet</div><div class="dval">4,00 %</div><div class="dsub">Niet herzienbaar</div></div>
         </div>
         <div class="detail-rows">
-          <div class="drow"><span class="lbl">Amortissement</span><span class="val">Vous payez la même somme chaque mois</span></div>
-          <div class="drow"><span class="lbl">Durée totale</span><span class="val">20 ans</span></div>
-          <div class="drow"><span class="lbl">Coût total du crédit<span class="info-tip">i<span class="tip">Le coût total du crédit représente la somme totale que vous rembourserez sur toute la durée du prêt : capital emprunté, intérêts, frais de dossier et primes d'assurance.</span></span></span><span class="val">341 160 €</span></div>
-          <div class="drow hl"><span class="lbl">TAEG<span class="info-tip">i<span class="tip">Le TAEG (Taux Annuel Effectif Global) intègre l'ensemble des coûts du crédit — taux nominal, frais de dossier, assurances obligatoires. C'est l'indicateur standard pour comparer plusieurs offres.</span></span></span><span class="val">4,17 %</span></div>
+          <div class="drow"><span class="lbl">Aflossing</span><span class="val">Je betaalt elke maand hetzelfde bedrag</span></div>
+          <div class="drow"><span class="lbl">Totale looptijd</span><span class="val">20 jaar</span></div>
+          <div class="drow"><span class="lbl">Totale kostprijs van het krediet<span class="info-tip">i<span class="tip">De totale kostprijs van het krediet is het totale bedrag dat je over de hele looptijd terugbetaalt: geleend kapitaal, interesten, dossierkosten en verzekeringspremies.</span></span></span><span class="val">341 160 €</span></div>
+          <div class="drow hl"><span class="lbl">JKP<span class="info-tip">i<span class="tip">Het JKP (jaarlijks kostenpercentage) omvat alle kosten van het krediet — nominale rentevoet, dossierkosten, verplichte verzekeringen. Het is de standaardindicator om meerdere voorstellen te vergelijken.</span></span></span><span class="val">4,17 %</span></div>
         </div>
-        <div class="choose-row"><button class="choose">Choisir cette offre et soumettre mon dossier<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Parler à un courtier</button></div>
+        <div class="choose-row"><button class="choose">Verdergaan met dit voorstel<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Praat met een kredietmakelaar</button></div>
       </div>
     </article>
 
@@ -1342,14 +1342,14 @@ html.embed .shell {
       <div class="offer-head" data-toggle>
         <div class="rate-block">
           <div class="rate">4,05<small>&nbsp;%</small></div>
-          <div class="monthly"><strong>1 427,30 €</strong> / mois</div>
+          <div class="monthly"><strong>1 427,30 €</strong> / maand</div>
         </div>
         <div class="bank">
           <div class="bank-logo" style="background: linear-gradient(135deg, #1A5E5E 0%, #0F3F3F 100%);">R</div>
           <div class="bank-info">
-            <div class="bank-name">Record Bank · <span class="formula">Fixe<span class="tip">Taux fixe pendant toute la durée du prêt. Vos mensualités restent identiques, indépendamment de l'évolution des taux du marché.</span></span></div>
+            <div class="bank-name">Record Bank · <span class="formula">Vast<span class="tip">Vaste rentevoet gedurende de hele looptijd van het krediet. Je maandelijkse afbetalingen blijven identiek, los van de evolutie van de marktrentevoeten.</span></span></div>
             <div class="bank-tags">
-              <span class="tag type fixe">Taux fixe</span>
+              <span class="tag type fixe">Vaste rentevoet</span>
             </div>
           </div>
         </div>
@@ -1357,32 +1357,32 @@ html.embed .shell {
       </div>
       <div class="offer-body">
         <div class="detail-grid">
-          <div class="detail-card"><div class="dlbl">Mensualité fixe</div><div class="dval">1 427,30 €</div><div class="dsub">Pendant toute la durée</div></div>
-          <div class="detail-card"><div class="dlbl">Taux garanti</div><div class="dval">4,05 %</div><div class="dsub">Non révisable</div></div>
+          <div class="detail-card"><div class="dlbl">Vaste afbetaling</div><div class="dval">1 427,30 €</div><div class="dsub">Gedurende de hele looptijd</div></div>
+          <div class="detail-card"><div class="dlbl">Gegarandeerde rentevoet</div><div class="dval">4,05 %</div><div class="dsub">Niet herzienbaar</div></div>
         </div>
         <div class="detail-rows">
-          <div class="drow"><span class="lbl">Amortissement</span><span class="val">Vous payez la même somme chaque mois</span></div>
-          <div class="drow"><span class="lbl">Durée totale</span><span class="val">20 ans</span></div>
-          <div class="drow"><span class="lbl">Coût total du crédit<span class="info-tip">i<span class="tip">Le coût total du crédit représente la somme totale que vous rembourserez sur toute la durée du prêt : capital emprunté, intérêts, frais de dossier et primes d'assurance.</span></span></span><span class="val">342 552 €</span></div>
-          <div class="drow hl"><span class="lbl">TAEG<span class="info-tip">i<span class="tip">Le TAEG (Taux Annuel Effectif Global) intègre l'ensemble des coûts du crédit — taux nominal, frais de dossier, assurances obligatoires. C'est l'indicateur standard pour comparer plusieurs offres.</span></span></span><span class="val">4,22 %</span></div>
+          <div class="drow"><span class="lbl">Aflossing</span><span class="val">Je betaalt elke maand hetzelfde bedrag</span></div>
+          <div class="drow"><span class="lbl">Totale looptijd</span><span class="val">20 jaar</span></div>
+          <div class="drow"><span class="lbl">Totale kostprijs van het krediet<span class="info-tip">i<span class="tip">De totale kostprijs van het krediet is het totale bedrag dat je over de hele looptijd terugbetaalt: geleend kapitaal, interesten, dossierkosten en verzekeringspremies.</span></span></span><span class="val">342 552 €</span></div>
+          <div class="drow hl"><span class="lbl">JKP<span class="info-tip">i<span class="tip">Het JKP (jaarlijks kostenpercentage) omvat alle kosten van het krediet — nominale rentevoet, dossierkosten, verplichte verzekeringen. Het is de standaardindicator om meerdere voorstellen te vergelijken.</span></span></span><span class="val">4,22 %</span></div>
         </div>
-        <div class="choose-row"><button class="choose">Choisir cette offre et soumettre mon dossier<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Parler à un courtier</button></div>
+        <div class="choose-row"><button class="choose">Verdergaan met dit voorstel<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Praat met een kredietmakelaar</button></div>
       </div>
     </article>
 
-    <!-- ALT Offer: Elantis · Fixe progressif (+ 2 %/an) -->
+    <!-- ALT Offer: Elantis · Vast progressief (+ 2 %/jaar) -->
     <article class="offer alt-offer" data-offer="11" data-type="progressif">
       <div class="offer-head" data-toggle>
         <div class="rate-block">
           <div class="rate">4,10<small>&nbsp;%</small></div>
-          <div class="monthly"><strong>1 220,40 €</strong> / mois en année 1</div>
+          <div class="monthly"><strong>1 220,40 €</strong> / maand in jaar 1</div>
         </div>
         <div class="bank">
           <div class="bank-logo" style="background: linear-gradient(135deg, #1554B5 0%, #0A3A8C 100%);">E</div>
           <div class="bank-info">
-            <div class="bank-name">Elantis · <span class="formula">Fixe progressif (+ 2 %/an)<span class="tip">Vos mensualités augmentent progressivement chaque année selon un calendrier contractuel — dans ce cas de +2 %/an. Conçu pour les profils dont les revenus vont progresser dans le temps.</span></span></div>
+            <div class="bank-name">Elantis · <span class="formula">Vast progressief (+ 2 %/jaar)<span class="tip">Je maandelijkse afbetalingen stijgen elk jaar geleidelijk volgens een contractueel schema — in dit geval +2 %/jaar. Ontworpen voor profielen waarvan de inkomsten in de tijd zullen stijgen.</span></span></div>
             <div class="bank-tags">
-              <span class="tag type progressif">Taux progressif</span>
+              <span class="tag type progressif">Progressieve rentevoet</span>
             </div>
           </div>
         </div>
@@ -1390,74 +1390,74 @@ html.embed .shell {
       </div>
       <div class="offer-body">
         <div class="detail-grid">
-          <div class="detail-card"><div class="dlbl">Mensualité année 1</div><div class="dval">1 220,40 €</div><div class="dsub">Charge initiale réduite</div></div>
-          <div class="detail-card"><div class="dlbl">Mensualité année 20</div><div class="dval">~ 1 778 €</div><div class="dsub">Augmentation prévue dans votre contrat : +2%/an</div></div>
+          <div class="detail-card"><div class="dlbl">Afbetaling jaar 1</div><div class="dval">1 220,40 €</div><div class="dsub">Lagere startlast</div></div>
+          <div class="detail-card"><div class="dlbl">Afbetaling jaar 20</div><div class="dval">~ 1 778 €</div><div class="dsub">Stijging voorzien in je contract: +2%/jaar</div></div>
         </div>
         <div class="detail-rows">
-          <div class="drow"><span class="lbl">Amortissement</span><span class="val">Versement progressif (+2 %/an)</span></div>
-          <div class="drow"><span class="lbl">Durée totale</span><span class="val">20 ans</span></div>
-          <div class="drow"><span class="lbl">Coût total du crédit<span class="info-tip">i<span class="tip">Le coût total du crédit représente la somme totale que vous rembourserez sur toute la durée du prêt : capital emprunté, intérêts, frais de dossier et primes d'assurance. Le coût d'un prêt progressif est calculé sur l'ensemble des mensualités prévues au contrat.</span></span></span><span class="val">~ 356 200 €</span></div>
-          <div class="drow hl"><span class="lbl">TAEG<span class="info-tip">i<span class="tip">Le TAEG (Taux Annuel Effectif Global) intègre l'ensemble des coûts du crédit — taux nominal, frais de dossier, assurances obligatoires. C'est l'indicateur standard pour comparer plusieurs offres.</span></span></span><span class="val">4,27 %</span></div>
+          <div class="drow"><span class="lbl">Aflossing</span><span class="val">Progressieve betaling (+2 %/jaar)</span></div>
+          <div class="drow"><span class="lbl">Totale looptijd</span><span class="val">20 jaar</span></div>
+          <div class="drow"><span class="lbl">Totale kostprijs van het krediet<span class="info-tip">i<span class="tip">De totale kostprijs van het krediet is het totale bedrag dat je over de hele looptijd terugbetaalt: geleend kapitaal, interesten, dossierkosten en verzekeringspremies. De kostprijs van een progressief krediet wordt berekend op alle contractueel voorziene afbetalingen.</span></span></span><span class="val">~ 356 200 €</span></div>
+          <div class="drow hl"><span class="lbl">JKP<span class="info-tip">i<span class="tip">Het JKP (jaarlijks kostenpercentage) omvat alle kosten van het krediet — nominale rentevoet, dossierkosten, verplichte verzekeringen. Het is de standaardindicator om meerdere voorstellen te vergelijken.</span></span></span><span class="val">4,27 %</span></div>
         </div>
         <div class="decision">
           <div class="scenarios progression">
-            <div class="scenarios-head">Évolution prévue de votre mensualité — progression contractuelle de <strong>+2 %/an</strong></div>
+            <div class="scenarios-head">Voorziene evolutie van je maandelijkse afbetaling — contractuele stijging van <strong>+2 %/jaar</strong></div>
             <div class="scenario optimistic">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Année 1 — Charge initiale réduite</div>
-                <div class="scenario-amt">1 220,40 € / mois</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Jaar 1 — Lagere startlast</div>
+                <div class="scenario-amt">1 220,40 € / maand</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:55%"></div></div>
-              <div class="scenario-cost">Mensualité de départ — <strong>~13 % sous</strong> le fixe classique</div>
+              <div class="scenario-cost">Startafbetaling — <strong>~13 % onder</strong> de klassieke vaste formule</div>
             </div>
 
             <div class="scenario probable">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Année 10 — Mi-parcours</div>
-                <div class="scenario-amt">~ 1 459 € / mois</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Jaar 10 — Halfweg</div>
+                <div class="scenario-amt">~ 1 459 € / maand</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:78%"></div></div>
-              <div class="scenario-cost"><strong>+ 19,5 %</strong> vs mensualité de départ</div>
+              <div class="scenario-cost"><strong>+ 19,5 %</strong> vs startafbetaling</div>
             </div>
 
             <div class="scenario stress">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Année 20 — Fin du prêt</div>
-                <div class="scenario-amt">~ 1 778 € / mois</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Jaar 20 — Einde van het krediet</div>
+                <div class="scenario-amt">~ 1 778 € / maand</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:100%"></div></div>
-              <div class="scenario-cost"><strong>+ 45,7 %</strong> vs mensualité de départ</div>
+              <div class="scenario-cost"><strong>+ 45,7 %</strong> vs startafbetaling</div>
             </div>
           </div>
           <div class="compare-box">
             <div class="compare-head">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6l1.5 1.5L7 5"/><path d="M3 12l1.5 1.5L7 11"/><path d="M3 18l1.5 1.5L7 17"/></svg>
-              Comparé à l'offre Fixe (3,90 % — 1 406 €/mois)
+              Vergeleken met het vaste voorstel (3,90 % — 1 406 €/maand)
             </div>
             <div class="compare-list">
-              <div class="compare-item save"><span class="ico">↓</span><span>Charge initiale réduite&nbsp;: <strong>~ 186 €/mois économisés</strong> la 1<sup>re</sup> année (1 220 € vs 1 406 €) — utile au démarrage</span></div>
-              <div class="compare-item cost"><span class="ico">↑</span><span>Engagement futur&nbsp;: la mensualité atteint <strong>~ 1 778 €</strong> en année 20 (+26 % vs le fixe classique)</span></div>
-              <div class="compare-item flip"><span class="ico">⚖</span><span>Surcoût total&nbsp;: <strong>~ 18 700 €</strong> sur 20 ans — à arbitrer selon la confiance dans la progression de revenus</span></div>
+              <div class="compare-item save"><span class="ico">↓</span><span>Lagere startlast&nbsp;: <strong>~ 186 €/maand bespaard</strong> la 1<sup>ste</sup> jaar (1 220 € vs 1 406 €) — nuttig bij de start</span></div>
+              <div class="compare-item cost"><span class="ico">↑</span><span>Toekomstig engagement&nbsp;: de afbetaling loopt op tot <strong>~ 1 778 €</strong> in jaar 20 (+26 % vs de klassieke vaste formule)</span></div>
+              <div class="compare-item flip"><span class="ico">⚖</span><span>Totale meerkost&nbsp;: <strong>~ 18 700 €</strong> over 20 jaar — af te wegen tegen het vertrouwen in de inkomensgroei</span></div>
             </div>
           </div>
         </div>
-        <div class="choose-row"><button class="choose">Choisir cette offre et soumettre mon dossier<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Parler à un courtier</button></div>
+        <div class="choose-row"><button class="choose">Verdergaan met dit voorstel<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Praat met een kredietmakelaar</button></div>
       </div>
     </article>
 
-    <!-- ALT Offer: Patronale Life · Fixe progressif (+ 1,5 %/an) -->
+    <!-- ALT Offer: Patronale Life · Vast progressief (+ 1,5 %/jaar) -->
     <article class="offer alt-offer" data-offer="12" data-type="progressif">
       <div class="offer-head" data-toggle>
         <div class="rate-block">
           <div class="rate">4,25<small>&nbsp;%</small></div>
-          <div class="monthly"><strong>1 285,42 €</strong> / mois en année 1</div>
+          <div class="monthly"><strong>1 285,42 €</strong> / maand in jaar 1</div>
         </div>
         <div class="bank">
           <div class="bank-logo" style="background: linear-gradient(135deg, #8B2942 0%, #5E1C2D 100%);">P</div>
           <div class="bank-info">
-            <div class="bank-name">Patronale Life · <span class="formula">Fixe progressif (+ 1,5 %/an)<span class="tip">Vos mensualités augmentent progressivement chaque année selon un calendrier contractuel — dans ce cas de +1,5 %/an. Conçu pour les profils dont les revenus vont progresser dans le temps.</span></span></div>
+            <div class="bank-name">Patronale Life · <span class="formula">Vast progressief (+ 1,5 %/jaar)<span class="tip">Je maandelijkse afbetalingen stijgen elk jaar geleidelijk volgens een contractueel schema — in dit geval +1,5 %/jaar. Ontworpen voor profielen waarvan de inkomsten in de tijd zullen stijgen.</span></span></div>
             <div class="bank-tags">
-              <span class="tag type progressif">Taux progressif</span>
+              <span class="tag type progressif">Progressieve rentevoet</span>
             </div>
           </div>
         </div>
@@ -1465,66 +1465,66 @@ html.embed .shell {
       </div>
       <div class="offer-body">
         <div class="detail-grid">
-          <div class="detail-card"><div class="dlbl">Mensualité année 1</div><div class="dval">1 285,42 €</div><div class="dsub">Charge initiale réduite</div></div>
-          <div class="detail-card"><div class="dlbl">Mensualité année 20</div><div class="dval">~ 1 706 €</div><div class="dsub">Progression contractuelle de +1,5 %/an</div></div>
+          <div class="detail-card"><div class="dlbl">Afbetaling jaar 1</div><div class="dval">1 285,42 €</div><div class="dsub">Lagere startlast</div></div>
+          <div class="detail-card"><div class="dlbl">Afbetaling jaar 20</div><div class="dval">~ 1 706 €</div><div class="dsub">Contractuele stijging van +1,5 %/jaar</div></div>
         </div>
         <div class="detail-rows">
-          <div class="drow"><span class="lbl">Amortissement</span><span class="val">Versement progressif (+1,5 %/an)</span></div>
-          <div class="drow"><span class="lbl">Durée totale</span><span class="val">20 ans</span></div>
-          <div class="drow"><span class="lbl">Coût total du crédit<span class="info-tip">i<span class="tip">Le coût total du crédit représente la somme totale que vous rembourserez sur toute la durée du prêt : capital emprunté, intérêts, frais de dossier et primes d'assurance. Le coût d'un prêt progressif est calculé sur l'ensemble des mensualités prévues au contrat.</span></span></span><span class="val">~ 358 700 €</span></div>
-          <div class="drow hl"><span class="lbl">TAEG<span class="info-tip">i<span class="tip">Le TAEG (Taux Annuel Effectif Global) intègre l'ensemble des coûts du crédit — taux nominal, frais de dossier, assurances obligatoires. C'est l'indicateur standard pour comparer plusieurs offres.</span></span></span><span class="val">4,42 %</span></div>
+          <div class="drow"><span class="lbl">Aflossing</span><span class="val">Progressieve betaling (+1,5 %/jaar)</span></div>
+          <div class="drow"><span class="lbl">Totale looptijd</span><span class="val">20 jaar</span></div>
+          <div class="drow"><span class="lbl">Totale kostprijs van het krediet<span class="info-tip">i<span class="tip">De totale kostprijs van het krediet is het totale bedrag dat je over de hele looptijd terugbetaalt: geleend kapitaal, interesten, dossierkosten en verzekeringspremies. De kostprijs van een progressief krediet wordt berekend op alle contractueel voorziene afbetalingen.</span></span></span><span class="val">~ 358 700 €</span></div>
+          <div class="drow hl"><span class="lbl">JKP<span class="info-tip">i<span class="tip">Het JKP (jaarlijks kostenpercentage) omvat alle kosten van het krediet — nominale rentevoet, dossierkosten, verplichte verzekeringen. Het is de standaardindicator om meerdere voorstellen te vergelijken.</span></span></span><span class="val">4,42 %</span></div>
         </div>
         <div class="decision">
           <div class="scenarios progression">
-            <div class="scenarios-head">Évolution prévue de votre mensualité — progression contractuelle de <strong>+1,5 %/an</strong></div>
+            <div class="scenarios-head">Voorziene evolutie van je maandelijkse afbetaling — contractuele stijging van <strong>+1,5 %/jaar</strong></div>
             <div class="scenario optimistic">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Année 1 — Charge initiale réduite</div>
-                <div class="scenario-amt">1 285,42 € / mois</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Jaar 1 — Lagere startlast</div>
+                <div class="scenario-amt">1 285,42 € / maand</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:55%"></div></div>
-              <div class="scenario-cost">Mensualité de départ — <strong>~9 % sous</strong> le fixe classique</div>
+              <div class="scenario-cost">Startafbetaling — <strong>~9 % onder</strong> de klassieke vaste formule</div>
             </div>
 
             <div class="scenario probable">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Année 10 — Mi-parcours</div>
-                <div class="scenario-amt">~ 1 470 € / mois</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Jaar 10 — Halfweg</div>
+                <div class="scenario-amt">~ 1 470 € / maand</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:75%"></div></div>
-              <div class="scenario-cost"><strong>+ 14,3 %</strong> vs mensualité de départ</div>
+              <div class="scenario-cost"><strong>+ 14,3 %</strong> vs startafbetaling</div>
             </div>
 
             <div class="scenario stress">
               <div class="scenario-row">
-                <div class="scenario-name"><span class="scenario-dot"></span>Année 20 — Fin du prêt</div>
-                <div class="scenario-amt">~ 1 706 € / mois</div>
+                <div class="scenario-name"><span class="scenario-dot"></span>Jaar 20 — Einde van het krediet</div>
+                <div class="scenario-amt">~ 1 706 € / maand</div>
               </div>
               <div class="scenario-bar-wrap"><div class="scenario-bar" style="width:95%"></div></div>
-              <div class="scenario-cost"><strong>+ 32,7 %</strong> vs mensualité de départ</div>
+              <div class="scenario-cost"><strong>+ 32,7 %</strong> vs startafbetaling</div>
             </div>
           </div>
           <div class="compare-box">
             <div class="compare-head">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6l1.5 1.5L7 5"/><path d="M3 12l1.5 1.5L7 11"/><path d="M3 18l1.5 1.5L7 17"/></svg>
-              Comparé à l'offre Fixe (3,90 % — 1 406 €/mois)
+              Vergeleken met het vaste voorstel (3,90 % — 1 406 €/maand)
             </div>
             <div class="compare-list">
-              <div class="compare-item save"><span class="ico">↓</span><span>Charge initiale réduite&nbsp;: <strong>~ 121 €/mois économisés</strong> la 1<sup>re</sup> année (1 285 € vs 1 406 €) — progression plus douce que le +2 %/an</span></div>
-              <div class="compare-item cost"><span class="ico">↑</span><span>Engagement futur&nbsp;: la mensualité atteint <strong>~ 1 706 €</strong> en année 20 (+21 % vs le fixe classique)</span></div>
-              <div class="compare-item flip"><span class="ico">⚖</span><span>Surcoût total&nbsp;: <strong>~ 21 200 €</strong> sur 20 ans — positionnement plus haut sur la courbe taux, à arbitrer si la progression douce vaut le surcoût</span></div>
+              <div class="compare-item save"><span class="ico">↓</span><span>Lagere startlast&nbsp;: <strong>~ 121 €/maand bespaard</strong> la 1<sup>ste</sup> jaar (1 285 € vs 1 406 €) — zachtere stijging dan +2 %/jaar</span></div>
+              <div class="compare-item cost"><span class="ico">↑</span><span>Toekomstig engagement&nbsp;: de afbetaling loopt op tot <strong>~ 1 706 €</strong> in jaar 20 (+21 % vs de klassieke vaste formule)</span></div>
+              <div class="compare-item flip"><span class="ico">⚖</span><span>Totale meerkost&nbsp;: <strong>~ 21 200 €</strong> over 20 jaar — hogere positie op de rentecurve, af te wegen of de zachte stijging de meerkost waard is</span></div>
             </div>
           </div>
         </div>
-        <div class="choose-row"><button class="choose">Choisir cette offre et soumettre mon dossier<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Parler à un courtier</button></div>
+        <div class="choose-row"><button class="choose">Verdergaan met dit voorstel<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button><button class="choose-talk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Praat met een kredietmakelaar</button></div>
       </div>
     </article>
     </div>
     <div class="pager">
-      <button aria-label="Précédent">‹</button>
+      <button aria-label="Vorige">‹</button>
       <button class="on">1</button>
       <button>2</button>
-      <button aria-label="Suivant">›</button>
+      <button aria-label="Volgende">›</button>
     </div>
   </main>
 </div>
@@ -1532,7 +1532,7 @@ html.embed .shell {
 <div class="actions">
   <a href="Mon_Projet.html" class="btn-back">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
-    Retour aux informations
+    Terug naar mijn gegevens
   </a>
 </div>
 
@@ -1541,15 +1541,15 @@ html.embed .shell {
   <div class="footer-top">
     <div>
       <svg viewBox="0 0 668.2 145" style="width:120px;height:auto;display:block;opacity:0.85;"><style>.sf{fill:#fff;}</style><rect class="sf" height="65.8" width="17.8" x="37.6" y="69.8"/><path class="sf" d="M140.3,68.5c-7.9,0-15,3.7-19,12.3c-2.8-8.3-9.4-12.3-17.1-12.3c-7.5,0-13,3.3-16.2,9.4v-8H70.2v65.8H88V95.9c0-8.3,4.2-12.3,9.7-12.3c5.5,0,9.7,3.6,9.7,11v41.1H125V95.2c0-7.6,3.9-12.1,9.7-12.1c5.5,0,9.7,4,9.7,11.4v41.1h17.8V91.2C162.2,76.5,153.5,68.5,140.3,68.5z"/><path class="sf" d="M247.1,68.5c-7.9,0-15,3.7-19,12.3c-2.8-8.3-9.4-12.3-17.1-12.3c-7.5,0-13,3.3-16.2,9.4v-8h-17.8v65.8h17.8V95.9c0-8.3,4.2-12.3,9.7-12.3c5.5,0,9.7,3.6,9.7,11v41.1h17.6V95.2c0-7.6,3.9-12.1,9.7-12.1c5.5,0,9.7,4,9.7,11.4v41.1h17.8V91.2C269.1,76.5,260.3,68.5,247.1,68.5z"/><polygon class="sf" points="450.6,119 439.3,69.8 418.5,69.8 406.9,119 394.9,69.8 377.1,69.8 395.1,135.6 418,135.6 428.9,92.9 439.5,135.6 462.4,135.6 480.5,69.8 462.9,69.8"/><path class="sf" d="M599.7,68.5c-8.7,0-16.8,4.6-21.1,11.2V38.5h-17.8v97.1h17.1v-8.7c4.6,6.7,12.2,10.1,20.8,10.1c18.5,0,31.9-13.2,31.9-34C630.7,82.2,617.5,68.5,599.7,68.5z M595.4,121.9c-9,0-17.5-6.7-17.5-18.9c0-12.5,8.5-19.3,17.5-19.3c9.4,0,17.5,7.1,17.5,19.3C612.9,114.9,604.9,121.9,595.4,121.9z"/><rect class="sf" height="17.2" width="17.8" x="37.6" y="38.4"/><path class="sf" d="M520,121.7c-8.9,0-17.1-5.3-17.3-15.7h44.7c0.6-2.5,0.8-5.1,0.8-8c0-18.2-12.3-29.6-30.5-29.6c-19.7,0-32.7,15.1-32.7,33.9c0,21.1,14.6,34.7,34.8,34.7c14.1,0,23.8-6.4,29-16.6l-15.1-5.9C531.1,119.1,526.7,121.7,520,121.7z M517.7,82.8c7.9,0,13.3,4.3,13.3,11c0,0.3-0.1,0.6-0.1,0.6h-28.2C504.3,86.9,510.6,82.8,517.7,82.8z"/><path class="sf" d="M355.3,53.9h-13.7v9l-17.8-12.6l-44.9,31.8l17.5,53.6h54.8l17.5-53.6l-13.4-9.5V53.9z M340.3,120.8h-33.1L296.6,88l27.2-19.3L351,88L340.3,120.8z"/></svg>
-      <p class="footer-brand-sub">Immoweb HypoMatch est un service du groupe AVIV, proposé en association avec un courtier en crédit hypothécaire agréé FSMA.</p>
+      <p class="footer-brand-sub">Immoweb HypoMatch is een dienst van de AVIV-groep, aangeboden in samenwerking met een FSMA-erkende kredietmakelaar in hypothecair krediet.</p>
     </div>
     <div>
       <div class="footer-col-title">HypoMatch</div>
-      <div class="footer-links"><a class="footer-link">Nos partenaires</a><a class="footer-link" href="#">Courtier en crédit</a><a class="footer-link" href="#">Notre modèle</a><a class="footer-link">Taux actuels</a></div>
+      <div class="footer-links"><a class="footer-link">Onze partners</a><a class="footer-link" role="link" aria-disabled="true">Kredietmakelaar</a><a class="footer-link" role="link" aria-disabled="true">Ons model</a><a class="footer-link">Actuele rentevoeten</a></div>
     </div>
     <div>
-      <div class="footer-col-title">Légal</div>
-      <div class="footer-links"><a class="footer-link">Politique RGPD</a><a class="footer-link">Conditions générales</a><a class="footer-link">Agrément FSMA</a><a class="footer-link">Cookies</a></div>
+      <div class="footer-col-title">Juridisch</div>
+      <div class="footer-links"><a class="footer-link">GDPR-beleid</a><a class="footer-link">Algemene voorwaarden</a><a class="footer-link">FSMA-erkenning</a><a class="footer-link">Cookies</a></div>
     </div>
   </div>
   <div class="footer-bottom">
@@ -1685,7 +1685,7 @@ function applyTypeFilter(type) {
   stripAllBestBadges();
   const firstMatch = document.querySelector('.offer.match');
   if (firstMatch) {
-    addBadge(firstMatch, 'Recommandée pour vous', ICO_RECO_CHECK);
+    addBadge(firstMatch, 'Aanbevolen voor jou', ICO_RECO_CHECK);
     // Flash for attention
     firstMatch.classList.remove('reco-flash');
     void firstMatch.offsetWidth;
@@ -1707,7 +1707,7 @@ function deselectAllControls() {
 
 // Reset just the offer list to its default appearance: every type visible,
 // only the default offer per type shown, no "match" highlights, no flash,
-// and the "Meilleure offre" star back on the top default offer. Does NOT
+// and the "Beste voorstel" star back on the top default offer. Does NOT
 // touch card selection — call deselectAllControls() yourself if you want
 // a full reset.
 function resetOffersToDefault() {
@@ -1722,9 +1722,9 @@ function resetOffersToDefault() {
 
   stripAllBestBadges();
 
-  // Restore "Meilleure offre" badge on the default top offer (data-offer="0")
+  // Restore "Beste voorstel" badge on the default top offer (data-offer="0")
   const defaultBest = document.querySelector('.offer[data-offer="0"]');
-  addBadge(defaultBest, 'Meilleure offre', ICO_STAR);
+  addBadge(defaultBest, 'Beste voorstel', ICO_STAR);
 }
 
 // Full reset: clears card selection AND restores the default offer view.
@@ -1751,7 +1751,7 @@ document.querySelectorAll('button.pref-card[data-pref]').forEach(card => {
     card.setAttribute('aria-checked', 'true');
 
     if (pref === 'all') {
-      // "Pas de préférence" — show every formula, restore default view
+      // "Geen voorkeur" — show every formula, restore default view
       resetOffersToDefault();
       return;
     }
@@ -1827,7 +1827,7 @@ document.querySelectorAll('.choose').forEach(btn => {
   });
 });
 
-// ── "Parler à un courtier" → navigate to Rendez-vous courtier page ──
+// ── "Praat met een kredietmakelaar" → navigate to Afspraak kredietmakelaar page ──
 document.querySelectorAll('.choose-talk').forEach(btn => {
   btn.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -1891,11 +1891,11 @@ updateCapital();
 
   // Map Q12 values → simulation page selectors
   const SELECTOR_MAP = {
-    fixe:       '.pref-subopt[data-suboffer="2"]',  // Mensualité fixe
-    progressif: '.pref-subopt[data-suboffer="3"]',  // Mensualité progressive
+    fixe:       '.pref-subopt[data-suboffer="2"]',  // Vaste afbetaling
+    progressif: '.pref-subopt[data-suboffer="3"]',  // Progressieve afbetaling
     accordeon:  'button.pref-card[data-pref="protected"]',  // Budget protégé
     variable:   'button.pref-card[data-pref="cheapest"]',   // Mensualité la plus basse
-    indecis:    'button.pref-card[data-pref="all"]'         // Pas de préférence
+    indecis:    'button.pref-card[data-pref="all"]'         // Geen voorkeur
   };
   const target = document.querySelector(SELECTOR_MAP[profil]);
   if (target) target.click();
