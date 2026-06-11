@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Immoweb – Confirmation &amp; envoi</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --iw-blue: #133DBD; --iw-blue-light: #EBF0FC; --iw-green: #65D78D;
+    --iw-green-light: #EDFAF3; --iw-green-d: #1A6B3C;
+    --iw-navy: #1B3353; --iw-gray: #8A9BB5;
+    --iw-border: #D6DFF0; --iw-surface: #F4F6FB; --iw-white: #ffffff;
+    --font: 'Manrope', Arial, 'Trebuchet MS', system-ui, sans-serif;
+  }
+
+  /* Announce + full header (matches Simulation / Mon Projet) */
+  .announce { background: var(--iw-navy); color: rgba(255,255,255,0.82); font-size: 12px; padding: 8px 60px; display: flex; align-items: center; justify-content: space-between; letter-spacing: 0.01em; }
+  .announce-right { display: flex; gap: 20px; }
+  .announce-right span { display: flex; align-items: center; gap: 6px; }
+  .hdr { background: var(--iw-blue); padding: 0 60px; height: 68px; display: flex; align-items: center; justify-content: space-between; position: relative; }
+  .hdr-left { display: flex; align-items: center; gap: 40px; }
+  .hdr-logo-wrap { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .hdr-beta { font-size: 8.5px; font-weight: 700; letter-spacing: 0.14em; color: var(--iw-green); background: rgba(101,215,141,0.14); border: 1px solid rgba(101,215,141,0.4); border-radius: 3px; padding: 2px 7px; text-transform: uppercase; line-height: 1; }
+  .hdr-nav { display: flex; align-items: center; gap: 26px; }
+  .hdr-link { font-size: 13px; color: rgba(255,255,255,0.72); font-weight: 500; padding: 6px 0; position: relative; cursor: pointer; }
+  .hdr-link.active { color: white; font-weight: 600; }
+  .hdr-link.active::after { content: ''; position: absolute; left: 0; right: 0; bottom: -24px; height: 3px; background: var(--iw-green); border-radius: 2px 2px 0 0; }
+  .hdr-right { display: flex; align-items: center; gap: 12px; }
+  .hdr-lang { font-size: 12px; color: rgba(255,255,255,0.65); font-weight: 600; padding: 6px 10px; border-radius: 6px; cursor: pointer; }
+  .hdr-lang.on { color: white; background: rgba(255,255,255,0.12); }
+  .hdr-cta { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: white; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+
+  /* Footer */
+  .footer { background: var(--iw-navy); color: white; padding: 60px 60px 28px; margin-top: 40px; }
+  .footer-top { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 48px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.12); }
+  .footer-brand-sub { font-size: 12.5px; color: rgba(255,255,255,0.6); line-height: 1.6; margin-top: 16px; max-width: 280px; }
+  .footer-col-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.55); margin-bottom: 16px; }
+  .footer-links { display: flex; flex-direction: column; gap: 10px; }
+  .footer-link { font-size: 13px; color: rgba(255,255,255,0.78); cursor: pointer; }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; }
+  .footer-bottom-l { font-size: 11.5px; color: rgba(255,255,255,0.45); }
+  .footer-bottom-r { display: flex; gap: 18px; }
+  .footer-bottom-r span { font-size: 11.5px; color: rgba(255,255,255,0.45); cursor: pointer; }
+  html, body { width: 1280px; margin: 0; font-family: var(--font); background: var(--iw-surface); color: var(--iw-navy); -webkit-font-smoothing: antialiased; font-feature-settings: 'ss01','cv11','tnum'; }
+  .iw-header { background: var(--iw-blue); padding: 0 40px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+  .iw-logo svg { width: 130px; height: auto; display: block; }
+  .iw-header-right { display: flex; align-items: center; gap: 14px; }
+  .iw-avatar { width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: white; }
+  .iw-header-name { font-size: 13px; color: rgba(255,255,255,0.85); }
+  .iw-progress-bar { background: var(--iw-white); border-bottom: 1px solid var(--iw-border); padding: 14px 60px; }
+  .iw-steps { display: flex; align-items: center; gap: 0; }
+  .iw-step { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--iw-gray); font-weight: 500; padding: 4px 14px 4px 0; }
+  .iw-step.active { color: var(--iw-blue); font-weight: 700; }
+  .iw-step.done { color: var(--iw-green-d); font-weight: 600; }
+  .iw-step-num { width: 22px; height: 22px; border-radius: 50%; background: white; border: 1.5px solid var(--iw-border); font-size: 11px; font-weight: 700; color: var(--iw-gray); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .iw-step.active .iw-step-num { background: var(--iw-blue); border-color: var(--iw-blue); color: white; }
+  .iw-step.done .iw-step-num { background: var(--iw-green); border-color: var(--iw-green); color: white; }
+  .iw-step-arrow { width: 32px; height: 1.5px; background: var(--iw-border); margin: 0 6px; display: inline-block; }
+  .iw-step-arrow.done { background: var(--iw-green); }
+  .iw-main { display: grid; grid-template-columns: 1fr 340px; gap: 24px; padding: 28px 60px 40px; align-items: start; }
+  .card { background: var(--iw-white); border: 1px solid var(--iw-border); border-radius: 12px; overflow: hidden; }
+  .card-header { padding: 16px 22px; border-bottom: 1px solid var(--iw-border); display: flex; align-items: center; justify-content: space-between; }
+  .card-title { font-size: 15px; font-weight: 600; color: var(--iw-navy); display: flex; align-items: center; gap: 10px; }
+  .card-icon { width: 30px; height: 30px; border-radius: 8px; background: var(--iw-blue-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .card-body { padding: 20px 22px; }
+  .edit-link { font-size: 12.5px; color: var(--iw-blue); font-weight: 600; text-decoration: none; border: 1px solid var(--iw-blue-light); border-radius: 6px; padding: 4px 12px; }
+  .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .data-row { padding: 10px 0; border-bottom: 1px solid var(--iw-border); }
+  .data-row:last-child { border-bottom: none; }
+  .data-label { font-size: 11.5px; color: var(--iw-gray); margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+  .data-value { font-size: 14px; color: var(--iw-navy); font-weight: 500; }
+  .data-row-full { padding: 10px 0; border-bottom: 1px solid var(--iw-border); grid-column: 1 / -1; }
+  .data-row-full:last-child { border-bottom: none; }
+  .doc-list { display: flex; flex-direction: column; gap: 8px; }
+  .doc-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--iw-green-light); border: 1px solid rgba(101,215,141,0.35); border-radius: 8px; }
+  .doc-item-icon { width: 32px; height: 32px; border-radius: 6px; background: var(--iw-green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .doc-item-name { font-size: 13px; font-weight: 600; color: #1A6B3C; flex: 1; }
+  .doc-item-meta { font-size: 11.5px; color: #2D8F52; }
+  .doc-item-size { font-size: 11px; color: #2D8F52; white-space: nowrap; }
+  .broker-card { background: var(--iw-blue); border-radius: 12px; padding: 22px; color: white; margin-bottom: 14px; }
+  .broker-avatar { width: 52px; height: 52px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: white; margin-bottom: 14px; }
+  .broker-name { font-size: 16px; font-weight: 600; margin-bottom: 2px; }
+  .broker-role { font-size: 12.5px; color: rgba(255,255,255,0.7); margin-bottom: 14px; }
+  .broker-detail { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: rgba(255,255,255,0.85); margin-bottom: 8px; }
+  .broker-detail:last-child { margin-bottom: 0; }
+  .consent-box { background: var(--iw-white); border: 1px solid var(--iw-border); border-radius: 12px; padding: 20px 22px; margin-bottom: 14px; }
+  .consent-title { font-size: 13px; font-weight: 700; color: var(--iw-navy); margin-bottom: 14px; }
+  .consent-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+  .consent-item:last-child { margin-bottom: 0; }
+  .checkbox { width: 18px; height: 18px; border-radius: 4px; background: var(--iw-blue); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .consent-text { font-size: 12.5px; color: var(--iw-navy); line-height: 1.5; }
+  .consent-text a { color: var(--iw-blue); text-decoration: underline; }
+
+  /* Optional opt-in section under the required confirmations */
+  .consent-divider { height: 1px; background: var(--iw-border); margin: 16px -22px; }
+  .consent-subtitle { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--iw-gray); margin-bottom: 12px; }
+  .consent-item-opt > .checkbox { margin-top: 6px; }
+  .bank-logo { width: 24px; height: 24px; border-radius: 6px; background: linear-gradient(135deg, #C8017E 0%, #9E0064 100%); color: white; font-weight: 800; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; font-family: var(--font); flex-shrink: 0; letter-spacing: -0.02em; }
+  .consent-item-opt { cursor: pointer; user-select: none; }
+  .consent-item-opt .checkbox { transition: background 0.15s, border-color 0.15s; }
+  .consent-item-opt:not(.checked) .checkbox { background: var(--iw-white); border: 1.5px solid var(--iw-border); }
+  .consent-item-opt:not(.checked) .checkbox svg { display: none; }
+  .summary-box { background: var(--iw-white); border: 1px solid var(--iw-border); border-radius: 12px; padding: 18px 22px; margin-bottom: 14px; }
+  .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--iw-border); font-size: 13px; }
+  .summary-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .summary-label { color: var(--iw-gray); }
+  .summary-value { font-weight: 600; color: var(--iw-navy); }
+  .summary-value.green { color: #1A6B3C; }
+  .send-btn { width: 100%; background: var(--iw-blue); color: white; border: none; border-radius: 10px; padding: 15px; font-size: 15px; font-weight: 700; font-family: var(--font); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; }
+  .talk-btn { width: 100%; background: var(--iw-white); color: var(--iw-blue); border: 1.5px solid var(--iw-blue); border-radius: 10px; padding: 13px; font-size: 14px; font-weight: 700; font-family: var(--font); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; transition: background 0.15s; }
+  .talk-btn:hover { background: var(--iw-blue-light); }
+  .security-note { display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--iw-gray); margin-top: 12px; justify-content: center; text-align: center; line-height: 1.5; }
+  .left-col { display: flex; flex-direction: column; gap: 16px; }
+  .project-highlight { background: var(--iw-blue-light); border: 1px solid rgba(19,61,189,0.12); border-radius: 10px; padding: 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 16px; }
+  .project-address { font-size: 16px; font-weight: 700; color: var(--iw-navy); margin-bottom: 3px; }
+  .project-sub { font-size: 13px; color: var(--iw-gray); }
+  .project-badge { background: var(--iw-blue); color: white; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; white-space: nowrap; }
+  .house-icon { width: 50px; height: 50px; border-radius: 10px; background: var(--iw-blue); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  /* Cardif certification */
+  --cardif-gold: #B45309; --cardif-gold-l: #FEF3E2;
+  .cert-card { background: var(--iw-white); border: 2px solid var(--cardif-gold); border-radius: 12px; overflow: hidden; }
+  .cert-header { background: var(--cardif-gold-l); padding: 16px 22px; border-bottom: 1px solid rgba(180,83,9,0.18); display: flex; align-items: center; justify-content: space-between; }
+  .cert-title { font-size: 15px; font-weight: 700; color: var(--cardif-gold); display: flex; align-items: center; gap: 10px; }
+  .cert-icon { width: 30px; height: 30px; border-radius: 8px; background: var(--cardif-gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .cert-badge { font-size: 10.5px; font-weight: 700; background: var(--cardif-gold); color: white; padding: 3px 10px; border-radius: 20px; }
+  .cert-body { padding: 20px 22px; }
+  .cert-desc { font-size: 13px; color: var(--iw-gray); line-height: 1.65; margin-bottom: 16px; }
+  .cert-highlight { background: var(--cardif-gold-l); border: 1px solid rgba(180,83,9,0.15); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 14px; }
+  .cert-shield { width: 44px; height: 44px; border-radius: 10px; background: var(--cardif-gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .cert-hl-title { font-size: 13.5px; font-weight: 700; color: var(--cardif-gold); margin-bottom: 3px; }
+  .cert-hl-sub { font-size: 12px; color: rgba(180,83,9,0.7); line-height: 1.5; }
+  .cert-computed { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .cert-stat { background: var(--iw-surface); border-radius: 8px; padding: 10px 12px; }
+  .cert-stat-label { font-size: 10.5px; color: var(--iw-gray); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; margin-bottom: 3px; }
+  .cert-stat-val { font-size: 15px; font-weight: 700; color: var(--iw-navy); }
+  .cert-stat-sub { font-size: 10.5px; color: var(--iw-gray); margin-top: 1px; }
+  .billing-toggle { display: flex; border: 1.5px solid var(--iw-border); border-radius: 8px; overflow: hidden; margin-bottom: 14px; }
+  .billing-opt { flex: 1; padding: 10px 14px; text-align: center; font-size: 13px; font-weight: 600; color: var(--iw-gray); background: var(--iw-white); }
+  .billing-opt.sel { background: var(--cardif-gold); color: white; }
+  .billing-detail { background: var(--iw-surface); border-radius: 8px; padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .billing-price { font-size: 22px; font-weight: 800; color: var(--iw-navy); }
+  .billing-period { font-size: 12px; color: var(--iw-gray); margin-top: 1px; }
+  .billing-saving { font-size: 11px; font-weight: 700; background: var(--iw-green-light); color: #1A6B3C; padding: 3px 9px; border-radius: 5px; }
+  .cert-cta { width: 100%; background: var(--cardif-gold); color: white; border: none; border-radius: 8px; padding: 12px; font-size: 14px; font-weight: 700; font-family: var(--font); cursor: pointer; text-align: center; margin-bottom: 8px; }
+  .cert-skip { width: 100%; background: var(--iw-white); color: var(--iw-gray); border: 1px solid var(--iw-border); border-radius: 8px; padding: 10px; font-size: 12.5px; font-weight: 600; font-family: var(--font); cursor: pointer; text-align: center; }
+  .cert-powered { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 11px; color: var(--iw-gray); margin-top: 10px; }
+  .cert-powered-logo { font-size: 11px; font-weight: 800; color: var(--cardif-gold); }
+
+  /* ── AI drop pane (Mon Projet style, adapted for Confirmation rail) ── */
+  .ai-card { background: linear-gradient(180deg, #FAF7FF 0%, #F6F9FE 100%); border: 1.5px solid #E4DAFB; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+  .ai-card-header { padding: 14px 18px; border-bottom: 1px solid rgba(180, 160, 230, 0.18); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .ai-card-title { font-size: 14px; font-weight: 700; color: #5B3FC4; display: flex; align-items: center; gap: 9px; }
+  .ai-card-icon { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #8B5CF6 0%, var(--iw-blue) 100%); color: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .ai-privacy-pill { display: flex; align-items: center; gap: 6px; font-size: 10.5px; color: var(--iw-gray); padding: 4px 9px; background: rgba(255,255,255,0.75); border-radius: 999px; border: 1px solid rgba(139,92,246,0.18); white-space: nowrap; }
+  .ai-privacy-pill strong { color: var(--iw-navy); font-weight: 700; }
+  .ai-privacy-pill svg { color: #8B5CF6; flex-shrink: 0; }
+  .ai-card-body { padding: 16px 18px 14px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+  .ai-drop { border: 2px dashed #C9B8F5; border-radius: 10px; background: rgba(255,255,255,0.6); transition: all 0.15s; cursor: pointer; }
+  .ai-drop.drag { border-color: #8B5CF6; background: rgba(139,92,246,0.08); }
+  .ai-drop-inner { padding: 22px 18px; text-align: center; }
+  .ai-drop-icon { width: 46px; height: 46px; border-radius: 50%; background: white; border: 1.5px solid #E4DAFB; color: #8B5CF6; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+  .ai-drop-title { font-size: 13.5px; font-weight: 700; color: var(--iw-navy); margin-bottom: 5px; line-height: 1.4; }
+  .ai-drop-pick { color: #8B5CF6; text-decoration: underline; font-weight: 700; cursor: pointer; padding: 0; font-family: inherit; font-size: inherit; background: none; border: none; }
+  .ai-drop-pick:hover { color: #7747E0; }
+  .ai-drop-sub { font-size: 11.5px; color: var(--iw-gray); margin-bottom: 12px; line-height: 1.5; }
+
+  .ai-doc-list { display: flex; flex-direction: column; gap: 2px; margin: 0 auto; max-width: 250px; text-align: left; padding: 9px 11px; background: rgba(255,255,255,0.55); border: 1px solid rgba(139,92,246,0.18); border-radius: 10px; }
+  .ai-doc-item { display: flex; align-items: flex-start; gap: 9px; padding: 5px 3px; transition: opacity 0.18s; }
+  .ai-doc-icon { width: 16px; height: 16px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; color: #C9B8F5; background: white; border: 1px solid #E4DAFB; transition: all 0.2s; margin-top: 1px; }
+  .ai-doc-icon .ai-doc-done { display: none; }
+  .ai-doc-content { display: flex; flex-direction: column; gap: 1px; flex: 1; min-width: 0; }
+  .ai-doc-label { font-size: 12px; font-weight: 600; color: var(--iw-navy); line-height: 1.3; }
+  .ai-doc-sub { font-size: 10px; color: var(--iw-gray); font-weight: 500; line-height: 1.35; }
+  .ai-doc-status { font-size: 10px; font-weight: 600; color: var(--iw-gray); letter-spacing: 0.01em; flex-shrink: 0; margin-top: 2px; }
+
+  .ai-doc-item.done .ai-doc-icon { color: white; background: var(--iw-green); border-color: var(--iw-green); }
+  .ai-doc-item.done .ai-doc-icon .ai-doc-pending { display: none; }
+  .ai-doc-item.done .ai-doc-icon .ai-doc-done { display: block; }
+  .ai-doc-item.done .ai-doc-label { color: var(--iw-green-d); }
+  .ai-doc-item.done .ai-doc-status { color: var(--iw-green-d); font-weight: 700; }
+  .ai-files { display: flex; flex-direction: column; gap: 8px; }
+  .ai-files:empty { display: none; }
+  .ai-file { display: grid; grid-template-columns: 28px 1fr auto; gap: 10px; align-items: center; padding: 9px 12px; background: white; border: 1px solid var(--iw-border); border-radius: 8px; }
+  .ai-file-icon { width: 28px; height: 28px; border-radius: 6px; background: var(--iw-blue-light); color: var(--iw-blue); display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800; }
+  .ai-file-body { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .ai-file-name { font-size: 12.5px; font-weight: 600; color: var(--iw-navy); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ai-file-meta { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--iw-gray); font-weight: 500; }
+  .ai-file-bar { height: 3px; background: var(--iw-border); border-radius: 999px; overflow: hidden; flex: 1; max-width: 100px; }
+  .ai-file-bar-fill { height: 100%; background: linear-gradient(90deg, #8B5CF6, var(--iw-blue)); transition: width 0.25s; border-radius: 999px; }
+  .ai-file.done .ai-file-bar-fill { background: var(--iw-green); }
+  .ai-file.done .ai-file-icon { background: var(--iw-green-light); color: var(--iw-green-d); }
+  .ai-file-status { font-size: 10.5px; font-weight: 700; color: var(--iw-gray); display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+  .ai-file.done .ai-file-status { color: var(--iw-green-d); }
+  .ai-foot-note { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--iw-gray); padding: 9px 12px; background: rgba(255,255,255,0.55); border-radius: 8px; line-height: 1.5; }
+  .ai-foot-note svg { color: #8B5CF6; flex-shrink: 0; }
+
+  /* Embed mode: hide chrome when loaded inside the landing-page demo iframe */
+  html.embed .announce,
+  html.embed .hdr,
+  html.embed .footer { display: none !important; }
+  html.embed body { background: var(--iw-surface); }
+  html.embed, html.embed body { width: 100% !important; overflow-x: hidden !important; }
+  html.embed .iw-progress-bar { padding: 10px 22px !important; }
+  html.embed .iw-main { padding: 14px 22px !important; }
+</style>
+<script>
+  if (new URLSearchParams(location.search).get('embed') === '1') {
+    document.documentElement.classList.add('embed');
+  }
+</script>
+</head>
+<body>
+
+<div class="announce">
+  <div></div>
+  <div class="announce-right">
+    <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Courtier agréé FSMA</span>
+    <span>🇧🇪 Belgique</span>
+  </div>
+</div>
+
+<header class="hdr">
+  <div class="hdr-left">
+    <div class="hdr-logo-wrap">
+      <a href="index.html" style="display:block;"><svg viewBox="0 0 668.2 145" style="width:130px;height:auto;display:block;"><style>.sw{fill:#fff;}</style><rect class="sw" height="65.8" width="17.8" x="37.6" y="69.8"/><path class="sw" d="M140.3,68.5c-7.9,0-15,3.7-19,12.3c-2.8-8.3-9.4-12.3-17.1-12.3c-7.5,0-13,3.3-16.2,9.4v-8H70.2v65.8H88V95.9c0-8.3,4.2-12.3,9.7-12.3c5.5,0,9.7,3.6,9.7,11v41.1H125V95.2c0-7.6,3.9-12.1,9.7-12.1c5.5,0,9.7,4,9.7,11.4v41.1h17.8V91.2C162.2,76.5,153.5,68.5,140.3,68.5z"/><path class="sw" d="M247.1,68.5c-7.9,0-15,3.7-19,12.3c-2.8-8.3-9.4-12.3-17.1-12.3c-7.5,0-13,3.3-16.2,9.4v-8h-17.8v65.8h17.8V95.9c0-8.3,4.2-12.3,9.7-12.3c5.5,0,9.7,3.6,9.7,11v41.1h17.6V95.2c0-7.6,3.9-12.1,9.7-12.1c5.5,0,9.7,4,9.7,11.4v41.1h17.8V91.2C269.1,76.5,260.3,68.5,247.1,68.5z"/><polygon class="sw" points="450.6,119 439.3,69.8 418.5,69.8 406.9,119 394.9,69.8 377.1,69.8 395.1,135.6 418,135.6 428.9,92.9 439.5,135.6 462.4,135.6 480.5,69.8 462.9,69.8"/><path class="sw" d="M599.7,68.5c-8.7,0-16.8,4.6-21.1,11.2V38.5h-17.8v97.1h17.1v-8.7c4.6,6.7,12.2,10.1,20.8,10.1c18.5,0,31.9-13.2,31.9-34C630.7,82.2,617.5,68.5,599.7,68.5z M595.4,121.9c-9,0-17.5-6.7-17.5-18.9c0-12.5,8.5-19.3,17.5-19.3c9.4,0,17.5,7.1,17.5,19.3C612.9,114.9,604.9,121.9,595.4,121.9z"/><rect class="sw" height="17.2" width="17.8" x="37.6" y="38.4"/><path class="sw" d="M520,121.7c-8.9,0-17.1-5.3-17.3-15.7h44.7c0.6-2.5,0.8-5.1,0.8-8c0-18.2-12.3-29.6-30.5-29.6c-19.7,0-32.7,15.1-32.7,33.9c0,21.1,14.6,34.7,34.8,34.7c14.1,0,23.8-6.4,29-16.6l-15.1-5.9C531.1,119.1,526.7,121.7,520,121.7z M517.7,82.8c7.9,0,13.3,4.3,13.3,11c0,0.3-0.1,0.6-0.1,0.6h-28.2C504.3,86.9,510.6,82.8,517.7,82.8z"/><path class="sw" d="M355.3,53.9h-13.7v9l-17.8-12.6l-44.9,31.8l17.5,53.6h54.8l17.5-53.6l-13.4-9.5V53.9z M340.3,120.8h-33.1L296.6,88l27.2-19.3L351,88L340.3,120.8z"/></svg></a>
+      <span class="hdr-beta">Beta</span>
+    </div>
+    <nav class="hdr-nav">
+      <a class="hdr-link active" href="index.html">HypoMatch</a>
+      <span class="hdr-link">Nos partenaires</span>
+      <a class="hdr-link" href="#">Notre modèle</a>
+      <a class="hdr-link" href="#">Courtier en crédit</a>
+    </nav>
+  </div>
+  <div class="hdr-right">
+    <span class="hdr-lang on">FR</span>
+    <span class="hdr-lang">NL</span>
+    <span class="hdr-lang">EN</span>
+    <button class="hdr-cta">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Julien Maes
+    </button>
+  </div>
+</header>
+
+<div class="iw-progress-bar">
+  <div class="iw-steps">
+    <div class="iw-step done"><div class="iw-step-num">✓</div> Mon projet</div>
+    <span class="iw-step-arrow done"></span>
+    <div class="iw-step done"><div class="iw-step-num">✓</div> Mes informations</div>
+    <span class="iw-step-arrow done"></span>
+    <div class="iw-step done"><div class="iw-step-num">✓</div> Simulation</div>
+    <span class="iw-step-arrow done"></span>
+    <div class="iw-step active"><div class="iw-step-num">4</div> Confirmation</div>
+  </div>
+</div>
+
+<div class="iw-main">
+  <div class="left-col">
+    <div>
+      <h1 style="font-size: 24px; font-weight: 600; color: var(--iw-navy); margin-bottom: 5px;">Vérifier &amp; envoyer votre dossier</h1>
+      <p style="font-size: 14px; color: var(--iw-gray); line-height: 1.5;">Vérifiez toutes les informations avant d'envoyer votre dossier. Vous pouvez encore revenir en arrière pour modifier ce que vous voulez.</p>
+    </div>
+
+    <!-- Projet -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="card-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#133DBD" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          Détails du projet
+        </div>
+        <a class="edit-link" href="#">Modifier</a>
+      </div>
+      <div class="card-body">
+        <div class="project-highlight">
+          <div class="house-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          <div style="flex: 1;">
+            <div class="project-address">Rue de la Loi 44, 1000 Bruxelles</div>
+            <div class="project-sub">Appartement · 87 m² · 2 chambres</div>
+          </div>
+          <span class="project-badge">Achat</span>
+        </div>
+        <div class="data-grid">
+          <div class="data-row" style="padding-right: 24px;">
+            <div class="data-label">Prix d'achat</div>
+            <div class="data-value">385.000 €</div>
+          </div>
+          <div class="data-row">
+            <div class="data-label">Montant emprunté</div>
+            <div class="data-value">308.000 €</div>
+          </div>
+          <div class="data-row" style="padding-right: 24px;">
+            <div class="data-label">Apport personnel</div>
+            <div class="data-value">77.000 € (20 %)</div>
+          </div>
+          <div class="data-row">
+            <div class="data-label">Durée souhaitée</div>
+            <div class="data-value">25 ans</div>
+          </div>
+          <div class="data-row" style="padding-right: 24px;">
+            <div class="data-label">Type de taux</div>
+            <div class="data-value">Fixe</div>
+          </div>
+          <div class="data-row">
+            <div class="data-label">Destination</div>
+            <div class="data-value">Résidence principale</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Informations personnelles -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="card-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#133DBD" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          Informations personnelles
+        </div>
+        <a class="edit-link" href="#">Modifier</a>
+      </div>
+
+      <!-- Borrower switcher (visible when à deux) -->
+      <div id="conf-btabs" style="padding:14px 22px 0;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;border:1px solid var(--iw-border);border-radius:10px;padding:5px;background:var(--iw-surface);">
+          <button data-buyer="1" class="conf-btab" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:7px;text-align:left;background:white;box-shadow:0 2px 6px rgba(19,61,189,0.08);">
+            <span class="conf-btab-icon" style="width:26px;height:26px;border-radius:50%;background:var(--iw-blue);color:white;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;">1</span>
+            <span style="flex:1;">
+              <span style="display:block;font-size:13px;font-weight:700;color:var(--iw-blue);">Emprunteur 1</span>
+              <span style="display:block;font-size:11.5px;color:var(--iw-gray);font-weight:500;margin-top:1px;" id="conf-btab-1-name">Julien Maes</span>
+            </span>
+            <span style="font-size:10.5px;font-weight:700;color:white;background:var(--iw-green);border-radius:999px;padding:3px 8px;">✓ Complet</span>
+          </button>
+          <button data-buyer="2" class="conf-btab" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:7px;text-align:left;background:transparent;">
+            <span class="conf-btab-icon" style="width:26px;height:26px;border-radius:50%;background:var(--iw-border);color:var(--iw-gray);font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;">2</span>
+            <span style="flex:1;">
+              <span style="display:block;font-size:13px;font-weight:700;color:var(--iw-navy);">Emprunteur 2</span>
+              <span style="display:block;font-size:11.5px;color:var(--iw-gray);font-weight:500;margin-top:1px;" id="conf-btab-2-name">Camille Dubois</span>
+            </span>
+            <span style="font-size:10.5px;font-weight:700;color:white;background:var(--iw-green);border-radius:999px;padding:3px 8px;">✓ Complet</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <!-- Emprunteur 1 -->
+        <div class="data-grid" data-buyer-panel="1">
+          <div class="data-row" style="padding-right: 24px;">
+            <div class="data-label">Nom complet</div>
+            <div class="data-value">Julien Maes</div>
+          </div>
+          <div class="data-row">
+            <div class="data-label">Date de naissance</div>
+            <div class="data-value">14 mars 1988</div>
+          </div>
+          <div class="data-row" style="padding-right: 24px;">
+            <div class="data-label">Numéro de registre national</div>
+            <div class="data-value">88.03.14-123.45</div>
+          </div>
+          <div class="data-row">
+            <div class="data-label">Situation familiale</div>
+            <div class="data-value">Marié(e)</div>
+          </div>
+          <div class="data-row" style="padding-right: 24px;">
+            <div class="data-label">E-mail</div>
+            <div class="data-value">j.maes@email.be</div>
+          </div>
+          <div class="data-row">
+            <div class="data-label">Téléphone</div>
+            <div class="data-value">+32 478 12 34 56</div>
+          </div>
+          <div class="data-row data-row-full">
+            <div class="data-label">Adresse actuelle</div>
+            <div class="data-value">Avenue Louise 200, 1050 Ixelles, Belgique</div>
+          </div>
+          <div class="data-row" style="padding-right: 24px;">
+            <div class="data-label">Type de contrat</div>
+            <div class="data-value">Employé (CDI)</div>
+          </div>
+          <div class="data-row">
+            <div class="data-label">Revenu net mensuel</div>
+            <div class="data-value">3.850 €</div>
+          </div>
+        </div>
+
+        <!-- Emprunteur 2 -->
+        <div class="data-grid" data-buyer-panel="2" style="display:none;">
+          <div class="data-row" style="padding-right: 24px;">
+            <div class="data-label">Nom complet</div>
+            <div class="data-value">Camille Dubois</div>
+          </div>
+          <div class="data-row">
+            <div class="data-label">Date de naissance</div>
+            <div class="data-value">22 juillet 1990</div>
+          </div>
+          <div class="data-row" style="padding-right: 24px;">
+            <div class="data-label">Numéro de registre national</div>
+            <div class="data-value">90.07.22-234.56</div>
+          </div>
+          <div class="data-row">
+            <div class="data-label">Situation familiale</div>
+            <div class="data-value">Marié(e)</div>
+          </div>
+          <div class="data-row" style="padding-right: 24px;">
+            <div class="data-label">E-mail</div>
+            <div class="data-value">c.dubois@email.be</div>
+          </div>
+          <div class="data-row">
+            <div class="data-label">Téléphone</div>
+            <div class="data-value">+32 471 98 76 54</div>
+          </div>
+          <div class="data-row data-row-full">
+            <div class="data-label">Adresse actuelle</div>
+            <div class="data-value">Avenue Louise 200, 1050 Ixelles, Belgique</div>
+          </div>
+          <div class="data-row" style="padding-right: 24px;">
+            <div class="data-label">Type de contrat</div>
+            <div class="data-value">Employée (CDI)</div>
+          </div>
+          <div class="data-row">
+            <div class="data-label">Revenu net mensuel</div>
+            <div class="data-value">3.200 €</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Colonne droite -->
+  <div style="display: flex; flex-direction: column; gap: 14px;">
+
+    <div class="broker-card">
+      <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: rgba(255,255,255,0.6); margin-bottom: 14px;">Votre courtier assigné</div>
+      <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
+        <div class="broker-avatar">SV</div>
+        <div>
+          <div class="broker-name">Sophie Vermeersch</div>
+          <div class="broker-role">Courtière en crédit · Partenaire Immoweb</div>
+        </div>
+      </div>
+      <div class="broker-detail">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        info@hypomatch.be
+      </div>
+      <div class="broker-detail">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Répond dans les 24 heures
+      </div>
+    </div>
+
+    <div class="consent-box">
+      <div class="consent-title">Veuillez confirmer avant d'envoyer</div>
+      <div class="consent-item">
+        <div class="checkbox"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="consent-text">Je confirme que toutes les informations personnelles et les documents que j'ai fournis sont exacts et complets.</div>
+      </div>
+      <div class="consent-item">
+        <div class="checkbox"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="consent-text">J'autorise mon courtier à transmettre ce dossier aux banques partenaires pour obtenir des offres de crédit.</div>
+      </div>
+      <div class="consent-item">
+        <div class="checkbox"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="consent-text">J'ai lu et j'accepte la <a href="#">politique de confidentialité</a> et les <a href="#">conditions d'utilisation</a> d'Immoweb.</div>
+      </div>
+      <div class="consent-divider"></div>
+      <div class="consent-subtitle">Option supplémentaire</div>
+      <div class="consent-item consent-item-opt" data-consent="belfius" role="checkbox" aria-checked="false" tabindex="0">
+        <div class="checkbox"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="consent-text">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;">
+            <div class="bank-logo" aria-label="Belfius">B</div>
+            <strong>Envoyer également mon dossier à Belfius</strong>
+          </div>
+          Belfius recevra mon dossier en parallèle de mon courtier et pourra me proposer une offre directe. Vous pourrez la comparer aux offres négociées par votre courtier.
+        </div>
+      </div>
+    </div>
+
+    <button class="send-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      Envoyer à mon courtier
+    </button>
+    <button class="talk-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Parler à mon courtier
+    </button>
+    <a href="Simulation.html" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:var(--iw-white);color:var(--iw-navy);border:1px solid var(--iw-border);border-radius:10px;padding:12px;font-size:13px;font-weight:600;font-family:var(--font);text-decoration:none;cursor:pointer;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Retour à la simulation
+    </a>
+
+    <div class="security-note">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8A9BB5" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Vos données sont chiffrées et protégées. Seuls votre courtier et les prêteurs sélectionnés peuvent accéder à ce dossier.
+    </div>
+  </div>
+
+  <!-- Row 2: Documents envoyés (left) + AI drop pane (right) — share a grid row so they align exactly -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">
+        <div class="card-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#133DBD" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        Vos documents
+      </div>
+      <a class="edit-link" href="#">Modifier</a>
+    </div>
+
+    <!-- Borrower switcher (mirrors #conf-btabs above; shown only when à deux) -->
+    <div id="conf-btabs-docs" style="padding:14px 22px 0;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;border:1px solid var(--iw-border);border-radius:10px;padding:5px;background:var(--iw-surface);">
+        <button data-buyer="1" class="conf-btab" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:7px;text-align:left;background:white;box-shadow:0 2px 6px rgba(19,61,189,0.08);">
+          <span class="conf-btab-icon" style="width:26px;height:26px;border-radius:50%;background:var(--iw-blue);color:white;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;">1</span>
+          <span style="flex:1;">
+            <span style="display:block;font-size:13px;font-weight:700;color:var(--iw-blue);">Emprunteur 1</span>
+            <span style="display:block;font-size:11.5px;color:var(--iw-gray);font-weight:500;margin-top:1px;">Julien Maes</span>
+          </span>
+          <span style="font-size:10.5px;font-weight:700;color:white;background:var(--iw-green);border-radius:999px;padding:3px 8px;">✓ Complet</span>
+        </button>
+        <button data-buyer="2" class="conf-btab" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:7px;text-align:left;background:transparent;">
+          <span class="conf-btab-icon" style="width:26px;height:26px;border-radius:50%;background:var(--iw-border);color:var(--iw-gray);font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;">2</span>
+          <span style="flex:1;">
+            <span style="display:block;font-size:13px;font-weight:700;color:var(--iw-navy);">Emprunteur 2</span>
+            <span style="display:block;font-size:11.5px;color:var(--iw-gray);font-weight:500;margin-top:1px;">Camille Dubois</span>
+          </span>
+          <span style="font-size:10.5px;font-weight:700;color:white;background:var(--iw-green);border-radius:999px;padding:3px 8px;">✓ Complet</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <!-- Documents — Emprunteur 1 -->
+      <div data-buyer-panel="1">
+        <div class="doc-list">
+          <div class="doc-item">
+            <div class="doc-item-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div style="flex:1;">
+              <div class="doc-item-name">carte_identite_recto.pdf &amp; carte_identite_verso.pdf</div>
+              <div class="doc-item-meta">Carte d'identité — recto et verso</div>
+            </div>
+            <span class="doc-item-size">2,1 Mo</span>
+          </div>
+          <div class="doc-item">
+            <div class="doc-item-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div style="flex:1;">
+              <div class="doc-item-name">fiche_salaire_fev25.pdf · fiche_salaire_mar25.pdf · fiche_salaire_avr25.pdf</div>
+              <div class="doc-item-meta">Fiches de salaire — 3 derniers mois</div>
+            </div>
+            <span class="doc-item-size">2,4 Mo</span>
+          </div>
+          <div class="doc-item">
+            <div class="doc-item-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div style="flex:1;">
+              <div class="doc-item-name">extrait_compte_fev25.pdf · extrait_compte_mar25.pdf · extrait_compte_avr25.pdf</div>
+              <div class="doc-item-meta">Extraits de compte — 3 derniers mois</div>
+            </div>
+            <span class="doc-item-size">6,0 Mo</span>
+          </div>
+          <div class="doc-item">
+            <div class="doc-item-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div style="flex:1;">
+              <div class="doc-item-name">avertissement_role_2023.pdf · avertissement_role_2024.pdf</div>
+              <div class="doc-item-meta">Avertissement-extrait de rôle — 2 dernières années</div>
+            </div>
+            <span class="doc-item-size">3,2 Mo</span>
+          </div>
+        </div>
+        <div style="margin-top: 12px; padding: 10px 14px; background: var(--iw-blue-light); border-radius: 8px; font-size: 12.5px; color: var(--iw-blue);">
+          <strong style="font-weight: 700;">5 fichiers · 13,7 Mo</strong> — Documents vérifiés et prêts à être envoyés.
+        </div>
+      </div>
+
+      <!-- Documents — Emprunteur 2 -->
+      <div data-buyer-panel="2" style="display:none;">
+        <div class="doc-list">
+          <div class="doc-item">
+            <div class="doc-item-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div style="flex:1;">
+              <div class="doc-item-name">carte_identite_recto.pdf &amp; carte_identite_verso.pdf</div>
+              <div class="doc-item-meta">Carte d'identité — recto et verso</div>
+            </div>
+            <span class="doc-item-size">1,9 Mo</span>
+          </div>
+          <div class="doc-item">
+            <div class="doc-item-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div style="flex:1;">
+              <div class="doc-item-name">fiche_salaire_fev25.pdf · fiche_salaire_mar25.pdf · fiche_salaire_avr25.pdf</div>
+              <div class="doc-item-meta">Fiches de salaire — 3 derniers mois</div>
+            </div>
+            <span class="doc-item-size">2,1 Mo</span>
+          </div>
+          <div class="doc-item">
+            <div class="doc-item-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div style="flex:1;">
+              <div class="doc-item-name">extrait_compte_fev25.pdf · extrait_compte_mar25.pdf · extrait_compte_avr25.pdf</div>
+              <div class="doc-item-meta">Extraits de compte — 3 derniers mois</div>
+            </div>
+            <span class="doc-item-size">5,4 Mo</span>
+          </div>
+          <div class="doc-item">
+            <div class="doc-item-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div style="flex:1;">
+              <div class="doc-item-name">avertissement_role_2023.pdf · avertissement_role_2024.pdf</div>
+              <div class="doc-item-meta">Avertissement-extrait de rôle — 2 dernières années</div>
+            </div>
+            <span class="doc-item-size">2,9 Mo</span>
+          </div>
+        </div>
+        <div style="margin-top: 12px; padding: 10px 14px; background: var(--iw-blue-light); border-radius: 8px; font-size: 12.5px; color: var(--iw-blue);">
+          <strong style="font-weight: 700;">5 fichiers · 12,3 Mo</strong> — Documents vérifiés et prêts à être envoyés.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Document Drop Pane -->
+  <div class="ai-card">
+    <div class="ai-card-header">
+      <div class="ai-card-title">
+        <div class="ai-card-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.7L19.5 10l-5.6 1.9L12 18l-1.9-6.1L4.5 10l5.6-1.3z"/><path d="M19 17l.9 2.1L22 20l-2.1.9L19 23l-.9-2.1L16 20l2.1-.9z"/></svg>
+        </div>
+        Compléter avec l'IA
+      </div>
+      <div class="ai-privacy-pill">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span><strong>Mistral</strong> · UE</span>
+      </div>
+    </div>
+    <div class="ai-card-body">
+      <div class="ai-drop" id="ai-drop">
+        <input type="file" id="ai-file" multiple accept=".pdf,.jpg,.jpeg,.png,.heic" hidden>
+        <div class="ai-drop-inner">
+          <div class="ai-drop-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div class="ai-drop-title">Ajoutez un document, ou <button type="button" class="ai-drop-pick" id="ai-pick">parcourir</button></div>
+          <div class="ai-drop-sub">L'IA extrait automatiquement les données utiles · PDF, JPG, PNG · max 15 Mo</div>
+          <div class="ai-doc-list" id="ai-doc-list">
+            <div class="ai-doc-item done" data-doc="cni">
+              <span class="ai-doc-icon">
+                <svg class="ai-doc-pending" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/></svg>
+                <svg class="ai-doc-done" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span class="ai-doc-content">
+                <span class="ai-doc-label">Carte d'identité</span>
+              </span>
+              <span class="ai-doc-status">Reçu</span>
+            </div>
+            <div class="ai-doc-item done" data-doc="paie">
+              <span class="ai-doc-icon">
+                <svg class="ai-doc-pending" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/></svg>
+                <svg class="ai-doc-done" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span class="ai-doc-content">
+                <span class="ai-doc-label">3 dernières fiches de paie</span>
+              </span>
+              <span class="ai-doc-status">Reçu</span>
+            </div>
+            <div class="ai-doc-item done" data-doc="aer">
+              <span class="ai-doc-icon">
+                <svg class="ai-doc-pending" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/></svg>
+                <svg class="ai-doc-done" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span class="ai-doc-content">
+                <span class="ai-doc-label">AER / fiche fiscale</span>
+              </span>
+              <span class="ai-doc-status">Reçu</span>
+            </div>
+            <div class="ai-doc-item done" data-doc="gage">
+              <span class="ai-doc-icon">
+                <svg class="ai-doc-pending" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/></svg>
+                <svg class="ai-doc-done" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span class="ai-doc-content">
+                <span class="ai-doc-label">Gage</span>
+                <span class="ai-doc-sub">Compromis de vente ou PV d'adjudication définitive</span>
+              </span>
+              <span class="ai-doc-status">Reçu</span>
+            </div>
+            <div class="ai-doc-item" data-doc="pret">
+              <span class="ai-doc-icon">
+                <svg class="ai-doc-pending" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/></svg>
+                <svg class="ai-doc-done" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              <span class="ai-doc-content">
+                <span class="ai-doc-label">Prêt</span>
+                <span class="ai-doc-sub">Demande de crédit originale signée</span>
+              </span>
+              <span class="ai-doc-status">À fournir</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ai-files" id="ai-files"></div>
+      <div class="ai-foot-note">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        <span>TLS 1.3 · Aucune donnée conservée · RGPD UE</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div>
+      <svg viewBox="0 0 668.2 145" style="width:120px;height:auto;display:block;opacity:0.85;"><style>.sf{fill:#fff;}</style><rect class="sf" height="65.8" width="17.8" x="37.6" y="69.8"/><path class="sf" d="M140.3,68.5c-7.9,0-15,3.7-19,12.3c-2.8-8.3-9.4-12.3-17.1-12.3c-7.5,0-13,3.3-16.2,9.4v-8H70.2v65.8H88V95.9c0-8.3,4.2-12.3,9.7-12.3c5.5,0,9.7,3.6,9.7,11v41.1H125V95.2c0-7.6,3.9-12.1,9.7-12.1c5.5,0,9.7,4,9.7,11.4v41.1h17.8V91.2C162.2,76.5,153.5,68.5,140.3,68.5z"/><path class="sf" d="M247.1,68.5c-7.9,0-15,3.7-19,12.3c-2.8-8.3-9.4-12.3-17.1-12.3c-7.5,0-13,3.3-16.2,9.4v-8h-17.8v65.8h17.8V95.9c0-8.3,4.2-12.3,9.7-12.3c5.5,0,9.7,3.6,9.7,11v41.1h17.6V95.2c0-7.6,3.9-12.1,9.7-12.1c5.5,0,9.7,4,9.7,11.4v41.1h17.8V91.2C269.1,76.5,260.3,68.5,247.1,68.5z"/><polygon class="sf" points="450.6,119 439.3,69.8 418.5,69.8 406.9,119 394.9,69.8 377.1,69.8 395.1,135.6 418,135.6 428.9,92.9 439.5,135.6 462.4,135.6 480.5,69.8 462.9,69.8"/><path class="sf" d="M599.7,68.5c-8.7,0-16.8,4.6-21.1,11.2V38.5h-17.8v97.1h17.1v-8.7c4.6,6.7,12.2,10.1,20.8,10.1c18.5,0,31.9-13.2,31.9-34C630.7,82.2,617.5,68.5,599.7,68.5z M595.4,121.9c-9,0-17.5-6.7-17.5-18.9c0-12.5,8.5-19.3,17.5-19.3c9.4,0,17.5,7.1,17.5,19.3C612.9,114.9,604.9,121.9,595.4,121.9z"/><rect class="sf" height="17.2" width="17.8" x="37.6" y="38.4"/><path class="sf" d="M520,121.7c-8.9,0-17.1-5.3-17.3-15.7h44.7c0.6-2.5,0.8-5.1,0.8-8c0-18.2-12.3-29.6-30.5-29.6c-19.7,0-32.7,15.1-32.7,33.9c0,21.1,14.6,34.7,34.8,34.7c14.1,0,23.8-6.4,29-16.6l-15.1-5.9C531.1,119.1,526.7,121.7,520,121.7z M517.7,82.8c7.9,0,13.3,4.3,13.3,11c0,0.3-0.1,0.6-0.1,0.6h-28.2C504.3,86.9,510.6,82.8,517.7,82.8z"/><path class="sf" d="M355.3,53.9h-13.7v9l-17.8-12.6l-44.9,31.8l17.5,53.6h54.8l17.5-53.6l-13.4-9.5V53.9z M340.3,120.8h-33.1L296.6,88l27.2-19.3L351,88L340.3,120.8z"/></svg>
+      <p class="footer-brand-sub">Immoweb HypoMatch est un service du groupe AVIV, agréé FSMA en tant que courtier en crédit hypothécaire.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">HypoMatch</div>
+      <div class="footer-links"><a class="footer-link">Nos partenaires</a><a class="footer-link" href="#">Courtier en crédit</a><a class="footer-link" href="#">Notre modèle</a><a class="footer-link">Taux actuels</a></div>
+    </div>
+    <div>
+      <div class="footer-col-title">Légal</div>
+      <div class="footer-links"><a class="footer-link">Politique RGPD</a><a class="footer-link">Conditions générales</a><a class="footer-link">Agrément FSMA</a><a class="footer-link">Cookies</a></div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-l">© 2026 Immoweb SA · Part of AVIV Group · Courtier en crédit agréé FSMA</div>
+    <div class="footer-bottom-r"><span>FR</span><span>NL</span><span>EN</span></div>
+  </div>
+</footer>
+
+<script>
+  // ────────── Buyer tabs (sync Informations + Documents panels) ──────────
+  // Placed at end-of-body so all .conf-btab buttons and [data-buyer-panel] panels
+  // are in the DOM by the time this runs — both Informations personnelles
+  // (in .left-col) and Documents envoyés (row-2 grid sibling).
+  (function(){
+    // Detect "à deux" from Mon Projet state
+    var isDeux = false;
+    try {
+      var saved = JSON.parse(localStorage.getItem('immoweb_mon_projet_v2') || '{}');
+      isDeux = saved && saved.projet && saved.projet.answers && saved.projet.answers.emprunteurs && saved.projet.answers.emprunteurs.value === 'deux';
+    } catch(e){}
+
+    var btabs = document.getElementById('conf-btabs');
+    var btabsDocs = document.getElementById('conf-btabs-docs');
+    if (!isDeux) {
+      if (btabs) btabs.style.display = 'none';
+      if (btabsDocs) btabsDocs.style.display = 'none';
+      return;
+    }
+
+    function select(n){
+      document.querySelectorAll('.conf-btab').forEach(function(b){
+        var active = parseInt(b.dataset.buyer,10) === n;
+        b.style.background = active ? 'white' : 'transparent';
+        b.style.boxShadow = active ? '0 2px 6px rgba(19,61,189,0.08)' : 'none';
+        var icon = b.querySelector('.conf-btab-icon');
+        icon.style.background = active ? 'var(--iw-blue)' : 'var(--iw-border)';
+        icon.style.color = active ? 'white' : 'var(--iw-gray)';
+        var title = b.querySelector('span > span:first-child');
+        title.style.color = active ? 'var(--iw-blue)' : 'var(--iw-navy)';
+      });
+      document.querySelectorAll('[data-buyer-panel]').forEach(function(p){
+        p.style.display = parseInt(p.dataset.buyerPanel,10) === n ? '' : 'none';
+      });
+    }
+    document.querySelectorAll('.conf-btab').forEach(function(b){
+      b.addEventListener('click', function(){ select(parseInt(b.dataset.buyer,10)); });
+    });
+    select(1);
+  })();
+</script>
+
+<script>
+  // ────────── AI extraction (drag & drop, simulated analysis) ──────────
+  (function(){
+    const aiDrop = document.getElementById('ai-drop');
+    const aiFileInput = document.getElementById('ai-file');
+    const aiPick = document.getElementById('ai-pick');
+    const aiFilesEl = document.getElementById('ai-files');
+    if (!aiDrop || !aiFileInput || !aiFilesEl) return;
+
+    aiPick?.addEventListener('click', (e) => { e.stopPropagation(); aiFileInput.click(); });
+    aiDrop.addEventListener('click', (e) => {
+      if (e.target.closest('.ai-drop-pick')) return;
+      aiFileInput.click();
+    });
+    ['dragover','dragenter'].forEach(ev => aiDrop.addEventListener(ev, (e) => { e.preventDefault(); aiDrop.classList.add('drag'); }));
+    ['dragleave','drop'].forEach(ev => aiDrop.addEventListener(ev, (e) => { e.preventDefault(); aiDrop.classList.remove('drag'); }));
+    aiDrop.addEventListener('drop', (e) => { handleAiFiles(e.dataTransfer.files); });
+    aiFileInput.addEventListener('change', (e) => { handleAiFiles(e.target.files); aiFileInput.value = ''; });
+
+    function handleAiFiles(fileList) {
+      const files = Array.from(fileList || []).slice(0, 6);
+      if (!files.length) return;
+      files.forEach(f => {
+        const matched = markDocProvided(detectDocType(f.name));
+        if (!matched) {
+          const firstPending = document.querySelector('.ai-doc-item:not(.done)');
+          if (firstPending) markDocProvided(firstPending.dataset.doc);
+        }
+        addAiFileRow(f);
+      });
+    }
+
+    // Required-document checklist — keywords to detect doc type from filename
+    const REQUIRED_DOCS = {
+      cni:   ['identite','identité','eid','cni','carte_id','carte-id','carteid','passeport','passport'],
+      paie:  ['paie','salaire','payslip','bulletin','remuneration','rémunération'],
+      aer:   ['aer','fiscal','avertissement','extrait','tax','impot','impôt'],
+      gage:  ['gage','compromis','vente','achat','offre','adjudication','pv'],
+      pret:  ['pret','prêt','demande','credit','crédit','signe','signé','application']
+    };
+    function detectDocType(filename) {
+      const f = (filename || '').toLowerCase().replace(/[\s_\-\.]/g, '');
+      for (const [id, kws] of Object.entries(REQUIRED_DOCS)) {
+        if (kws.some(k => f.includes(k.replace(/[\s_\-\.]/g, '')))) return id;
+      }
+      return null;
+    }
+    function markDocProvided(id) {
+      if (!id) return false;
+      const item = document.querySelector(`.ai-doc-item[data-doc="${id}"]`);
+      if (!item || item.classList.contains('done')) return false;
+      item.classList.add('done');
+      const status = item.querySelector('.ai-doc-status');
+      if (status) status.textContent = 'Reçu';
+      return true;
+    }
+
+    function addAiFileRow(file) {
+      const ext = (file.name.split('.').pop() || 'doc').toUpperCase().slice(0, 4);
+      const sizeKB = Math.round(file.size / 1024);
+      const sizeStr = sizeKB > 1024 ? `${(sizeKB/1024).toFixed(1)} Mo` : `${sizeKB} Ko`;
+      const row = document.createElement('div');
+      row.className = 'ai-file';
+      row.innerHTML = `
+        <span class="ai-file-icon">${ext}</span>
+        <span class="ai-file-body">
+          <span class="ai-file-name"></span>
+          <span class="ai-file-meta">
+            <span>${sizeStr}</span>
+            <span class="ai-file-bar"><span class="ai-file-bar-fill" style="width:0%"></span></span>
+          </span>
+        </span>
+        <span class="ai-file-status">Analyse…</span>`;
+      row.querySelector('.ai-file-name').textContent = file.name;
+      aiFilesEl.appendChild(row);
+
+      const fill = row.querySelector('.ai-file-bar-fill');
+      const statusEl = row.querySelector('.ai-file-status');
+      let pct = 0;
+      const tick = () => {
+        pct = Math.min(100, pct + 8 + Math.random() * 14);
+        fill.style.width = pct + '%';
+        if (pct < 100) {
+          setTimeout(tick, 120 + Math.random() * 140);
+        } else {
+          row.classList.add('done');
+          statusEl.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Extrait`;
+        }
+      };
+      setTimeout(tick, 200);
+    }
+  })();
+
+  // ────────── "Parler à mon courtier" → navigate to Rendez-vous courtier page ──────────
+  document.querySelectorAll('.talk-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      window.location.href = 'Rendez-vous_courtier.html';
+    });
+  });
+
+  // ────────── Optional consent rows (e.g. send file to Belfius) — toggle on click ──────────
+  document.querySelectorAll('.consent-item-opt').forEach(function(item){
+    function toggle(){
+      const on = item.classList.toggle('checked');
+      item.setAttribute('aria-checked', on ? 'true' : 'false');
+    }
+    item.addEventListener('click', toggle);
+    item.addEventListener('keydown', function(e){
+      if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(); }
+    });
+  });
+</script>
+
+</body>
+</html>
