@@ -198,10 +198,10 @@ input, select { font-family: inherit; }
 .drow .val { color: var(--iw-navy); font-weight: 700; font-feature-settings: 'tnum'; }
 .drow.hl .val { color: var(--iw-blue); font-size: 15px; }
 .info-tip { display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; border-radius: 50%; background: var(--iw-border); color: var(--iw-gray-d); font-size: 9.5px; font-weight: 700; font-style: italic; font-family: Georgia, 'Times New Roman', serif; margin-left: 6px; cursor: help; position: relative; vertical-align: middle; transition: background 0.15s, color 0.15s; }
-.info-tip:hover { background: var(--iw-blue); color: white; }
+.info-tip:hover { background: var(--iw-blue); color: white; z-index: 1000; }
 .formula { cursor: help; border-bottom: 1px dotted var(--iw-gray); position: relative; transition: border-color 0.15s, color 0.15s; font-feature-settings: 'tnum'; }
 .formula:hover { border-bottom-color: var(--iw-blue); color: var(--iw-blue); }
-.info-tip .tip, .formula .tip { position: absolute; bottom: calc(100% + 8px); left: 0; background: var(--iw-navy); color: white; font-size: 12.5px; font-weight: 500; font-style: normal; font-family: var(--font-sans); line-height: 1.55; padding: 13px 16px; border-radius: 7px; width: 320px; opacity: 0; pointer-events: none; transition: opacity 0.15s; box-shadow: 0 4px 14px rgba(27,51,83,0.18); z-index: 10; text-align: left; letter-spacing: 0; white-space: normal; }
+.info-tip .tip, .formula .tip { position: absolute; bottom: calc(100% + 8px); left: 0; background: var(--iw-navy); color: white; font-size: 12.5px; font-weight: 500; font-style: normal; font-family: var(--font-sans); line-height: 1.55; padding: 13px 16px; border-radius: 7px; width: 320px; opacity: 0; pointer-events: none; transition: opacity 0.15s; box-shadow: 0 4px 14px rgba(27,51,83,0.18); z-index: 1000; text-align: left; letter-spacing: 0; white-space: normal; }
 .info-tip .tip::after, .formula .tip::after { content: ''; position: absolute; top: 100%; left: 7px; transform: none; border: 5px solid transparent; border-top-color: var(--iw-navy); }
 .info-tip:hover .tip, .formula:hover .tip { opacity: 1; }
 .drow .val .info-tip .tip { left: auto; right: 0; }
@@ -478,7 +478,7 @@ html.embed .shell {
   <main>
     <div class="offers-head">
       <div class="offers-title">
-        Solutions
+        Voorstellen
         <span class="offers-count">Actuele marktrentevoeten<span class="info-tip">i<span class="tip">Deze rentevoeten weerspiegelen de huidige marktomstandigheden. Je definitieve rentevoet wordt door de bank bevestigd na onderzoek van je volledige dossier — hij kan dus licht afwijken.</span></span></span>
       </div>
     </div>
@@ -1856,9 +1856,9 @@ const capitalVal = document.getElementById('capital-val');
 function parseNum(s) { return parseInt(String(s).replace(/\D/g, ''), 10) || 0; }
 function fmt(n) {
   const i = Math.floor(n), d = Math.round((n - i) * 100);
-  return i.toLocaleString('fr-BE').replace(/,/g, ' ') + ',' + String(d).padStart(2, '0');
+  return i.toLocaleString('nl-BE').replace(/,/g, ' ') + ',' + String(d).padStart(2, '0');
 }
-function fmtInt(n) { return n.toLocaleString('fr-BE').replace(/,/g, ' '); }
+function fmtInt(n) { return n.toLocaleString('nl-BE').replace(/,/g, ' '); }
 
 const PRIX = 400000, FRAIS = 35935;
 function updateCapital() {

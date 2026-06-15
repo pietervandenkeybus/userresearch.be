@@ -1024,14 +1024,14 @@ Jouw beste woonkrediet, <em>in één simulatie</em></h1>
     <div class="funnel-card">
       <h2 class="funnel-title">4 eenvoudige stappen</h2>
       <div class="steps">
-        <div class="step done" data-step="1">
-          <div class="step-num">✓</div>
+        <div class="step active" data-step="1">
+          <div class="step-num">1</div>
           <div>
             <div class="step-body-title">Mijn project</div>
             <div class="step-body-sub">De woning, het bedrag, de eigen inbreng</div>
           </div>
         </div>
-        <div class="step active" data-step="2">
+        <div class="step" data-step="2">
           <div class="step-num">2</div>
           <div>
             <div class="step-body-title">Mijn gegevens</div>
@@ -1374,7 +1374,7 @@ Jouw beste woonkrediet, <em>in één simulatie</em></h1>
 <section class="final-cta">
   <div class="final-cta-inner">
     <div class="final-cta-kicker">Klaar om te vergelijken?</div>
-    <h2 class="final-cta-title">Trouvez <em>het voorstel dat bij jou past.</em></h2>
+    <h2 class="final-cta-title">Vind <em>het voorstel dat bij jou past.</em></h2>
     <p class="final-cta-sub">Start je simulatie gratis en vrijblijvend. Een kredietmakelaar begeleidt je als je dat wil.</p>
     <div class="final-cta-buttons">
       <div class="itsme-pop-wrap">
@@ -1609,7 +1609,7 @@ function applySimStep(n) {
   document.getElementById('flow-back').style.visibility = n === 1 ? 'hidden' : 'visible';
   const nextLbl = document.getElementById('flow-next-label');
   if (n === 4) nextLbl.textContent = 'Afronden';
-  else if (n === 3) nextLbl.textContent = 'Valider mon offre';
+  else if (n === 3) nextLbl.textContent = 'Ga verder met dit voorstel';
   else nextLbl.textContent = 'Doorgaan';
   document.getElementById('flow-progress-text').textContent = `Stap ${n} van 4`;
   // sync tweak chip

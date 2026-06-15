@@ -794,7 +794,7 @@ html.embed .q.pending .qq { font-size: 10.5px !important; }
 /* ═══════════════════════════════════════════════════════════════════
    QUESTION FLOW — "Mijn project"
 ═══════════════════════════════════════════════════════════════════ */
-const fmtEUR = n => (n == null || n === '') ? '' : Number(n).toLocaleString('fr-BE', { maximumFractionDigits: 0 }) + ' €';
+const fmtEUR = n => (n == null || n === '') ? '' : Number(n).toLocaleString('nl-BE', { maximumFractionDigits: 0 }) + ' €';
 
 const ZIPS = {
   '1000': 'Bruxelles', '1030': 'Schaarbeek', '1050': 'Elsene', '1060': 'Sint-Gillis', '1180': 'Ukkel',
@@ -870,7 +870,7 @@ const PROJET_QUESTIONS = [
       return `
         <div class="field">
           <div class="input-wrap">
-            <input type="text" inputmode="numeric" maxlength="4" placeholder="Code postal du bien (ex. 1030)" data-control="commune-zip" value="${state.zip||''}">
+            <input type="text" inputmode="numeric" maxlength="4" placeholder="Postcode van de woning (bv. 1030)" data-control="commune-zip" value="${state.zip||''}">
           </div>
           <div class="hint">Geef de postcode in van de woning die je wil kopen.</div>
         </div>
@@ -889,21 +889,21 @@ const PROJET_QUESTIONS = [
     summary: a => ({
       principale: 'Hoofdverblijfplaats',
       secondaire: 'Tweede verblijf',
-      locatif: 'Bien locatif',
-      pro: 'Projet professionnel ou commercial',
-      mixte: 'Projet mixte'
+      locatif: 'Huurpand',
+      pro: 'Professioneel of commercieel project',
+      mixte: 'Gemengd project'
     }[a.value]),
     rail: {
-      title: 'L\'bestemming van de woning verandert alles',
+      title: 'De bestemming van de woning verandert alles',
       body: `<p>Een <strong>hoofdverblijfplaats</strong> geeft recht op lagere rentevoeten en bepaalde fiscale voordelen.</p><p>Een <strong>huurpand</strong> of een <strong>professioneel project</strong> wordt anders behandeld, met specifieke financieringsvoorwaarden.</p>`
     },
     render: (state) => {
       const opts = [
         ['principale','Hoofdverblijfplaats','Je woont er hoofdzakelijk'],
         ['secondaire','Tweede verblijf','Vakantiewoning, pied-à-terre'],
-        ['locatif','Bien locatif','Om te verhuren'],
-        ['pro','Projet pro / commercial','Bureau, commerce'],
-        ['mixte','Projet mixte','Woning + activiteit']
+        ['locatif','Huurpand','Om te verhuren'],
+        ['pro','Professioneel / commercieel','Kantoor, handelszaak'],
+        ['mixte','Gemengd project','Woning + activiteit']
       ];
       return `<div class="opts" data-control="usage">${opts.map(([v,t,s]) => `
         <button class="opt ${state.value===v?'selected':''}" data-val="${v}" title="${s}"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>${t}</button>
@@ -930,11 +930,11 @@ const PROJET_QUESTIONS = [
     },
     render: (state) => {
       const opts = [
-        ['maison2','Rijwoning (2 gevels)','Mitoyenne','M2 21h20M4 21v-8M20 21v-8M7 21V10l5-3 5 3v11M10 21v-4h4v4'],
-        ['maison3','Halfopen bebouwing (3 gevels)','Semi-mitoyenne','M2 21h20M4 21v-8M6 21V10l6-3.5 6 3.5v11M10 21v-4h4v4'],
+        ['maison2','Rijwoning (2 gevels)','Aaneengesloten','M2 21h20M4 21v-8M20 21v-8M7 21V10l5-3 5 3v11M10 21v-4h4v4'],
+        ['maison3','Halfopen bebouwing (3 gevels)','Halfopen','M2 21h20M4 21v-8M6 21V10l6-3.5 6 3.5v11M10 21v-4h4v4'],
         ['maison4','Open bebouwing (4 gevels)','Vrijstaand','M3 21h18M6 21V10l6-4 6 4v11M10 21v-5h4v5'],
-        ['appartement','Appartement','En immeuble','M4 21V4h11v17M16 21h4V10h-4M7 8h2M11 8h2M7 12h2M11 12h2M7 16h2M11 16h2'],
-        ['terrain','Bouwgrond','+ construction','M3 21h18M12 21v-5M12 16a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9z']
+        ['appartement','Appartement','In een gebouw','M4 21V4h11v17M16 21h4V10h-4M7 8h2M11 8h2M7 12h2M11 12h2M7 16h2M11 16h2'],
+        ['terrain','Bouwgrond','+ bouw','M3 21h18M12 21v-5M12 16a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9z']
       ];
       return `<div class="opts-tiles" data-control="typebien" style="grid-template-columns:repeat(3,1fr);">${opts.map(([v,t,s,p]) => `
         <button class="opt-tile ${state.value===v?'selected':''}" data-val="${v}">
@@ -945,7 +945,7 @@ const PROJET_QUESTIONS = [
       ${state.value==='terrain' ? `
       <div class="subfield">
         <span class="subfield-label">Geschat bouwbudget</span>
-        <div class="field"><div class="input-wrap"><input type="number" placeholder="0" data-control="construction-montant" value="${state.montant||''}"><span class="suffix">€</span></div><div class="hint">Voorzien bedrag voor de bouw, exclusief de grondprijs (in te geven bij de volgende stap).</div></div>
+        <div class="field"><div class="input-wrap"><input type="text" inputmode="numeric" placeholder="0" data-control="construction-montant" value="${state.montant||''}"><span class="suffix">€</span></div><div class="hint">Voorzien bedrag voor de bouw, exclusief de grondprijs (in te geven bij de volgende stap).</div></div>
       </div>` : ''}`;
     },
     valid: a => !!a.value && (a.value !== 'terrain' || (a.montant && Number(a.montant) > 0))
@@ -976,16 +976,16 @@ const PROJET_QUESTIONS = [
   },
   {
     id: 'prix',
-    get label() { return (state.projet.answers.typebien && state.projet.answers.typebien.value === 'terrain') ? 'Grondprijs' : 'Prix du bien (frais d\'agence compris)'; },
+    get label() { return (state.projet.answers.typebien && state.projet.answers.typebien.value === 'terrain') ? 'Grondprijs' : 'Prijs van de woning (incl. makelaarskosten)'; },
     summary: a => fmtEUR(a.value),
     rail: {
-      title: 'Le prix d\'achat',
+      title: 'De aankoopprijs',
       body: `<p>Geef de <strong>totale te betalen prijs</strong> in, inclusief makelaarskosten indien van toepassing. De notariskosten en registratierechten worden er bovenop berekend.</p>`
     },
     render: (state) => `
       <div class="field">
         <div class="input-wrap">
-          <input type="number" placeholder="0" data-control="prix" value="${state.value||''}">
+          <input type="text" inputmode="numeric" placeholder="0" data-control="prix" value="${state.value||''}">
           <span class="suffix">€</span>
         </div>
         <div class="hint">Exclusief notariskosten en registratierechten.</div>
@@ -1009,7 +1009,7 @@ const PROJET_QUESTIONS = [
       ${state.value==='oui' ? `
       <div class="subfield">
         <span class="subfield-label">Hoeveel?</span>
-        <div class="field"><div class="input-wrap"><input type="number" placeholder="0" data-control="travaux-montant" value="${state.montant||''}"><span class="suffix">€</span></div></div>
+        <div class="field"><div class="input-wrap"><input type="text" inputmode="numeric" placeholder="0" data-control="travaux-montant" value="${state.montant||''}"><span class="suffix">€</span></div></div>
       </div>` : ''}
     `,
     valid: a => a.value === 'non' || (a.value === 'oui' && a.montant && Number(a.montant) > 0)
@@ -1025,7 +1025,7 @@ const PROJET_QUESTIONS = [
     render: (state) => `
       <div class="field">
         <div class="input-wrap">
-          <input type="number" placeholder="0" data-control="apport" value="${state.value||''}">
+          <input type="text" inputmode="numeric" placeholder="0" data-control="apport" value="${state.value||''}">
           <span class="suffix">€</span>
         </div>
         <div class="hint">Beschikbaar spaargeld bestemd voor de aankoop.</div>
@@ -1044,7 +1044,7 @@ const PROJET_QUESTIONS = [
     render: (state) => `
       <div class="field">
         <div class="input-wrap">
-          <input type="number" placeholder="0" data-control="reste" value="${state.value||''}">
+          <input type="text" inputmode="numeric" placeholder="0" data-control="reste" value="${state.value||''}">
           <span class="suffix">€</span>
         </div>
         <div class="hint">Spaargeld dat je overhoudt na het verlijden bij de notaris.</div>
@@ -1058,21 +1058,21 @@ const PROJET_QUESTIONS = [
    MES INFORMATIONS — 12 questions (duplicated per borrower if à deux)
 ═══════════════════════════════════════════════════════════════════ */
 const EMP_SUB = {
-  prive: ['CDI', 'CDD', 'Interim'],
+  prive: ['Vast contract', 'Tijdelijk contract', 'Interim'],
   fonctionnaire: [],
   indep: ['Zelfstandige','Dirigeant d\'entreprise','Vrij beroep juridisch','Vrij beroep medisch/paramedisch','Vrij beroep andere','Andere'],
   pensionne: [], chomeur: [], etudiant: [], handicap: [], rentier: [], sans: []
 };
 const EMP_LABELS = {
-  prive: 'Bediende privé / arbeider', fonctionnaire: 'Fonctionnaire', indep: 'Zelfstandige / bedrijfsleider / vrij beroep',
-  pensionne: 'Pensionné', chomeur: 'Werkzoekend', etudiant: 'Étudiant', handicap: 'Persoon met een handicap',
-  rentier: 'Rentier', sans: 'Sans profession'
+  prive: 'Bediende privé / arbeider', fonctionnaire: 'Ambtenaar', indep: 'Zelfstandige / bedrijfsleider / vrij beroep',
+  pensionne: 'Gepensioneerd', chomeur: 'Werkzoekend', etudiant: 'Student', handicap: 'Persoon met een handicap',
+  rentier: 'Rentenier', sans: 'Zonder beroep'
 };
 const OTHER_REV = [
-  ['locatif','Revenus locatifs'],['pension','Pension alimentaire'],['alloc','Allocations familiales'],
-  ['cheques','Maaltijdcheques'],['rembours','Remboursements'],['autre','Andere inkomsten']
+  ['locatif','Huurinkomsten'],['pension','Ontvangen onderhoudsgeld'],['alloc','Kinderbijslag'],
+  ['cheques','Maaltijdcheques'],['rembours','Terugbetalingen'],['autre','Andere inkomsten']
 ];
-const CHARGES = [['loyer','Loyer'],['pension','Betaald onderhoudsgeld'],['autre','Andere terugkerende uitgave']];
+const CHARGES = [['loyer','Huur'],['pension','Betaald onderhoudsgeld'],['autre','Andere terugkerende uitgave']];
 
 // ── Banque actuelle : banques belges, produits détenus & estimation de réduction ──
 // `code, libellé affiché, couleur de marque, badge court (2-3 lettres)`
@@ -1086,25 +1086,25 @@ const BANKS = [
   ['beobank', 'Beobank',            '#1A2C5B', 'BEO'],
 ];
 const BANK_PRODUCTS = [
-  ['compte_salaire', 'Compte courant',          'Met loondomiciliëring'],
-  ['hab',            'Assurance habitation',    'Incendie + RC familiale'],
-  ['auto',           'Assurance auto',          'Eigen wagen'],
+  ['compte_salaire', 'Zichtrekening',           'Met loondomiciliëring'],
+  ['hab',            'Woningverzekering',       'Brand + familiale BA'],
+  ['auto',           'Autoverzekering',         'Eigen wagen'],
   ['epargne',        'Spaarrekening',          'Spaarboekje of rentegevende rekening'],
-  ['placement',      'Placement / Investissement', 'Fonds, actions, obligations'],
-  ['vie_pension',    'Assurance vie / Pension', '2ᵉ ou 3ᵉ pilier'],
-  ['carte_credit',   'Kredietkaart',         'Visa ou Mastercard'],
+  ['placement',      'Belegging / investering',  'Fondsen, aandelen, obligaties'],
+  ['vie_pension',    'Levens- / pensioenverzekering', '2e of 3e pijler'],
+  ['carte_credit',   'Kredietkaart',         'Visa of Mastercard'],
 ];
 
 const INFOS_QUESTIONS = [
   {
     id: 'naissance', label: 'Wat is je geboortedatum?',
-    summary: a => a.value ? new Date(a.value).toLocaleDateString('fr-BE', {day:'2-digit',month:'long',year:'numeric'}) : '',
+    summary: a => a.value ? new Date(a.value).toLocaleDateString('nl-BE', {day:'2-digit',month:'long',year:'numeric'}) : '',
     rail: { title: 'Jouw geboortedatum', body: `<p>Je leeftijd beïnvloedt de <strong>maximale looptijd van het krediet</strong> en de schuldsaldoverzekering die de bank voorstelt.</p>` },
-    render: s => `<div class="field"><div class="input-wrap"><input type="date" data-control="naissance" value="${s.value||''}"></div></div>`,
+    render: s => `<div class="field"><div class="input-wrap"><input type="date" data-control="naissance" min="1940-01-01" max="2008-12-31" value="${s.value||'1985-01-01'}"></div></div>`,
     valid: a => !!a.value
   },
   {
-    id: 'enfants', label: 'Combien d\'kinderen ten laste?',
+    id: 'enfants', label: 'Hoeveel kinderen heb je ten laste?',
     summary: a => a.value == null || a.value === '' ? '' : `${a.value} enfant${a.value>1?'s':''}`,
     rail: { title: 'Kinderen ten laste', body: `<p>Het aantal kinderen ten laste beïnvloedt het <strong>minimumbedrag</strong> dat de banken eisen dat je elke maand overhoudt om van te leven nadat je je hypothecair krediet hebt betaald.</p>` },
     render: s => `<div class="opts" data-control="enfants">${[0,1,2,3,4,5].map(n => `<button class="opt ${String(s.value)===String(n)?'selected':''}" data-val="${n}"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>${n===5?'5 ou +':n}</button>`).join('')}</div>`,
@@ -1115,7 +1115,7 @@ const INFOS_QUESTIONS = [
     summary: a => ({proprio:'Eigenaar (hoofdverblijfplaats)', loc:'Huurder (hoofdverblijfplaats)', fonction:'Dienstwoning', gratuit:'Gratis inwonend'}[a.value]),
     rail: { title: 'Jouw huidige woonsituatie', body: `<p>Je huidige situatie helpt de banken om je terugkerende lasten en je woonstabiliteit in te schatten.</p>` },
     render: s => {
-      const opts = [['proprio','Propriétaire','d\'een hoofdverblijfplaats'],['loc','Locataire','d\'een hoofdverblijfplaats'],['fonction','Dienstwoning','fourni par l\'employeur'],['gratuit','Gratis inwonend','bij familie of vrienden']];
+      const opts = [['proprio','Eigenaar','van een hoofdverblijfplaats'],['loc','Huurder','van een hoofdverblijfplaats'],['fonction','Dienstwoning','ter beschikking gesteld door de werkgever'],['gratuit','Gratis inwonend','bij familie of vrienden']];
       return `<div class="opts-tiles" data-control="logement">${opts.map(([v,t,sub])=>`<button class="opt-tile ${s.value===v?'selected':''}" data-val="${v}"><span class="opt-tile-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg></span><span class="opt-tile-body"><span class="opt-tile-title">${t}</span><span class="opt-tile-sub">${sub}</span></span></button>`).join('')}</div>`;
     },
     valid: a => !!a.value
@@ -1125,7 +1125,7 @@ const INFOS_QUESTIONS = [
     summary: a => {
       const base = EMP_LABELS[a.value] || '';
       const sub = a.subtype ? ` · ${a.subtype}` : '';
-      const date = a.since ? ` · depuis ${new Date(a.since).toLocaleDateString('fr-BE',{month:'short',year:'numeric'})}` : '';
+      const date = a.since ? ` · sinds ${new Date(a.since).toLocaleDateString('nl-BE',{month:'short',year:'numeric'})}` : '';
       return base + sub + date;
     },
     rail: { title: 'Jouw beroepsstatuut', body: `<p>Je statuut en je anciënniteit wegen sterk door in de beslissing van de bank. Een <strong>vast contract</strong> met meer dan 3 jaar anciënniteit is de gunstigste situatie.</p>` },
@@ -1148,10 +1148,10 @@ const INFOS_QUESTIONS = [
   },
   {
     id: 'pays', label: 'Mijn inkomsten komen uit…',
-    summary: a => ({be:'Belgique', lu:'Luxembourg', fr:'France', nl:'Pays-Bas', de:'Allemagne', autre:'Autre pays'}[a.value]),
-    rail: { title: 'Pays d\'herkomst van de inkomsten', body: `<p>Worden je inkomsten in het buitenland verdiend (grensarbeider), dan geldt een bijzondere behandeling.</p>` },
+    summary: a => ({be:'België', lu:'Luxemburg', fr:'Frankrijk', nl:'Nederland', de:'Duitsland', autre:'Ander land'}[a.value]),
+    rail: { title: 'Land van herkomst van de inkomsten', body: `<p>Worden je inkomsten in het buitenland verdiend (grensarbeider), dan geldt een bijzondere behandeling.</p>` },
     render: s => {
-      const opts = [['be','🇧🇪 België'],['lu','🇱🇺 Luxembourg'],['fr','🇫🇷 France'],['nl','🇳🇱 Pays-Bas'],['de','🇩🇪 Allemagne'],['autre','Autre pays']];
+      const opts = [['be','🇧🇪 België'],['lu','🇱🇺 Luxemburg'],['fr','🇫🇷 Frankrijk'],['nl','🇳🇱 Nederland'],['de','🇩🇪 Duitsland'],['autre','Ander land']];
       return `<div class="opts" data-control="pays">${opts.map(([v,t])=>`<button class="opt ${s.value===v?'selected':''}" data-val="${v}"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>${t}</button>`).join('')}</div>`;
     },
     valid: a => !!a.value
@@ -1165,7 +1165,7 @@ const INFOS_QUESTIONS = [
         <button class="opt ${s.period!=='an'?'selected':''}" data-val="mois"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Maandelijks</button>
         <button class="opt ${s.period==='an'?'selected':''}" data-val="an"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Jaarlijks</button>
       </div>
-      <div class="field"><div class="input-wrap"><input type="number" placeholder="0" data-control="revenu-base" value="${s.value||''}"><span class="suffix">€ ${s.period==='an'?'/ jaar':'/ maand'}</span></div></div>
+      <div class="field"><div class="input-wrap"><input type="text" inputmode="numeric" placeholder="0" data-control="revenu-base" value="${s.value||''}"><span class="suffix">€ ${s.period==='an'?'/ jaar':'/ maand'}</span></div></div>
     `,
     valid: a => a.value && Number(a.value) > 0
   },
@@ -1190,7 +1190,7 @@ const INFOS_QUESTIONS = [
           `;}).join('')}
         </div>
         ${Object.keys(items).filter(k=>items[k]?.on).map(k=>`
-          <div class="subfield"><span class="subfield-label">${OTHER_REV.find(x=>x[0]===k)[1]} — montant mensuel</span><div class="field"><div class="input-wrap"><input type="number" placeholder="0" data-control="autres-amt" data-key="${k}" value="${items[k]?.amt||''}"><span class="suffix">€ / maand</span></div></div></div>
+          <div class="subfield"><span class="subfield-label">${OTHER_REV.find(x=>x[0]===k)[1]} — montant mensuel</span><div class="field"><div class="input-wrap"><input type="text" inputmode="numeric" placeholder="0" data-control="autres-amt" data-key="${k}" value="${items[k]?.amt||''}"><span class="suffix">€ / maand</span></div></div></div>
         `).join('')}`:''}
       `;
     },
@@ -1214,7 +1214,7 @@ const INFOS_QUESTIONS = [
           ${CHARGES.map(([v,t])=>{ const on=items[v]?.on; const amt=items[v]?.amt||''; return `<button class="opt-tile ${on?'selected':''}" data-val="${v}"><span class="opt-tile-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 1 0 0 7h5a3.5 3.5 0 1 1 0 7H6"/></svg></span><span class="opt-tile-body"><span class="opt-tile-title">${t}</span>${on&&amt?`<span class="opt-tile-sub">${fmtEUR(amt)} / maand</span>`:''}</span></button>`;}).join('')}
         </div>
         ${Object.keys(items).filter(k=>items[k]?.on).map(k=>`
-          <div class="subfield"><span class="subfield-label">${CHARGES.find(x=>x[0]===k)[1]} — montant mensuel</span><div class="field"><div class="input-wrap"><input type="number" placeholder="0" data-control="charges-amt" data-key="${k}" value="${items[k]?.amt||''}"><span class="suffix">€ / maand</span></div></div></div>
+          <div class="subfield"><span class="subfield-label">${CHARGES.find(x=>x[0]===k)[1]} — montant mensuel</span><div class="field"><div class="input-wrap"><input type="text" inputmode="numeric" placeholder="0" data-control="charges-amt" data-key="${k}" value="${items[k]?.amt||''}"><span class="suffix">€ / maand</span></div></div></div>
         `).join('')}`:''}
       `;
     },
@@ -1229,7 +1229,7 @@ const INFOS_QUESTIONS = [
         <button class="opt ${s.value==='non'?'selected':''}" data-val="non"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Nee</button>
         <button class="opt ${s.value==='oui'?'selected':''}" data-val="oui"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Ja</button>
       </div>
-      ${s.value==='oui'?`<div class="subfield"><span class="subfield-label">Totaal van de lopende maandelijkse afbetalingen</span><div class="field"><div class="input-wrap"><input type="number" placeholder="0" data-control="credits-montant" value="${s.montant||''}"><span class="suffix">€ / maand</span></div></div></div>`:''}
+      ${s.value==='oui'?`<div class="subfield"><span class="subfield-label">Totaal van de lopende maandelijkse afbetalingen</span><div class="field"><div class="input-wrap"><input type="text" inputmode="numeric" placeholder="0" data-control="credits-montant" value="${s.montant||''}"><span class="suffix">€ / maand</span></div></div></div>`:''}
     `,
     valid: a => a.value === 'non' || (a.value === 'oui' && a.montant && Number(a.montant) > 0)
   },
@@ -1243,8 +1243,8 @@ const INFOS_QUESTIONS = [
         <button class="opt ${s.value==='oui'?'selected':''}" data-val="oui"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Ja</button>
       </div>
       ${s.value==='oui'?`
-        <div class="subfield"><span class="subfield-label">Totaal gecumuleerd bedrag</span><div class="field"><div class="input-wrap"><input type="number" placeholder="0" data-control="retards-total" value="${s.total||''}"><span class="suffix">€</span></div></div></div>
-        <div class="subfield"><span class="subfield-label">Bedrag van de maandelijkse achterstanden</span><div class="field"><div class="input-wrap"><input type="number" placeholder="0" data-control="retards-mois" value="${s.mois||''}"><span class="suffix">€ / maand</span></div></div></div>
+        <div class="subfield"><span class="subfield-label">Totaal gecumuleerd bedrag</span><div class="field"><div class="input-wrap"><input type="text" inputmode="numeric" placeholder="0" data-control="retards-total" value="${s.total||''}"><span class="suffix">€</span></div></div></div>
+        <div class="subfield"><span class="subfield-label">Bedrag van de maandelijkse achterstanden</span><div class="field"><div class="input-wrap"><input type="text" inputmode="numeric" placeholder="0" data-control="retards-mois" value="${s.mois||''}"><span class="suffix">€ / maand</span></div></div></div>
       `:''}
     `,
     valid: a => a.value === 'non' || (a.value === 'oui' && a.total && Number(a.total) > 0)
@@ -1471,7 +1471,7 @@ function render() {
       div.dataset.qid = q.id;
       div.innerHTML = `
         <span class="qnum"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-        <span class="qlbl">${q.label}${a._ai?'<span class="by-ai-badge"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.7L19.5 10l-5.6 1.9L12 18l-1.9-6.1L4.5 10l5.6-1.3z"/></svg>IA</span>':''}</span>
+        <span class="qlbl">${q.label}${a._ai?'<span class="by-ai-badge"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.7L19.5 10l-5.6 1.9L12 18l-1.9-6.1L4.5 10l5.6-1.3z"/></svg>AI</span>':''}</span>
         <span class="qval">${q.summary(a)}</span>
         <button class="qedit" data-act="edit">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
@@ -1721,19 +1721,19 @@ document.getElementById('qlist').addEventListener('input', e => {
   // PROJET
   if (ctrl === 'compromis-date') a.date = inp.value;
   else if (ctrl === 'commune-zip') a.zip = inp.value.replace(/\D/g,'').slice(0,4);
-  else if (ctrl === 'prix') a.value = inp.value;
-  else if (ctrl === 'travaux-montant') a.montant = inp.value;
-  else if (ctrl === 'construction-montant') a.montant = inp.value;
-  else if (ctrl === 'apport') a.value = inp.value;
-  else if (ctrl === 'reste') a.value = inp.value;
+  else if (ctrl === 'prix') { inp.value = inp.value.replace(/\D/g,''); a.value = inp.value; }
+  else if (ctrl === 'travaux-montant') { inp.value = inp.value.replace(/\D/g,''); a.montant = inp.value; }
+  else if (ctrl === 'construction-montant') { inp.value = inp.value.replace(/\D/g,''); a.montant = inp.value; }
+  else if (ctrl === 'apport') { inp.value = inp.value.replace(/\D/g,''); a.value = inp.value; }
+  else if (ctrl === 'reste') { inp.value = inp.value.replace(/\D/g,''); a.value = inp.value; }
   // INFOS
   else if (ctrl === 'naissance') a.value = inp.value;
   else if (ctrl === 'emploi-since') a.since = inp.value;
-  else if (ctrl === 'revenu-base') a.value = inp.value;
+  else if (ctrl === 'revenu-base') { inp.value = inp.value.replace(/\D/g,''); a.value = inp.value; }
   else if (ctrl === 'autres-amt') { a.items = a.items || {}; a.items[inp.dataset.key] = a.items[inp.dataset.key] || { on: true }; a.items[inp.dataset.key].amt = inp.value; }
   else if (ctrl === 'charges-amt') { a.items = a.items || {}; a.items[inp.dataset.key] = a.items[inp.dataset.key] || { on: true }; a.items[inp.dataset.key].amt = inp.value; }
-  else if (ctrl === 'credits-montant') a.montant = inp.value;
-  else if (ctrl === 'retards-total') a.total = inp.value;
+  else if (ctrl === 'credits-montant') { inp.value = inp.value.replace(/\D/g,''); a.montant = inp.value; }
+  else if (ctrl === 'retards-total') { inp.value = inp.value.replace(/\D/g,''); a.total = inp.value; }
   else if (ctrl === 'retards-mois') a.mois = inp.value;
   else if (ctrl === 'banque-autre-name') a.bankOther = inp.value;
 
