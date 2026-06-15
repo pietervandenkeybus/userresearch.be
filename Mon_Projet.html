@@ -35,7 +35,7 @@
   --r-sm: 7px; --r-md: 10px; --r-lg: 14px; --r-xl: 20px;
 }
 html, body {
-  width: 1280px; margin: 0;
+  width: 100%; max-width: 1280px; margin: 0 auto;
   font-family: var(--font-sans);
   background: var(--iw-white);
   color: var(--iw-navy);
@@ -361,7 +361,10 @@ input, select { font-family: inherit; }
 
 /* Text/number inputs */
 .field { display: flex; flex-direction: column; gap: 8px; max-width: 360px; }
-.field .input-wrap {
+.field .date-selects { display: flex; gap: 8px; }
+.date-sel { flex: 1; min-width: 0; padding: 11px 12px; font-family: inherit; font-size: 14px; color: var(--iw-navy); background: white; border: 1.5px solid var(--iw-border); border-radius: 10px; cursor: pointer; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 30px; }
+.date-sel:focus { outline: none; border-color: var(--iw-blue); box-shadow: 0 0 0 3px rgba(19,61,189,0.12); }
+.input-wrap {
   display: flex; align-items: center;
   border: 1.5px solid var(--iw-border);
   border-radius: var(--r-sm);
@@ -1100,14 +1103,14 @@ const INFOS_QUESTIONS = [
     id: 'naissance', label: 'Wat is je geboortedatum?',
     summary: a => a.value ? new Date(a.value).toLocaleDateString('nl-BE', {day:'2-digit',month:'long',year:'numeric'}) : '',
     rail: { title: 'Jouw geboortedatum', body: `<p>Je leeftijd beïnvloedt de <strong>maximale looptijd van het krediet</strong> en de schuldsaldoverzekering die de bank voorstelt.</p>` },
-    render: s => `<div class="field"><div class="input-wrap"><input type="date" data-control="naissance" min="1940-01-01" max="2008-12-31" value="${s.value||'1985-01-01'}"></div></div>`,
+    render: s => { const v=(s.value||'').split('-'); const yy=v[0]||'', mm=v[1]||'', dd=v[2]||''; const MO=['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december']; const days=Array.from({length:31},(_,i)=>i+1); const years=Array.from({length:(2008-1940+1)},(_,i)=>2008-i); return `<div class="field"><div class="date-selects" data-control="naissance"><select class="date-sel" data-part="day" aria-label="Dag"><option value="" ${dd?'':'selected'} disabled>Dag</option>${days.map(d=>`<option value="${String(d).padStart(2,'0')}" ${(+dd===d)?'selected':''}>${d}</option>`).join('')}</select><select class="date-sel" data-part="month" aria-label="Maand"><option value="" ${mm?'':'selected'} disabled>Maand</option>${MO.map((m,i)=>`<option value="${String(i+1).padStart(2,'0')}" ${(+mm===i+1)?'selected':''}>${m}</option>`).join('')}</select><select class="date-sel" data-part="year" aria-label="Jaar"><option value="" ${yy?'':'selected'} disabled>Jaar</option>${years.map(y=>`<option value="${y}" ${(+yy===y)?'selected':''}>${y}</option>`).join('')}</select></div></div>`; },
     valid: a => !!a.value
   },
   {
     id: 'enfants', label: 'Hoeveel kinderen heb je ten laste?',
-    summary: a => a.value == null || a.value === '' ? '' : `${a.value} enfant${a.value>1?'s':''}`,
+    summary: a => a.value == null || a.value === '' ? '' : `${a.value} ${a.value==1?'kind':'kinderen'}`,
     rail: { title: 'Kinderen ten laste', body: `<p>Het aantal kinderen ten laste beïnvloedt het <strong>minimumbedrag</strong> dat de banken eisen dat je elke maand overhoudt om van te leven nadat je je hypothecair krediet hebt betaald.</p>` },
-    render: s => `<div class="opts" data-control="enfants">${[0,1,2,3,4,5].map(n => `<button class="opt ${String(s.value)===String(n)?'selected':''}" data-val="${n}"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>${n===5?'5 ou +':n}</button>`).join('')}</div>`,
+    render: s => `<div class="opts" data-control="enfants">${[0,1,2,3,4,5].map(n => `<button class="opt ${String(s.value)===String(n)?'selected':''}" data-val="${n}"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>${n===5?'5 of meer':n}</button>`).join('')}</div>`,
     valid: a => a.value != null && a.value !== ''
   },
   {
@@ -1136,7 +1139,7 @@ const INFOS_QUESTIONS = [
       return `
         <div class="opts" data-control="emploi">${opts.map(([v,t])=>`<button class="opt ${s.value===v?'selected':''}" data-val="${v}"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>${t}</button>`).join('')}</div>
         ${needsSub?`<div class="subfield"><span class="subfield-label">Type contract / activiteit</span><div class="opts" data-control="emploi-subtype">${EMP_SUB[s.value].map(t=>`<button class="opt ${s.subtype===t?'selected':''}" data-val="${t}"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>${t}</button>`).join('')}</div></div>`:''}
-        ${needsDate?`<div class="subfield"><span class="subfield-label">Sinds wanneer?</span><div class="field"><div class="input-wrap"><input type="month" data-control="emploi-since" value="${s.since||''}"></div></div></div>`:''}
+        ${needsDate?`<div class="subfield"><span class="subfield-label">Sinds wanneer?</span><div class="field"><div class="date-selects" data-control="emploi-since">${(()=>{const v=(s.since||'').split('-');const yy=v[0]||'',mm=v[1]||'';const MO=['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];const years=Array.from({length:(2026-1980+1)},(_,i)=>2026-i);return `<select class="date-sel" data-part="month" aria-label="Maand"><option value="" ${mm?'':'selected'} disabled>Maand</option>${MO.map((m,i)=>`<option value="${String(i+1).padStart(2,'0')}" ${(+mm===i+1)?'selected':''}>${m}</option>`).join('')}</select>`+`<select class="date-sel" data-part="year" aria-label="Jaar"><option value="" ${yy?'':'selected'} disabled>Jaar</option>${years.map(y=>`<option value="${y}" ${(+yy===y)?'selected':''}>${y}</option>`).join('')}</select>`;})()}</div></div></div>`:''}
       `;
     },
     valid: a => {
@@ -1190,7 +1193,7 @@ const INFOS_QUESTIONS = [
           `;}).join('')}
         </div>
         ${Object.keys(items).filter(k=>items[k]?.on).map(k=>`
-          <div class="subfield"><span class="subfield-label">${OTHER_REV.find(x=>x[0]===k)[1]} — montant mensuel</span><div class="field"><div class="input-wrap"><input type="text" inputmode="numeric" placeholder="0" data-control="autres-amt" data-key="${k}" value="${items[k]?.amt||''}"><span class="suffix">€ / maand</span></div></div></div>
+          <div class="subfield"><span class="subfield-label">${OTHER_REV.find(x=>x[0]===k)[1]} — maandbedrag</span><div class="field"><div class="input-wrap"><input type="text" inputmode="numeric" placeholder="0" data-control="autres-amt" data-key="${k}" value="${items[k]?.amt||''}"><span class="suffix">€ / maand</span></div></div></div>
         `).join('')}`:''}
       `;
     },
@@ -1201,7 +1204,7 @@ const INFOS_QUESTIONS = [
     summary: a => {
       if (a.none) return 'Geen lasten';
       const sel = Object.keys(a.items || {}).filter(k => a.items[k]?.on);
-      return sel.length ? `${sel.length} charge${sel.length>1?'s':''}` : '';
+      return sel.length ? `${sel.length} ${sel.length>1?'lasten':'last'}` : '';
     },
     rail: { title: 'Jouw huidige lasten', body: `<p>Vaste lasten (huur, betaald onderhoudsgeld…) worden van je inkomsten afgetrokken om in te schatten welke maandelijkse afbetaling je aankan.</p>` },
     render: s => {
@@ -1214,7 +1217,7 @@ const INFOS_QUESTIONS = [
           ${CHARGES.map(([v,t])=>{ const on=items[v]?.on; const amt=items[v]?.amt||''; return `<button class="opt-tile ${on?'selected':''}" data-val="${v}"><span class="opt-tile-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 1 0 0 7h5a3.5 3.5 0 1 1 0 7H6"/></svg></span><span class="opt-tile-body"><span class="opt-tile-title">${t}</span>${on&&amt?`<span class="opt-tile-sub">${fmtEUR(amt)} / maand</span>`:''}</span></button>`;}).join('')}
         </div>
         ${Object.keys(items).filter(k=>items[k]?.on).map(k=>`
-          <div class="subfield"><span class="subfield-label">${CHARGES.find(x=>x[0]===k)[1]} — montant mensuel</span><div class="field"><div class="input-wrap"><input type="text" inputmode="numeric" placeholder="0" data-control="charges-amt" data-key="${k}" value="${items[k]?.amt||''}"><span class="suffix">€ / maand</span></div></div></div>
+          <div class="subfield"><span class="subfield-label">${CHARGES.find(x=>x[0]===k)[1]} — maandbedrag</span><div class="field"><div class="input-wrap"><input type="text" inputmode="numeric" placeholder="0" data-control="charges-amt" data-key="${k}" value="${items[k]?.amt||''}"><span class="suffix">€ / maand</span></div></div></div>
         `).join('')}`:''}
       `;
     },
@@ -1235,7 +1238,7 @@ const INFOS_QUESTIONS = [
   },
   {
     id: 'retards', label: 'Heb je betalingsachterstanden?',
-    summary: a => a.value === 'non' ? 'Geen achterstanden' : a.value === 'oui' ? `Ja · ${fmtEUR(a.total)} cumulés` : '',
+    summary: a => a.value === 'non' ? 'Geen achterstanden' : a.value === 'oui' ? `Ja · ${fmtEUR(a.total)} in totaal` : '',
     rail: { title: 'Betalingsachterstanden', body: `<p>Eerlijk aan te geven — de bank raadpleegt de <strong>Centrale voor Kredieten aan Particulieren</strong> van de NBB. Een achterstand is niet noodzakelijk een afknapper als hij wordt toegelicht.</p>` },
     render: s => `
       <div class="opts" data-control="retards">
@@ -1751,6 +1754,30 @@ document.getElementById('qlist').addEventListener('input', e => {
   }
 });
 
+// ── Date dropdown groups (geboortedatum / sinds wanneer) ──
+document.getElementById('qlist').addEventListener('change', e => {
+  const sel = e.target.closest('select.date-sel');
+  if (!sel) return;
+  const grp = sel.closest('.date-selects[data-control]');
+  if (!grp) return;
+  const ctrl = grp.dataset.control;
+  const store = currentStore();
+  const qEl = grp.closest('.q'); if (!qEl) return;
+  const qid = qEl.dataset.qid;
+  const a = store.answers[qid] || {};
+  const get = p => { const el = grp.querySelector(`select[data-part="${p}"]`); return el ? el.value : ''; };
+  if (ctrl === 'naissance') {
+    const d=get('day'), m=get('month'), y=get('year');
+    a.value = (d && m && y) ? `${y}-${m}-${d}` : '';
+  } else if (ctrl === 'emploi-since') {
+    const m=get('month'), y=get('year');
+    a.since = (m && y) ? `${y}-${m}` : '';
+  }
+  store.answers[qid] = a;
+  persist();
+  render();
+});
+
 // ────────── AI extraction ──────────
 const aiToggleBtn = document.getElementById('ai-toggle-btn');
 const aiPanel = document.getElementById('ai-panel');
@@ -1839,7 +1866,7 @@ function handleAiFiles(fileList) {
 function addAiFileRow(file) {
   const ext = (file.name.split('.').pop() || 'doc').toUpperCase().slice(0, 4);
   const sizeKB = Math.round(file.size / 1024);
-  const sizeStr = sizeKB > 1024 ? `${(sizeKB/1024).toFixed(1)} Mo` : `${sizeKB} Ko`;
+  const sizeStr = sizeKB > 1024 ? `${(sizeKB/1024).toFixed(1)} MB` : `${sizeKB} kB`;
   const row = document.createElement('div');
   row.className = 'ai-file';
   row.innerHTML = `
@@ -1865,7 +1892,7 @@ function addAiFileRow(file) {
       setTimeout(tick, 120 + Math.random() * 140);
     } else {
       row.classList.add('done');
-      statusEl.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Champs extraits`;
+      statusEl.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Velden ingevuld`;
       applyExtractedProfile();
     }
   };
