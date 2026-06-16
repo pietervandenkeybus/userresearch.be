@@ -1023,7 +1023,7 @@ const PROJET_QUESTIONS = [
     summary: a => fmtEUR(a.value),
     rail: {
       title: 'Jouw eigen inbreng',
-      body: `<p>L'<strong>eigen inbreng</strong> is het bedrag dat je zelf in het project steekt. Hoe hoger, hoe betere rentevoeten je krijgt.</p><p>Banken zien graag een inbreng die minstens de notariskosten dekt (~10 % van de prijs).</p>`
+      body: `<p>De <strong>eigen inbreng</strong> is het bedrag dat je zelf in het project steekt. Hoe hoger, hoe betere rentevoeten je krijgt.</p><p>Banken zien graag een inbreng die minstens de notariskosten dekt (~10 % van de prijs).</p>`
     },
     render: (state) => `
       <div class="field">
@@ -1103,7 +1103,7 @@ const INFOS_QUESTIONS = [
     id: 'naissance', label: 'Wat is je geboortedatum?',
     summary: a => a.value ? new Date(a.value).toLocaleDateString('nl-BE', {day:'2-digit',month:'long',year:'numeric'}) : '',
     rail: { title: 'Jouw geboortedatum', body: `<p>Je leeftijd beïnvloedt de <strong>maximale looptijd van het krediet</strong> en de schuldsaldoverzekering die de bank voorstelt.</p>` },
-    render: s => { const v=(s.value||'').split('-'); const yy=v[0]||'', mm=v[1]||'', dd=v[2]||''; const MO=['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december']; const days=Array.from({length:31},(_,i)=>i+1); const years=Array.from({length:(2008-1940+1)},(_,i)=>2008-i); return `<div class="field"><div class="date-selects" data-control="naissance"><select class="date-sel" data-part="day" aria-label="Dag"><option value="" ${dd?'':'selected'} disabled>Dag</option>${days.map(d=>`<option value="${String(d).padStart(2,'0')}" ${(+dd===d)?'selected':''}>${d}</option>`).join('')}</select><select class="date-sel" data-part="month" aria-label="Maand"><option value="" ${mm?'':'selected'} disabled>Maand</option>${MO.map((m,i)=>`<option value="${String(i+1).padStart(2,'0')}" ${(+mm===i+1)?'selected':''}>${m}</option>`).join('')}</select><select class="date-sel" data-part="year" aria-label="Jaar"><option value="" ${yy?'':'selected'} disabled>Jaar</option>${years.map(y=>`<option value="${y}" ${(+yy===y)?'selected':''}>${y}</option>`).join('')}</select></div></div>`; },
+    render: s => { const v=(s.value||'').split('-'); const yy=s.year||v[0]||'', mm=s.month||v[1]||'', dd=s.day||v[2]||''; const MO=['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december']; const days=Array.from({length:31},(_,i)=>i+1); const years=Array.from({length:(2008-1940+1)},(_,i)=>2008-i); return `<div class="field"><div class="date-selects" data-control="naissance"><select class="date-sel" data-part="day" aria-label="Dag"><option value="" ${dd?'':'selected'} disabled>Dag</option>${days.map(d=>`<option value="${String(d).padStart(2,'0')}" ${(+dd===d)?'selected':''}>${d}</option>`).join('')}</select><select class="date-sel" data-part="month" aria-label="Maand"><option value="" ${mm?'':'selected'} disabled>Maand</option>${MO.map((m,i)=>`<option value="${String(i+1).padStart(2,'0')}" ${(+mm===i+1)?'selected':''}>${m}</option>`).join('')}</select><select class="date-sel" data-part="year" aria-label="Jaar"><option value="" ${yy?'':'selected'} disabled>Jaar</option>${years.map(y=>`<option value="${y}" ${(+yy===y)?'selected':''}>${y}</option>`).join('')}</select></div></div>`; },
     valid: a => !!a.value
   },
   {
@@ -1139,7 +1139,7 @@ const INFOS_QUESTIONS = [
       return `
         <div class="opts" data-control="emploi">${opts.map(([v,t])=>`<button class="opt ${s.value===v?'selected':''}" data-val="${v}"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>${t}</button>`).join('')}</div>
         ${needsSub?`<div class="subfield"><span class="subfield-label">Type contract / activiteit</span><div class="opts" data-control="emploi-subtype">${EMP_SUB[s.value].map(t=>`<button class="opt ${s.subtype===t?'selected':''}" data-val="${t}"><span class="check"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>${t}</button>`).join('')}</div></div>`:''}
-        ${needsDate?`<div class="subfield"><span class="subfield-label">Sinds wanneer?</span><div class="field"><div class="date-selects" data-control="emploi-since">${(()=>{const v=(s.since||'').split('-');const yy=v[0]||'',mm=v[1]||'';const MO=['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];const years=Array.from({length:(2026-1980+1)},(_,i)=>2026-i);return `<select class="date-sel" data-part="month" aria-label="Maand"><option value="" ${mm?'':'selected'} disabled>Maand</option>${MO.map((m,i)=>`<option value="${String(i+1).padStart(2,'0')}" ${(+mm===i+1)?'selected':''}>${m}</option>`).join('')}</select>`+`<select class="date-sel" data-part="year" aria-label="Jaar"><option value="" ${yy?'':'selected'} disabled>Jaar</option>${years.map(y=>`<option value="${y}" ${(+yy===y)?'selected':''}>${y}</option>`).join('')}</select>`;})()}</div></div></div>`:''}
+        ${needsDate?`<div class="subfield"><span class="subfield-label">Sinds wanneer?</span><div class="field"><div class="date-selects" data-control="emploi-since">${(()=>{const v=(s.since||'').split('-');const yy=s.sy||v[0]||'',mm=s.sm||v[1]||'';const MO=['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];const years=Array.from({length:(2026-1980+1)},(_,i)=>2026-i);return `<select class="date-sel" data-part="month" aria-label="Maand"><option value="" ${mm?'':'selected'} disabled>Maand</option>${MO.map((m,i)=>`<option value="${String(i+1).padStart(2,'0')}" ${(+mm===i+1)?'selected':''}>${m}</option>`).join('')}</select>`+`<select class="date-sel" data-part="year" aria-label="Jaar"><option value="" ${yy?'':'selected'} disabled>Jaar</option>${years.map(y=>`<option value="${y}" ${(+yy===y)?'selected':''}>${y}</option>`).join('')}</select>`;})()}</div></div></div>`:''}
       `;
     },
     valid: a => {
@@ -1767,11 +1767,11 @@ document.getElementById('qlist').addEventListener('change', e => {
   const a = store.answers[qid] || {};
   const get = p => { const el = grp.querySelector(`select[data-part="${p}"]`); return el ? el.value : ''; };
   if (ctrl === 'naissance') {
-    const d=get('day'), m=get('month'), y=get('year');
-    a.value = (d && m && y) ? `${y}-${m}-${d}` : '';
+    a.day = get('day'); a.month = get('month'); a.year = get('year');
+    a.value = (a.day && a.month && a.year) ? `${a.year}-${a.month}-${a.day}` : '';
   } else if (ctrl === 'emploi-since') {
-    const m=get('month'), y=get('year');
-    a.since = (m && y) ? `${y}-${m}` : '';
+    a.sm = get('month'); a.sy = get('year');
+    a.since = (a.sm && a.sy) ? `${a.sy}-${a.sm}` : '';
   }
   store.answers[qid] = a;
   persist();
