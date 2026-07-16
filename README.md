@@ -1,99 +1,149 @@
-# Owner hub — clickable prototype
+# Immoweb Owner Hub — clickable prototype
 
-A static HTML prototype of the Immoweb owner hub / property estimation flow, rebuilt
-from the Figma designs. No build step, no dependencies — three files and a `vercel.json`.
+A static, low-fidelity prototype of the Immoweb Owner Hub and its property-estimation
+onboarding flow, built from **Owner Hub Logic Proto.pdf**. Interface language is
+Dutch (Belgium), informal *je/jouw*.
+
+No build step, no backend, no external APIs, no map API, no webfonts. Open it and it works —
+including fully offline.
 
 ```
-index.html    all screens, as sections
-styles.css    design tokens + components
-app.js        router + interactions
-vercel.json   headers + clean URLs
+index.html    shell + inline SVG icon sprite
+styles.css    low-fidelity Immoweb-inspired styling
+ui.js         reusable render helpers (header, nav, action bar, cards, fields, counters, …)
+data.js       all Dutch copy and mock values, in one place
+screens.js    one render function per screen
+app.js        state, hash router, actions, validation, localStorage
 ```
 
-## Run locally
+## Running it
 
-Any static server works:
+Open `index.html` directly, or serve the folder:
 
 ```bash
-python3 -m http.server 8000
-# → http://localhost:8000
+python3 -m http.server 8000     # → http://localhost:8000
 ```
 
-Opening `index.html` directly via `file://` also works.
+Designed for a ~390 px mobile viewport, centred on a neutral desktop background.
+Everything works with mouse and physical keyboard — there are no swipe-only
+interactions and no simulated on-screen keyboard.
 
-## Deploy
+## Resetting
 
-1. **Push to GitHub**
+Three ways, all documented and all outside the Immoweb interface:
 
-   ```bash
-   git init
-   git add .
-   git commit -m "Owner hub prototype"
-   git branch -M main
-   git remote add origin git@github.com:<you>/<repo>.git
-   git push -u origin main
-   ```
+- the **“Prototype opnieuw starten”** button in the grey bar above the phone
+- the URL parameter **`?reset=true`**
 
-2. **Import into Vercel** — vercel.com → *Add New… → Project* → pick the repo.
-   Framework preset: **Other**. Leave build command and output directory empty.
-   Vercel serves the repo root as-is. Every push to `main` redeploys.
+Reset clears localStorage, the fake account and the saved property, and returns to
+the empty Owner Hub.
 
-3. **Custom domain** — Project → *Settings → Domains* → add your domain, then at
-   your registrar either:
-   - point an `A` record for the apex to `76.76.21.21`, or
-   - point a `CNAME` for a subdomain (e.g. `proto.yourdomain.com`) to `cname.vercel-dns.com`.
+## Starting at a specific state
 
-   TLS is issued automatically once DNS resolves.
+Use the **Startscherm** dropdown in the grey bar, or the `?start=` parameter:
 
-## Deep links
+| URL | State |
+|---|---|
+| `?start=owner-hub-empty` | Empty Owner Hub |
+| `?start=address-search` | Estimation flow, at the address step |
+| `?start=estimate-result-locked` | Locked estimate result |
+| `?start=owner-hub-property` | Owner Hub with the property registered |
+| `?start=estimate-section-overview` | Detailed-estimation overview |
+| `?start=estimate-result-refined` | Refined estimate (€ 491.000) |
 
-Every screen has a hash route, so you can share a single screen:
+`?start=` seeds the minimum state each entry point needs. Any screen id also works as a
+hash route, e.g. `#interior-amenities`.
 
-```
-/#estimation        My estimation (full)
-/#preview           Estimation preview (locked)
-/#refine-hub        Get a sharper estimate
-/#basics-condition  Refine › Basics › condition
-```
+## How state is stored
 
-The full list is in the **Jump to** dropdown, bottom-left on desktop.
+One central object in `app.js`, mirrored to `localStorage` under
+`immoweb-owner-hub-proto` on every change. It holds the current screen, previous-screen
+history, sign-in status, account details, the selected address, property facts, the
+initial and refined estimates, the selling intention, completed sections, every form
+answer and the notification preferences. Refreshing the page restores exactly where you
+were.
 
-## How it's put together
+## The two branches — the important bit
 
-**One screen visible at a time.** Each screen is a `<section class="screen">` inside the
-`.device` frame; `app.js` toggles `.is-active`. No page reloads, so the sticky bars never
-flash or re-render.
+The PDF contains **two rows of wireframes. They are not duplicates.** They are two
+branches of the same flow, and the prototype reproduces both:
 
-**Sticky bars are structural, not `position: fixed`.** Each screen is a flex column of
-`header → .scroll → footer`. The scroll area is the only thing that scrolls, so:
+| | **Row 1** — entered via “Voeg je woning toe” or “+” | **Row 2** — entered via “Schatten” |
+|---|---|---|
+| `state.claimed` | `true` | `false` |
+| Owner Hub, “Mijn woning” | holds the property card | keeps its empty state |
+| Owner Hub, “Schattingen” | shows the “Schat je woning gratis” CTA | holds the property card |
+| Refined result, footer | **only** “Plaats op Immoweb” | “Plaats op Immoweb” **and** “Claim deze woning” |
 
-- the **bottom nav** (Home / Search / Saves / My immo / Profile) stays pinned on the
-  My immo screens,
-- the wizard's **Back / Next footer** stays pinned on every refine step,
-- the grey app header stays pinned at the top.
+In row 2, “Claim deze woning” is the one route that moves the property into “Mijn woning”,
+which is exactly where the PDF’s extra bottom-right Owner Hub screen comes from.
 
-This also means iOS URL-bar resize can't detach the bars, which `position: fixed` suffers from.
+## Account gating
 
-**The bottom nav is defined once** (`NAV` in `app.js`) and injected into any screen carrying
-`data-nav-bar`. Add a screen to the tab bar by giving it `data-nav="<id>"` and an empty
-`<nav class="bottom-nav" data-nav-bar></nav>`.
+Before the account exists, the estimate result keeps the indicated areas locked: the low
+and high ends of the range, the market statistics, the price-trend chart and the
+market-activity map. They stay visible but blurred, behind a lock icon.
 
-**State, not duplicate screens.** The Figma export contains ~50 PNGs, but many are state
-variants of the same screen (empty vs filled, locked vs unlocked, section not-started vs
-completed). Those are handled by JS state rather than 50 copies of the markup — 22 real screens.
+Per the sticky note on the board — *“Areas intentionally shown as locked to entice user to
+click on them to make an account”* — every one of those locked areas is clickable and
+leads to the account-benefits screen, as do “Verfijn mijn schatting” and
+“Bekijk alle inzichten”. That is five separate routes into account creation, matching the
+five arrows in the PDF.
 
-**The estimate moves as you refine.** Completing a refine section tightens the range
-(€453 000 → €472 000 → €491 000), swaps the navy card's copy to "Estimate refined with last
-property details", and flips the section badge to Completed — matching the design variants.
+## Intentionally disabled
 
-## Things to know
+The wireframes give these no destination, so they are inert: visible for realism, marked
+`aria-disabled`, and they route nowhere.
 
-- **Font.** The Figma file uses Immoweb's brand face; the PDF ships it as outlines so it
-  couldn't be extracted. The prototype loads **Plus Jakarta Sans** as the closest free match.
-  Swap it by changing `--font` in `styles.css` (one place, everything follows).
-- **Maps and the agent logos are placeholders.** Inline SVG stands in for the Figma map
-  screenshots. Drop in a Mapbox/Google static image when you have a key.
-- **iOS keyboards and status bars from the designs are not rendered** — those were Figma
-  mockups of OS chrome. Real inputs open the real keyboard.
-- **The `.proto-bar` jump menu is prototype scaffolding.** Delete that block from
-  `index.html` (and `initJump` in `app.js`) before any dev handoff.
+- Bottom navigation: **Home, Zoeken, Favorieten, Profiel** (only **Mijn Immo** works)
+- **Vind een kantoor in de buurt**
+- **Plaats een zoekertje** / “Aanmaken”
+- **Vertrouw je verkoop toe aan een expert**
+- **Download het volledige rapport**
+- **Verwijder deze schatting**
+- **Plaats op Immoweb**
+- **Gebruik mijn huidige locatie**
+- The notifications bell and the share icon
+- **Hoe we onze schattingen berekenen en beoordelen**
+- **Opnieuw versturen** on the SMS-code screen
+
+Separately, primary actions are *disabled* — a different thing — while required
+information is missing. That is a state, not a dead end: fill the fields and the button
+activates.
+
+## Deterministic values
+
+Nothing is randomised.
+
+| | |
+|---|---|
+| Initial estimate | € 453.000 (range € 440.000 – € 465.000) |
+| After one section | € 472.000 |
+| Refined estimate | € 491.000 (range € 478.000 – € 501.000) |
+| Nearby average | € 442.500 |
+| 12-month price trend | +6,4% |
+| Demand | Hoog |
+| Days on market | 28 dagen |
+| Example property | Statiestraat 15, 2000 Antwerpen, Vlaanderen |
+
+Currency is formatted Belgian-style via `Intl.NumberFormat('nl-BE')` → `€ 453.000`.
+
+## Deviations from the suggested screen list, and why
+
+- **`energy-features` is not a separate screen.** The PDF keeps heating type and the extra
+  energy features on one screen: picking a heating type reveals the checklist below it.
+  The id still resolves, as an alias of `energy-heating`.
+- **`estimate-result-refined` is the same screen as `estimate-detail`.** Refined is a
+  *state* of that screen, not a different screen. Both ids work as routes; `?start=` seeds
+  the refined variant.
+- **`address-results` is the same screen as `address-search`** — suggestions appear in
+  place as you type, which is what the wireframes show.
+- **Immoweb blue.** The wireframes use `#000924` throughout for primary actions, so that
+  is what `--blue` is set to. Change it in one place in `styles.css` if the brand value
+  differs.
+
+## Simulated
+
+All estimates, market data, agencies, accounts and SMS codes are fake and hard-coded.
+No SMS is sent, no request leaves the page, and nothing is transmitted or stored
+externally. The only persistence is your own browser's localStorage.

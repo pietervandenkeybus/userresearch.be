@@ -1,508 +1,539 @@
 /* ==========================================================================
-   Owner hub prototype — router + interactions
-   No dependencies. Everything is driven by data-* attributes in index.html.
+   app.js — central state, hash router, action handling.
+
+   State lives in one object and is mirrored to localStorage on every change,
+   so a refresh restores exactly where the tester was.
    ========================================================================== */
-(function () {
+(function (global) {
   'use strict';
 
-  const $  = (sel, root) => (root || document).querySelector(sel);
-  const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
+  const STORAGE_KEY = 'immoweb-owner-hub-proto';
+  const $ = sel => document.querySelector(sel);
 
-  /* ------------------------------------------------------------------
-     Screen registry — label is what shows in the "Jump to" helper
-     ------------------------------------------------------------------ */
-  const SCREENS = [
-    ['s-myimmo',                 'My immo — empty'],
-    ['s-myimmo-valuation',       'My immo — with valuation'],
-    ['s-address',                'Location — address search'],
-    ['s-address-confirm',        'Location — map preview'],
-    ['s-property-summary',       'Location — property summary'],
-    ['s-collect-email',          'Collect e-mail'],
-    ['s-preview',                'Estimation — preview (locked)'],
-    ['s-upsell',                 'One free account'],
-    ['s-signup-name',            'Create account — your details'],
-    ['s-signup-password',        'Create account — password'],
-    ['s-signup-phone',           'Create account — phone'],
-    ['s-signup-otp',             'Create account — 2FA'],
-    ['s-estimation',             'My estimation — full'],
-    ['s-refine-hub',             'Refine — hub'],
-    ['s-basics-type',            'Refine › Basics — type'],
-    ['s-basics-characteristics', 'Refine › Basics — characteristics'],
-    ['s-basics-condition',       'Refine › Basics — condition'],
-    ['s-interior-rooms',         'Refine › Interior — rooms'],
-    ['s-interior-view',          'Refine › Interior — view'],
-    ['s-interior-amenities',     'Refine › Interior — amenities'],
-    ['s-energy-performance',     'Refine › Energy — EPC'],
-    ['s-energy-heating',         'Refine › Energy — heating']
-  ];
+  /* =====================================================================
+     State
+     ===================================================================== */
+  function blankState() {
+    return {
+      screen: 'owner-hub-empty',
+      history: [],
 
-  /* ------------------------------------------------------------------
-     App state
-     ------------------------------------------------------------------ */
-  const state = {
-    signedIn: false,
-    sections: { basics: 'todo', interior: 'todo', energy: 'todo' },
-    // The estimate tightens as sections get completed — matching the
-    // €453 000 → €472 000 → €491 000 progression in the designs.
-    estimates: [
-      { mid: '453 000', low: '440 000', high: '465 000', rent: '1.300' },
-      { mid: '472 000', low: '460 000', high: '484 000', rent: '1.450' },
-      { mid: '491 000', low: '478 000', high: '501 000', rent: '1.600' }
-    ]
-  };
+      signedIn: false,
+      // true  = entered via "Voeg je woning toe" / "+"  (PDF row 1)
+      // false = entered via "Schatten"                   (PDF row 2)
+      claimed: false,
 
-  /* ------------------------------------------------------------------
-     Router
-     ------------------------------------------------------------------ */
-  function go(id, opts) {
-    const next = document.getElementById(id);
-    if (!next) { console.warn('[proto] no screen:', id); return; }
+      property: { saved: false },
 
-    $$('.screen.is-active').forEach(s => s.classList.remove('is-active'));
-    next.classList.add('is-active');
-    $$('.scroll', next).forEach(s => { s.scrollTop = 0; });
+      account: { firstName: '', lastName: '', email: '', phone: '' },
 
-    if (!opts || !opts.silent) {
-      history.replaceState(null, '', '#' + id.replace(/^s-/, ''));
-    }
-    const jump = $('#proto-jump');
-    if (jump) jump.value = id;
+      sections: { basics: 'todo', interior: 'todo', energy: 'todo' },
 
-    closeOverlay();
+      notifications: { valuation: true, neighbourhood: true },
+
+      ui: {
+        previewTab: 'overview',   // PDF shows Marktoverzicht as the default tab
+        detailTab: 'overview',
+        intentDismissed: false,
+        sheet: null               // 'epc' | 'heating' | null
+      },
+
+      form: {
+        addressQuery: '', addressPicked: false,
+        email: '', firstName: '', lastName: '',
+        password: '', password2: '',
+        countryCode: '(BE) +32', phone: '',
+        code: ['', '', '', '', '', ''],
+
+        propertyType: '', houseKind: '', facades: '',
+        livingArea: '', landArea: '', constructionYear: '',
+        condition: '',
+
+        rooms: { rooms: 0, bedrooms: 0, bathrooms: 0, toilets: 0 },
+        view: '',
+        amenities: { garden: false, terrace: false, pool: false },
+        amenityDetails: {
+          garden:  { surface: '', orientation: '' },
+          terrace: { surface: '', orientation: '' }
+        },
+
+        epc: '', epcRef: '', epcConsumption: '', epcCo2: '',
+        heating: '', energyFeatures: {},
+
+        intent: ''
+      }
+    };
+  }
+
+  let state = blankState();
+
+  function save() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    catch (e) { /* private mode — the prototype still works, just not across reloads */ }
+  }
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return false;
+      const saved = JSON.parse(raw);
+      // shallow-merge onto a blank state so new keys always exist
+      state = Object.assign(blankState(), saved);
+      state.ui = Object.assign(blankState().ui, saved.ui || {});
+      state.form = Object.assign(blankState().form, saved.form || {});
+      state.form.rooms = Object.assign(blankState().form.rooms, (saved.form || {}).rooms || {});
+      state.form.amenityDetails = Object.assign(blankState().form.amenityDetails, (saved.form || {}).amenityDetails || {});
+      return true;
+    } catch (e) { return false; }
+  }
+
+  function reset() {
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+    state = blankState();
+    save();
+    location.hash = '';
     render();
   }
 
-  /* ------------------------------------------------------------------
-     Bottom nav — one definition, injected into every screen that has it.
-     Sticky by construction: it is a flex sibling of .scroll, so it never
-     scrolls away and never re-renders between tabs.
-     ------------------------------------------------------------------ */
-  const NAV = [
-    { id: 'home',    label: 'Home',    icon: 'i-home',   target: null },
-    { id: 'search',  label: 'Search',  icon: 'i-search', target: null },
-    { id: 'saves',   label: 'Saves',   icon: 'i-heart',  target: null },
-    { id: 'myimmo',  label: 'My immo', icon: 'i-key',    target: 'myimmo' },
-    { id: 'profile', label: 'Profile', icon: 'i-user',   target: null }
-  ];
-
-  function buildNav() {
-    $$('[data-nav-bar]').forEach(bar => {
-      const active = bar.closest('.screen').dataset.nav;
-      bar.innerHTML = NAV.map(n => `
-        <button class="nav-item${n.id === active ? ' is-active' : ''}"
-                data-nav-to="${n.id}"
-                ${n.id === active ? 'aria-current="page"' : ''}>
-          <svg class="ic ic--sm" viewBox="0 0 24 24"${n.id === 'myimmo' ? ' style="fill:currentColor;stroke-width:1.4"' : ''}>
-            <use href="#${n.icon}"/>
-          </svg>
-          <span>${n.label}</span>
-        </button>`).join('');
-    });
+  /* =====================================================================
+     Derived values
+     ===================================================================== */
+  function completedCount(st) {
+    return Object.values((st || state).sections).filter(v => v === 'done').length;
   }
 
-  /* ------------------------------------------------------------------
-     Sponsored agent cards — same list on preview + full estimation
-     ------------------------------------------------------------------ */
-  const AGENTS = [
-    ['Belvil.immo',   '4700 Eupen • 3km away',   '12 properties for sale'],
-    ['TB Imomobiliere', '4900 Spa • 6km away',   '23 properties for sale'],
-    ['Sunset Estate', 'Ixelles 700 • 32km away', '125 properties for sale']
-  ];
-
-  function buildAgents() {
-    $$('[data-agents]').forEach(el => {
-      el.innerHTML = AGENTS.map(([name, meta1, meta2]) => `
-        <div class="agent">
-          <div class="agent__logo"></div>
-          <div class="agent__name">${name}</div>
-          <div class="agent__meta">${meta1}</div>
-          <div class="agent__meta">${meta2}</div>
-        </div>`).join('');
-    });
+  // The estimate tightens as sections are completed: 453.000 -> 472.000 -> 491.000
+  function currentEstimate(st) {
+    const s = st || state;
+    const n = completedCount(s);
+    if (n === 0) return global.DATA.ESTIMATES.initial;
+    if (n >= global.DATA.SECTIONS.length) return global.DATA.ESTIMATES.refined;
+    return global.DATA.ESTIMATES.partial;
   }
 
-  /* ------------------------------------------------------------------
-     Price trend chart (Market overview)
-     ------------------------------------------------------------------ */
-  const TREND = [412, 430, 437, 452, 461, 471, 476];
-  const TREND_LABELS = ["Jun '24", "Aug '24", "Oct '24", "Dec '24", "Feb '25", "Apr '25", "Jun '25"];
+  const emailValid = v => /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test((v || '').trim());
 
-  function buildCharts() {
-    $$('[data-chart="trend"]').forEach(el => {
-      const W = 330, H = 190, padL = 42, padR = 8, padT = 12, padB = 26;
-      const min = 410, max = 500;
-      const x = i => padL + (i / (TREND.length - 1)) * (W - padL - padR);
-      const y = v => padT + (1 - (v - min) / (max - min)) * (H - padT - padB);
-
-      const grid = [500, 470, 450, 430, 410].map(v => `
-        <line x1="${padL}" y1="${y(v)}" x2="${W - padR}" y2="${y(v)}" stroke="#E5E8F0"/>
-        <text x="${padL - 6}" y="${y(v) + 4}" text-anchor="end" font-size="9" fill="#63697B">${v}k</text>`).join('');
-
-      const line = TREND.map((v, i) => `${i ? 'L' : 'M'}${x(i)},${y(v)}`).join(' ');
-      const dots = TREND.map((v, i) => `<circle cx="${x(i)}" cy="${y(v)}" r="3.2" fill="#000924"/>`).join('');
-      const labels = TREND_LABELS.map((l, i) =>
-        `<text x="${x(i)}" y="${H - 8}" text-anchor="middle" font-size="8.5" fill="#63697B">${l}</text>`).join('');
-
-      el.innerHTML = `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Price trend">
-        ${grid}
-        <path d="${line}" fill="none" stroke="#000924" stroke-width="2" stroke-linejoin="round"/>
-        ${dots}${labels}
-      </svg>`;
-      if (el.dataset.locked) el.firstChild.classList.add('locked');
-    });
+  function passwordRules(v) {
+    v = v || '';
+    return {
+      len: v.length >= 10,
+      mix: /[a-z]/.test(v) && /[A-Z]/.test(v) && /\d/.test(v) && /[^\w\s]/.test(v)
+    };
   }
 
-  /* ------------------------------------------------------------------
-     Bottom-sheet pickers
-     ------------------------------------------------------------------ */
-  const SHEETS = {
-    heating: { title: 'Heating type', options: ['Carbon', 'Electric', 'Gas', 'Fuel oil', 'Wood', 'Pallet', 'Solar'] },
-    epc:     { title: 'Energy performance', options: ['A++', 'A+', 'A', 'B', 'C', 'D', 'E', 'F', 'G'] }
+  const heatingLabel = value => {
+    const o = global.DATA.OPTIONS.heating.find(h => h.value === value);
+    return o ? o.label : '';
   };
 
-  let sheetTrigger = null;
-
-  function openSheet(key, trigger) {
-    const cfg = SHEETS[key];
-    if (!cfg) return;
-    sheetTrigger = trigger;
-    $('#sheet-title').textContent = cfg.title;
-    $('#sheet-list').innerHTML = cfg.options
-      .map(o => `<button class="sheet__option" data-sheet-value="${o}">${o}</button>`).join('');
-    $('#overlay').classList.add('is-open');
+  /* =====================================================================
+     Router
+     ===================================================================== */
+  function go(screen, opts) {
+    if (!global.SCREENS[screen]) { console.warn('[proto] unknown screen:', screen); return; }
+    if (state.screen !== screen) state.history.push(state.screen);
+    state.screen = screen;
+    if (!opts || !opts.replace) location.hash = screen;
+    save();
+    render();
+    $('#live').textContent = 'Scherm: ' + screen;
   }
 
-  function closeOverlay() {
-    $('#overlay').classList.remove('is-open');
+  // "go:owner-hub" resolves to whichever Owner Hub variant the state implies
+  function resolve(target) {
+    if (target === 'owner-hub') {
+      return state.property.saved ? 'owner-hub-property' : 'owner-hub-empty';
+    }
+    return target;
   }
 
-  /* ------------------------------------------------------------------
-     Address autocomplete
-     ------------------------------------------------------------------ */
-  const ADDRESSES = [
-    ['Ruelle des Prés de l’Egli', 'se 1, 1457 Nil-Saint-Vincent-Saint-Martin, Walhain'],
-    ['Ruelle des Prés de l’Egli', 'se 3, 1457 Nil-Saint-Vincent-Saint-Martin, Walhain'],
-    ['Ruelle des Prés de l’Egli', 'se 5, 1457 Nil-Saint-Vincent-Saint-Martin, Walhain']
+  /* =====================================================================
+     Render
+     ===================================================================== */
+  function render() {
+    const root = $('#screen-root');
+    const fn = global.SCREENS[state.screen] || global.SCREENS['owner-hub-empty'];
+    root.innerHTML = fn(state) + sheetMarkup();
+    // Scroll position resets when a new screen opens.
+    const sc = root.querySelector('.scroll');
+    if (sc) sc.scrollTop = 0;
+    syncJump();
+  }
+
+  /* Bottom-sheet picker (Energieprestatie / Type verwarming) */
+  function sheetMarkup() {
+    const key = state.ui.sheet;
+    if (!key) return '';
+    const cfg = key === 'epc'
+      ? { title: 'Energieprestatie', options: global.DATA.OPTIONS.epc.map(v => ({ value: v, label: v })) }
+      : { title: 'Type verwarming', options: global.DATA.OPTIONS.heating };
+    return `<div class="overlay is-open" data-act="close-sheet">
+      <div class="sheet" role="dialog" aria-modal="true" aria-label="${global.UI.esc(cfg.title)}">
+        <div class="hdr hdr--sheet">
+          <span class="hdr__grab" aria-hidden="true"></span>
+          <div class="hdr__left">
+            <button type="button" class="icon-btn" data-act="close-sheet" aria-label="Sluiten">
+              ${global.UI.icon('i-close')}
+            </button>
+          </div>
+          <h2 class="hdr__title">${global.UI.esc(cfg.title)}</h2>
+          <div class="hdr__right"></div>
+        </div>
+        <div class="sheet__list">
+          ${cfg.options.map(o => `<button type="button" class="sheet__opt"
+            data-act="pick-sheet" data-value="${global.UI.esc(o.value)}">${global.UI.esc(o.label)}</button>`).join('')}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  /* =====================================================================
+     Actions — one delegated listener for the whole prototype.
+     ===================================================================== */
+  document.addEventListener('click', function (ev) {
+    const el = ev.target.closest('[data-act]');
+    if (!el) return;
+    if (el.disabled || el.getAttribute('aria-disabled') === 'true') return;
+
+    const act = el.dataset.act;
+    const value = el.dataset.value;
+
+    // go:<screen>
+    if (act.startsWith('go:')) { go(resolve(act.slice(3))); return; }
+
+    // set:<field>
+    if (act.startsWith('set:')) {
+      const key = act.slice(4);
+      state.form[key] = state.form[key] === value ? '' : value;
+      // Changing the property type invalidates the follow-ups below it.
+      if (key === 'propertyType') { state.form.houseKind = ''; state.form.facades = ''; }
+      if (key === 'houseKind') { state.form.facades = ''; }
+      markProgress();
+      save(); render();
+      return;
+    }
+
+    // sheet:<key>
+    if (act.startsWith('sheet:')) { state.ui.sheet = act.slice(6); render(); return; }
+
+    // complete:<section>
+    if (act.startsWith('complete:')) {
+      state.sections[act.slice(9)] = 'done';
+      save();
+      go('estimate-section-overview');
+      return;
+    }
+
+    switch (act) {
+      /* ---- entry points: this is the branch --------------------------- */
+      case 'start:claim':          // "Voeg je woning toe" / "+"  -> PDF row 1
+        state.claimed = true;
+        go('address-search');
+        break;
+      case 'start:estimate':       // "Schatten"                  -> PDF row 2
+        state.claimed = false;
+        go('address-search');
+        break;
+
+      /* ---- address ---------------------------------------------------- */
+      case 'pick-address': {
+        const s = global.DATA.SUGGESTIONS[Number(value)];
+        state.form.addressQuery = s.match + s.rest;
+        state.form.addressPicked = true;
+        save();
+        go('address-confirmation');
+        break;
+      }
+      case 'clear-address':
+        state.form.addressQuery = '';
+        state.form.addressPicked = false;
+        save();
+        go('address-search', { replace: state.screen === 'address-search' });
+        render();
+        break;
+
+      /* ---- e-mail ----------------------------------------------------- */
+      case 'submit-email':
+        if (!emailValid(state.form.email)) break;
+        state.account.email = state.form.email;
+        go('estimate-result-locked');
+        break;
+      case 'social-signin':
+        // The wireframes route Google/Apple to the same next screen.
+        go('estimate-result-locked');
+        break;
+
+      /* ---- tabs ------------------------------------------------------- */
+      case 'set-preview-tab': state.ui.previewTab = value; save(); render(); break;
+      case 'set-detail-tab':  state.ui.detailTab = value; save(); render(); break;
+
+      /* ---- account ---------------------------------------------------- */
+      case 'create-account':
+        state.signedIn = true;
+        state.property.saved = true;
+        state.account.firstName = state.form.firstName;
+        state.account.lastName = state.form.lastName;
+        state.account.phone = state.form.phone;
+        save();
+        go('owner-hub-property');
+        break;
+
+      /* ---- claim (only reachable on the unclaimed branch) -------------- */
+      case 'claim-property':
+        state.claimed = true;
+        save();
+        go('owner-hub-property');
+        break;
+
+      /* ---- refine wizard ---------------------------------------------- */
+      case 'save-exit':
+        // Save & Exit keeps everything entered and returns to the overview.
+        save();
+        go('estimate-section-overview');
+        break;
+
+      case 'count': {
+        const [name, delta] = value.split(':');
+        const next = state.form.rooms[name] + Number(delta);
+        state.form.rooms[name] = Math.max(0, next);
+        markProgress(); save(); render();
+        break;
+      }
+
+      case 'toggle-amenity':
+        // Values inside a detail block are deliberately kept when unticked.
+        state.form.amenities[value] = !state.form.amenities[value];
+        markProgress(); save(); render();
+        break;
+
+      case 'toggle-feature':
+        state.form.energyFeatures[value] = !state.form.energyFeatures[value];
+        markProgress(); save(); render();
+        break;
+
+      case 'pick-sheet':
+        if (state.ui.sheet === 'epc') state.form.epc = value;
+        else state.form.heating = value;
+        state.ui.sheet = null;
+        markProgress(); save(); render();
+        break;
+
+      case 'close-sheet':
+        if (ev.target.closest('.sheet') && !ev.target.closest('[data-act="close-sheet"]')) break;
+        state.ui.sheet = null; render();
+        break;
+
+      /* ---- estimate detail -------------------------------------------- */
+      case 'set-intent':   state.form.intent = value; save(); render(); break;
+      case 'dismiss-intent': state.ui.intentDismissed = true; save(); render(); break;
+      case 'toggle':
+        state.notifications[value] = !state.notifications[value];
+        save(); render();
+        break;
+
+      case 'nav-myimmo': go(resolve('owner-hub')); break;
+
+      case 'toggle-pw': {
+        const input = document.getElementById(value);
+        input.type = input.type === 'password' ? 'text' : 'password';
+        break;
+      }
+    }
+  });
+
+  /* Any answer inside a refine section flips it to "Bezig" */
+  function markProgress() {
+    const map = {
+      'basics-type': 'basics', 'basics-characteristics': 'basics', 'basics-condition': 'basics',
+      'interior-rooms': 'interior', 'interior-view': 'interior', 'interior-amenities': 'interior',
+      'energy-performance': 'energy', 'energy-heating': 'energy', 'energy-features': 'energy'
+    };
+    const sec = map[state.screen];
+    if (sec && state.sections[sec] === 'todo') state.sections[sec] = 'progress';
+  }
+
+  /* =====================================================================
+     Inputs — typed values go straight into state.form via data-model.
+     Re-render only when it changes something visible (validation gates,
+     progressive disclosure), so typing never loses focus.
+     ===================================================================== */
+  document.addEventListener('input', function (ev) {
+    const el = ev.target;
+
+    if (el.dataset.otp !== undefined) {
+      const i = Number(el.dataset.otp);
+      el.value = el.value.replace(/\D/g, '').slice(0, 1);
+      state.form.code[i] = el.value;
+      const boxes = document.querySelectorAll('[data-otp]');
+      if (el.value && boxes[i + 1]) boxes[i + 1].focus();
+      save();
+      refreshGates();
+      return;
+    }
+
+    const model = el.dataset.model;
+    if (!model) return;
+    setModel(model, el.value);
+    markProgress();
+    save();
+
+    // Address search shows/hides its suggestion list as you type.
+    if (model === 'addressQuery') {
+      state.form.addressPicked = false;
+      renderKeepingFocus();
+      return;
+    }
+    refreshGates();
+  });
+
+  document.addEventListener('change', function (ev) {
+    const el = ev.target;
+    if (!el.dataset.model) return;
+    setModel(el.dataset.model, el.value);
+    if (el.classList.contains('select')) el.classList.toggle('is-placeholder', !el.value);
+    markProgress(); save();
+  });
+
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape' && state.ui.sheet) { state.ui.sheet = null; render(); }
+    if (ev.key === 'Backspace' && ev.target.dataset && ev.target.dataset.otp !== undefined && !ev.target.value) {
+      const i = Number(ev.target.dataset.otp);
+      const boxes = document.querySelectorAll('[data-otp]');
+      if (boxes[i - 1]) boxes[i - 1].focus();
+    }
+  });
+
+  function setModel(path, value) {
+    const parts = path.split('.');
+    let obj = state.form;
+    while (parts.length > 1) obj = obj[parts.shift()];
+    obj[parts[0]] = value;
+  }
+
+  /* Screens whose *visible structure* changes as you type (password rules and
+     the confirm field appearing) need a real re-render; everything else only
+     needs its primary action re-evaluated, so typing never loses focus. */
+  const RERENDER_ON_INPUT = ['account-password'];
+
+  function refreshGates() {
+    if (RERENDER_ON_INPUT.indexOf(state.screen) !== -1) { renderKeepingFocus(); return; }
+
+    // Re-run the screen renderer off-DOM and copy the disabled state across,
+    // matching buttons by their action rather than by position.
+    const tmp = document.createElement('div');
+    tmp.innerHTML = global.SCREENS[state.screen](state);
+
+    tmp.querySelectorAll('button[data-act]').forEach(fresh => {
+      const live = document.querySelector(
+        `#screen-root button[data-act="${CSS.escape(fresh.dataset.act)}"]`);
+      if (!live) return;
+      const shouldDisable = fresh.hasAttribute('disabled');
+      live.disabled = shouldDisable;
+      if (shouldDisable) live.setAttribute('aria-disabled', 'true');
+      else live.removeAttribute('aria-disabled');
+    });
+  }
+
+  /* Re-render, then put the caret back where the tester left it. */
+  function renderKeepingFocus() {
+    const el = document.activeElement;
+    const id = el && el.id;
+    let pos = null;
+    try { pos = el && el.selectionStart; } catch (e) {}
+    render();
+    if (!id) return;
+    const back = document.getElementById(id);
+    if (!back) return;
+    back.focus();
+    if (pos != null) { try { back.setSelectionRange(pos, pos); } catch (e) {} }
+  }
+
+  /* =====================================================================
+     Desktop test controls (outside the mobile frame)
+     ===================================================================== */
+  const TEST_STATES = [
+    ['owner-hub-empty',           'Lege Owner Hub'],
+    ['address-search',            'Schattingsflow — adres'],
+    ['estimate-result-locked',    'Vergrendelde schatting'],
+    ['owner-hub-property',        'Owner Hub met woning'],
+    ['estimate-section-overview', 'Overzicht gedetailleerde schatting'],
+    ['estimate-result-refined',   'Verfijnde schatting (€ 491.000)']
   ];
 
-  function initAddress() {
-    const input = $('#addr-input');
-    const list  = $('#addr-suggestions');
-    const clear = $('#addr-clear');
-    if (!input) return;
-
-    function update() {
-      const has = input.value.trim().length > 0;
-      clear.hidden = !has;
-      if (!has) { list.hidden = true; return; }
-      list.hidden = false;
-      list.innerHTML = ADDRESSES.map(([b, rest]) =>
-        `<button class="suggestion"><b>${b}</b>${rest}</button>`).join('');
+  // Seeds the minimum state each test entry point needs to make sense.
+  function seedFor(screen) {
+    if (screen === 'owner-hub-empty' || screen === 'address-search') return;
+    state.form.addressQuery = global.DATA.PROPERTY.full;
+    state.form.addressPicked = true;
+    state.form.email = 'jan.janssens@email.be';
+    state.account.email = state.form.email;
+    if (screen === 'estimate-result-locked') return;
+    state.signedIn = true;
+    state.property.saved = true;
+    if (screen === 'estimate-result-refined') {
+      state.sections = { basics: 'done', interior: 'done', energy: 'done' };
     }
+  }
 
-    input.addEventListener('input', update);
-    input.addEventListener('focus', () => { input.placeholder = 'Search'; });
-    input.addEventListener('blur',  () => {
-      if (!input.value) input.placeholder = 'Enter street, city or neighbourhood';
+  function syncJump() {
+    const sel = $('#test-jump');
+    if (sel && sel.value !== state.screen) {
+      const has = TEST_STATES.some(t => t[0] === state.screen);
+      sel.value = has ? state.screen : '';
+    }
+  }
+
+  function initControls() {
+    const sel = $('#test-jump');
+    sel.innerHTML = '<option value="">— huidig scherm —</option>' +
+      TEST_STATES.map(([v, l]) => `<option value="${v}">${l}</option>`).join('');
+    sel.addEventListener('change', () => {
+      if (!sel.value) return;
+      state = blankState();
+      seedFor(sel.value);
+      go(sel.value);
     });
-    clear.addEventListener('click', () => { input.value = ''; update(); input.focus(); });
-    list.addEventListener('click', e => {
-      if (e.target.closest('.suggestion')) go('s-address-confirm');
-    });
-    $('#addr-locate').addEventListener('click', () => go('s-address-confirm'));
+    $('#reset-btn').addEventListener('click', reset);
   }
 
-  /* ------------------------------------------------------------------
-     Password rules
-     ------------------------------------------------------------------ */
-  function initPassword() {
-    const pw = $('#pw');
-    if (!pw) return;
-    const rules  = $('#pw-rules');
-    const field2 = $('#pw2-field');
-
-    pw.addEventListener('input', () => {
-      const v = pw.value;
-      const len = v.length >= 10;
-      const mix = /[a-z]/.test(v) && /[A-Z]/.test(v) && /\d/.test(v) && /[^\w\s]/.test(v);
-      $('[data-rule="len"]', rules).classList.toggle('is-met', len);
-      $('[data-rule="mix"]', rules).classList.toggle('is-met', mix);
-      field2.hidden = !(len && mix);
-    });
-
-    $$('[data-toggle-pw]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const input = document.getElementById(btn.dataset.togglePw);
-        input.type = input.type === 'password' ? 'text' : 'password';
-      });
-    });
-  }
-
-  /* ------------------------------------------------------------------
-     OTP auto-advance
-     ------------------------------------------------------------------ */
-  function initOtp() {
-    const boxes = $$('#otp input');
-    boxes.forEach((box, i) => {
-      box.addEventListener('input', () => {
-        box.value = box.value.replace(/\D/g, '').slice(0, 1);
-        if (box.value && boxes[i + 1]) boxes[i + 1].focus();
-      });
-      box.addEventListener('keydown', e => {
-        if (e.key === 'Backspace' && !box.value && boxes[i - 1]) boxes[i - 1].focus();
-      });
-    });
-  }
-
-  /* ------------------------------------------------------------------
-     Steppers
-     ------------------------------------------------------------------ */
-  function initSteppers() {
-    $$('[data-stepper]').forEach(st => {
-      const out = $('output', st);
-      const [minus, , plus] = $$('button, output', st);
-      const read  = () => (out.textContent === '' ? null : parseInt(out.textContent, 10));
-      const write = v => { out.textContent = v === null ? '' : v; };
-      minus.addEventListener('click', () => {
-        const v = read();
-        if (v === null) return;
-        write(v <= 0 ? null : v - 1);
-      });
-      plus.addEventListener('click', () => {
-        const v = read();
-        write(v === null ? 1 : v + 1);
-      });
-    });
-  }
-
-  /* ------------------------------------------------------------------
-     Render bindings
-     ------------------------------------------------------------------ */
-  function completedCount() {
-    return Object.values(state.sections).filter(s => s === 'done').length;
-  }
-
-  function render() {
-    // estimate value follows how many sections are complete
-    const idx = Math.min(completedCount(), state.estimates.length - 1);
-    const est = state.estimates[idx];
-
-    $$('[data-bind="mid"]').forEach(el => el.textContent = est.mid);
-    $$('[data-bind="low"]').forEach(el => el.textContent = est.low);
-    $$('[data-bind="high"]').forEach(el => el.textContent = est.high);
-    $$('[data-bind="rent"]').forEach(el => el.textContent = est.rent);
-    $$('[data-bind="estimate"]').forEach(el => el.textContent = est.mid.replace(' ', ','));
-
-    // hub: "€472 000 vs initial estimation of €453 000"
-    const delta = $('[data-refine-delta]');
-    if (delta) delta.hidden = idx === 0;
-
-    // navy card copy swaps once anything is refined
-    const fresh = $('[data-est-state="fresh"]');
-    const refined = $('[data-est-state="refined"]');
-    if (fresh && refined) {
-      fresh.hidden = idx > 0;
-      refined.hidden = idx === 0;
-    }
-
-    // property meta line gains land area once basics are done
-    const meta = $('[data-bind="propmeta"]');
-    if (meta) {
-      meta.innerHTML = state.sections.basics === 'done'
-        ? 'House &nbsp;•&nbsp; 159 m² &nbsp;•&nbsp; 547 m² land'
-        : 'House &nbsp;•&nbsp; 159 m²';
-    }
-
-    // section badges on the refine hub
-    const BADGE = {
-      todo:     { cls: 'badge',                text: 'Not started' },
-      progress: { cls: 'badge badge--progress', text: 'In progress' },
-      done:     { cls: 'badge badge--done',     text: 'Completed' }
-    };
-    Object.entries(state.sections).forEach(([key, val]) => {
-      const el = $(`[data-badge="${key}"]`);
-      if (!el) return;
-      const cfg = BADGE[val];
-      el.className = cfg.cls;
-      el.innerHTML = val === 'done'
-        ? `<svg class="ic ic--xs" viewBox="0 0 24 24"><use href="#i-check-circle"/></svg> ${cfg.text}`
-        : `<span class="badge__dot"></span> ${cfg.text}`;
-    });
-  }
-
-  /* ------------------------------------------------------------------
-     Global delegated click handling
-     ------------------------------------------------------------------ */
-  document.addEventListener('click', e => {
-    // -- navigate --------------------------------------------------
-    const goto = e.target.closest('[data-goto]');
-    if (goto) {
-      e.preventDefault();
-      if (goto.hasAttribute('data-signin')) state.signedIn = true;
-
-      // mark a refine section complete on its final Next
-      const done = goto.dataset.complete;
-      if (done) state.sections[done] = 'done';
-
-      go(goto.dataset.goto);
-      return;
-    }
-
-    // -- bottom nav ------------------------------------------------
-    const navTo = e.target.closest('[data-nav-to]');
-    if (navTo) {
-      const item = NAV.find(n => n.id === navTo.dataset.navTo);
-      if (item && item.target === 'myimmo') {
-        go(state.signedIn ? 's-myimmo-valuation' : 's-myimmo');
-      } else {
-        toast(`“${navTo.textContent.trim()}” lives outside this prototype`);
-      }
-      return;
-    }
-
-    // -- tabs ------------------------------------------------------
-    const tab = e.target.closest('.tab');
-    if (tab) {
-      const group = tab.closest('[data-tabs]');
-      const screen = group.closest('.screen');
-      $$('.tab', group).forEach(t => t.classList.toggle('is-active', t === tab));
-      $$('[data-tabpanel]', screen).forEach(p => {
-        p.hidden = p.dataset.tabpanel !== tab.dataset.tab;
-      });
-      return;
-    }
-
-    // -- radio groups (choice cards + tiles) -----------------------
-    const opt = e.target.closest('[data-radio-group] > [data-value]');
-    if (opt) {
-      const group = opt.parentElement;
-      $$('[data-value]', group).forEach(o => {
-        o.classList.toggle('is-selected', o === opt);
-      });
-      markInProgress(opt);
-      return;
-    }
-
-    // -- checkboxes ------------------------------------------------
-    const check = e.target.closest('[data-check]');
-    if (check) {
-      check.classList.toggle('is-checked');
-      markInProgress(check);
-      return;
-    }
-
-    // -- amenities (checkbox that expands) -------------------------
-    const amenityHead = e.target.closest('.amenity__head');
-    if (amenityHead) {
-      amenityHead.parentElement.classList.toggle('is-open');
-      markInProgress(amenityHead);
-      return;
-    }
-
-    // -- switches --------------------------------------------------
-    const sw = e.target.closest('.switch');
-    if (sw) {
-      const on = sw.classList.toggle('is-on');
-      sw.setAttribute('aria-checked', String(on));
-      return;
-    }
-
-    // -- open a picker sheet ---------------------------------------
-    const sheetBtn = e.target.closest('[data-sheet]');
-    if (sheetBtn) { openSheet(sheetBtn.dataset.sheet, sheetBtn); return; }
-
-    // -- pick a sheet value ----------------------------------------
-    const sheetVal = e.target.closest('[data-sheet-value]');
-    if (sheetVal && sheetTrigger) {
-      sheetTrigger.textContent = sheetVal.dataset.sheetValue;
-      sheetTrigger.classList.remove('is-placeholder');
-      // reveal the follow-up questions the design shows after a pick
-      const details = sheetTrigger.dataset.sheet === 'epc'
-        ? $('#epc-details') : $('#heating-details');
-      if (details) details.hidden = false;
-      markInProgress(sheetTrigger);
-      closeOverlay();
-      return;
-    }
-
-    // -- dismiss overlay / popovers --------------------------------
-    if (e.target.closest('[data-dismiss-overlay]') || e.target.id === 'overlay') {
-      closeOverlay();
-      return;
-    }
-    const dismiss = e.target.closest('[data-dismiss]');
-    if (dismiss) { $(dismiss.dataset.dismiss).hidden = true; return; }
-
-    // -- not-in-prototype affordances ------------------------------
-    const todo = e.target.closest('[data-todo]');
-    if (todo) { toast(`“${todo.dataset.todo}” is not in this prototype yet`); }
-  });
-
-  // any interaction inside a refine flow flips that section to "In progress"
-  function markInProgress(el) {
-    const screen = el.closest('.screen');
-    const flow = screen && screen.dataset.flow;
-    if (flow && state.sections[flow] === 'todo') {
-      state.sections[flow] = 'progress';
-      render();
-    }
-  }
-
-  // native <select> also counts as progress
-  document.addEventListener('change', e => {
-    if (e.target.matches('.select')) {
-      e.target.classList.toggle('is-placeholder', e.target.value === '');
-      markInProgress(e.target);
-    }
-  });
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeOverlay();
-  });
-
-  /* ------------------------------------------------------------------
-     Toast — prototype-only affordance for out-of-scope taps
-     ------------------------------------------------------------------ */
-  let toastTimer;
-  function toast(msg) {
-    let el = $('#proto-toast');
-    if (!el) {
-      el = document.createElement('div');
-      el.id = 'proto-toast';
-      el.style.cssText =
-        'position:absolute;left:16px;right:16px;bottom:100px;z-index:100;' +
-        'background:#000924;color:#fff;border-radius:12px;padding:12px 14px;' +
-        'font-size:13px;line-height:1.4;text-align:center;opacity:0;' +
-        'transition:opacity .2s ease;pointer-events:none';
-      $('#device').appendChild(el);
-    }
-    el.textContent = msg;
-    requestAnimationFrame(() => { el.style.opacity = '1'; });
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => { el.style.opacity = '0'; }, 1900);
-  }
-
-  /* ------------------------------------------------------------------
-     Prototype jump menu
-     ------------------------------------------------------------------ */
-  function initJump() {
-    const sel = $('#proto-jump');
-    sel.innerHTML = SCREENS.map(([id, label]) => `<option value="${id}">${label}</option>`).join('');
-    sel.addEventListener('change', () => go(sel.value));
-  }
-
-  /* ------------------------------------------------------------------
+  /* =====================================================================
      Boot
-     ------------------------------------------------------------------ */
-  buildNav();
-  buildAgents();
-  buildCharts();
-  initAddress();
-  initPassword();
-  initOtp();
-  initSteppers();
-  initJump();
+     ===================================================================== */
+  function boot() {
+    const params = new URLSearchParams(location.search);
 
-  const start = location.hash ? 's-' + location.hash.slice(1) : 's-myimmo';
-  go(document.getElementById(start) ? start : 's-myimmo');
-})();
+    if (params.get('reset') === 'true') {
+      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+      history.replaceState(null, '', location.pathname);
+    } else {
+      load();
+    }
+
+    // ?start=<screen> jumps straight to a documented test state
+    const start = params.get('start');
+    if (start && global.SCREENS[start]) {
+      state = blankState();
+      seedFor(start);
+      state.screen = start;
+    } else {
+      const hash = location.hash.slice(1);
+      if (hash && global.SCREENS[hash]) state.screen = hash;
+    }
+
+    initControls();
+    save();
+    render();
+  }
+
+  window.addEventListener('hashchange', () => {
+    const hash = location.hash.slice(1);
+    if (hash && global.SCREENS[hash] && hash !== state.screen) { state.screen = hash; save(); render(); }
+  });
+
+  global.APP = {
+    get state() { return state; },
+    go, reset, currentEstimate, completedCount, emailValid, passwordRules, heatingLabel
+  };
+
+  document.addEventListener('DOMContentLoaded', boot);
+})(window);
