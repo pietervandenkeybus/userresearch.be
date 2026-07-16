@@ -8,13 +8,69 @@ No build step, no backend, no external APIs, no map API, no webfonts. Open it an
 including fully offline.
 
 ```
-index.html    shell + inline SVG icon sprite
-styles.css    low-fidelity Immoweb-inspired styling
-ui.js         reusable render helpers (header, nav, action bar, cards, fields, counters, …)
-data.js       all Dutch copy and mock values, in one place
-screens.js    one render function per screen
-app.js        state, hash router, actions, validation, localStorage
+index.html      shell + inline SVG icon sprite
+styles.css      low-fidelity Immoweb-inspired styling
+gate.js         password start screen (see "Toegang" below)
+ui.js           reusable render helpers (header, nav, action bar, cards, fields, counters, …)
+data.js         all Dutch copy and mock values, in one place
+screens.js      one render function per screen
+app.js          state, hash router, actions, validation, localStorage
+robots.txt      keeps the prototype out of search engines
+.vercelignore   keeps README.md off the deployed site (it names the password)
 ```
+
+## Toegang — het wachtwoord
+
+**Wachtwoord: `immoweb2026`**
+
+Testers see a Dutch start screen and type it once per browser session.
+
+### ⚠ This is a speed bump, not security
+
+The check runs in the browser, so the answer has to be in the shipped code
+somewhere. What this does and does not do:
+
+**It stops:** someone stumbling on the URL, a link forwarded to the wrong
+person, the page turning up in a Google result.
+
+**It does not stop:** anyone who opens DevTools. They can delete the overlay,
+set the `sessionStorage` flag by hand, or just request `styles.css` / `app.js`
+directly — none of which the gate can prevent. Treat the contents as
+"unlisted", not "confidential".
+
+Some care has been taken so it isn't trivial: `gate.js` stores only an FNV-1a
+*hash* of the password, never the password itself, and `.vercelignore` keeps
+this README (which names it) off the deployed site. That raises the bar from
+"view source" to "read the code and bypass it". It doesn't change the
+conclusion above.
+
+`robots.txt` and the `noindex` meta tag, on the other hand, are *real* — search
+engines honour them.
+
+### Changing the password
+
+The stored value is a hash, so you can't just type a new password in. In the
+browser console:
+
+```js
+GATE.hash('jouw-nieuwe-wachtwoord')   // → prints a number
+```
+
+Paste that number into `PASSWORD_HASH` at the top of `gate.js`, and update this
+README. Locked yourself out? Delete the `<script src="gate.js">` line from
+`index.html`.
+
+### Echte afscherming
+
+If this ever needs to be genuinely private, do it server-side — the browser
+can't. On Vercel, either:
+
+- **Vercel Authentication** — project *Settings → Deployment Protection*. Free,
+  zero code, but every viewer needs a Vercel account. Good for internal only.
+- **Edge Middleware with Basic Auth** — a `middleware.js` that checks a header
+  before any file is served, with the password in an environment variable. Free
+  on Hobby, works for outside stakeholders, and the files genuinely are not
+  served without it. Ask and I'll add it.
 
 ## Running it
 

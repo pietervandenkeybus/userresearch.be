@@ -1,2 +1,3 @@
+# Prototype — not for indexing.
 User-agent: *
 Disallow: /
