@@ -365,12 +365,12 @@
       `<line x1="${padL}" y1="${y(v)}" x2="${W - padR}" y2="${y(v)}" stroke="#E5E8F0"/>
        <text x="${padL - 6}" y="${y(v) + 4}" text-anchor="end" font-size="9" fill="#63697B">${v}k</text>`).join('');
     const line = M.trendPoints.map((v, i) => `${i ? 'L' : 'M'}${x(i)},${y(v)}`).join(' ');
-    const dots = M.trendPoints.map((v, i) => `<circle cx="${x(i)}" cy="${y(v)}" r="3.2" fill="#000924"/>`).join('');
+    const dots = M.trendPoints.map((v, i) => `<circle cx="${x(i)}" cy="${y(v)}" r="3.2" fill="#133dbd"/>`).join('');
     const labels = M.trendLabels.map((l, i) =>
       `<text x="${x(i)}" y="${H - 8}" text-anchor="middle" font-size="8" fill="#63697B">${esc(l)}</text>`).join('');
     return `<svg class="chart${locked ? ' is-locked' : ''}" viewBox="0 0 ${W} ${H}" role="img"
       aria-label="Prijstrend van de laatste twaalf maanden">
-      ${grid}<path d="${line}" fill="none" stroke="#000924" stroke-width="2" stroke-linejoin="round"/>${dots}${labels}
+      ${grid}<path d="${line}" fill="none" stroke="#133dbd" stroke-width="2" stroke-linejoin="round"/>${dots}${labels}
     </svg>`;
   }
 
@@ -380,11 +380,11 @@
   function mapIllustration(opts) {
     const o = opts || {};
     const pins = o.activity
-      ? `<g fill="#000924">
+      ? `<g fill="#133dbd">
            ${[[90, 40], [185, 34], [215, 58], [130, 78], [285, 62], [215, 98]].map(([px, py]) =>
              `<path d="M${px} ${py}a9 9 0 0 0-9 9c0 7 9 17 9 17s9-10 9-17a9 9 0 0 0-9-9Z"/>`).join('')}
          </g>`
-      : `<g transform="translate(158,72)" fill="#000924">
+      : `<g transform="translate(158,72)" fill="#133dbd">
            <path d="M12 0a12 12 0 0 0-12 12c0 9 12 22 12 22s12-13 12-22A12 12 0 0 0 12 0Z"/>
            <circle cx="12" cy="12" r="4.5" fill="#fff"/>
          </g>`;

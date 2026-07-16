@@ -113,6 +113,11 @@
 
   const emailValid = v => /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test((v || '').trim());
 
+  /* The password requirements from the design are shown as live feedback only.
+     They are deliberately NOT enforced — this is a prototype, and blocking a
+     tester on password complexity adds friction without testing anything.
+     Any non-empty password continues. Same for the confirmation field: it is
+     shown because the design has it, but a mismatch does not block. */
   function passwordRules(v) {
     v = v || '';
     return {

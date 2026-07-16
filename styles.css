@@ -7,10 +7,14 @@
    ========================================================================== */
 
 :root {
-  /* Immoweb dark blue — the primary action colour used across the wireframes */
-  --blue:        #000924;
-  --blue-soft:   #3D4459;
-  --blue-tint:   #D4D9E8;
+  /* ---- Immoweb blue ----
+     --blue   primary actions, selected states, dark estimate card
+     --blue-2 secondary action sitting ON the blue card, progress bar, hover
+     Change these two and everything downstream follows. */
+  --blue:        #133dbd;
+  --blue-2:      #315ed1;
+  --blue-tint:   #DDE4F8;   /* light tint of --blue, for soft buttons */
+  --blue-on-dark:#C3CFF0;   /* muted body text on a --blue surface */
 
   --bg-desk:     #DFE3EA;
   --bg-page:     #FFFFFF;
@@ -123,6 +127,9 @@ input, select { font: inherit; color: inherit; }
   width: 100%;
   min-height: 0;
   padding: 16px 0;
+  /* Only kicks in when the window is shorter than the phone; the desktop page
+     never scrolls otherwise, so scrolling always belongs to the prototype. */
+  overflow: auto;
 }
 
 .deskfoot {
@@ -137,11 +144,14 @@ input, select { font: inherit; color: inherit; }
 /* ==========================================================================
    Device
    ========================================================================== */
+/* Fixed at a true iPhone 14 / 15 logical viewport: 390 × 844 CSS px.
+   Never scaled — the phone stays at a representative size whatever the
+   desktop window does, so what testers see matches a real device. */
 .device {
   position: relative;
+  flex: none;
   width: 390px;
-  height: 100%;
-  max-height: 844px;
+  height: 844px;
   background: var(--bg-page);
   border-radius: 40px;
   box-shadow: 0 0 0 10px #11141d, 0 18px 50px rgba(0, 9, 36, .35);
@@ -167,7 +177,7 @@ input, select { font: inherit; color: inherit; }
   .deskbar { position: sticky; top: 0; z-index: 100; }
   .stage { padding: 0; }
   .device {
-    width: 100%; max-height: none; height: auto; min-height: 80vh;
+    width: 100%; height: auto; min-height: 80vh;
     border-radius: 0; box-shadow: none;
   }
   .device__notch, .device__homebar { display: none; }
@@ -260,7 +270,7 @@ input, select { font: inherit; color: inherit; }
 .btn--sm { min-height: 38px; padding: 0 18px; font-size: 14px; }
 .btn--primary    { background: var(--blue); color: #fff; }
 .btn--soft       { background: var(--blue-tint); color: var(--blue); }
-.btn--soft-dark  { background: var(--blue-soft); color: #fff; }
+.btn--soft-dark  { background: var(--blue-2); color: #fff; }
 .btn--outline    { background: #fff; border: 1px solid var(--border); }
 .btn--pill-light { background: var(--bg-subtle); color: var(--blue); }
 .btn:not(:disabled):not(.is-inert):hover { filter: brightness(1.12); }
@@ -304,7 +314,7 @@ input, select { font: inherit; color: inherit; }
   background: var(--divider);
 }
 .progress__bar {
-  height: 100%; background: var(--blue-soft);
+  height: 100%; background: var(--blue-2);
   border-radius: 0 var(--r-pill) var(--r-pill) 0;
   transition: width .25s ease;
 }
@@ -381,7 +391,7 @@ input, select { font: inherit; color: inherit; }
 .est__mid { font-size: 27px; font-weight: 800; letter-spacing: -.02em; white-space: nowrap; }
 .est__side { text-align: center; }
 .est__side b { display: block; font-size: 11.5px; font-weight: 800; white-space: nowrap; }
-.est__side span { font-size: 10.5px; color: #AEB2BF; }
+.est__side span { font-size: 10.5px; color: var(--blue-on-dark); }
 .est__dash { opacity: .8; }
 .est__rent { text-align: center; font-size: 13.5px; margin-top: 8px; }
 .est__link {
@@ -390,8 +400,8 @@ input, select { font: inherit; color: inherit; }
 }
 .est__hr { border: 0; border-top: 1px solid rgba(255,255,255,.22); margin: 16px 0; }
 .est__q { font-size: 13.5px; font-weight: 800; }
-.est__body { font-size: 12px; line-height: 1.5; color: #C4C8D3; margin-top: 5px; }
-.est__refined { display: flex; gap: 9px; align-items: flex-start; font-size: 12px; line-height: 1.4; color: #E2E4EA; }
+.est__body { font-size: 12px; line-height: 1.5; color: var(--blue-on-dark); margin-top: 5px; }
+.est__refined { display: flex; gap: 9px; align-items: flex-start; font-size: 12px; line-height: 1.4; color: #EAEFFC; }
 .est .btn { margin-top: 14px; }
 
 .lock-chip {
@@ -446,7 +456,7 @@ input, select { font: inherit; color: inherit; }
 .select.is-placeholder { color: var(--text-faint); }
 .select {
   appearance: none; padding-right: 36px;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23000924' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23133dbd' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
   background-repeat: no-repeat; background-position: right 12px center;
 }
 
@@ -471,12 +481,27 @@ input, select { font: inherit; color: inherit; }
   width: 30px; height: 30px; display: grid; place-items: center; border-radius: var(--r-pill);
 }
 
+/* Password requirements.
+   NB: named .pwrule, not .rule — .rule is the <hr> divider and the two
+   collided, leaking the divider's 20px margin into this list. */
 .rules { margin-top: 10px; }
 .rules__title { font-size: 12px; color: var(--text-muted); }
-.rule { display: flex; gap: 8px; align-items: flex-start; font-size: 12px; line-height: 1.45; color: var(--text-muted); margin-top: 4px; border: 0; }
-.rule__dot { flex: none; width: 13px; height: 13px; margin-top: 2px; border-radius: 50%; border: 1.5px solid var(--border); }
-.rule.is-met { color: var(--text); font-weight: 600; }
-.rule.is-met .rule__dot { background: var(--blue); border-color: var(--blue); }
+.pwrule {
+  display: flex; gap: 8px; align-items: flex-start;
+  font-size: 12px; line-height: 1.45; color: var(--text-muted);
+  margin-top: 5px;
+}
+.pwrule__dot {
+  flex: none; width: 13px; height: 13px; margin-top: 2px;
+  border-radius: 50%; border: 1.5px solid var(--border);
+  display: grid; place-items: center; color: #fff;
+}
+.pwrule__dot .ic { opacity: 0; stroke-width: 3.5; width: 9px; height: 9px; }
+.pwrule.is-met { color: var(--text); font-weight: 600; }
+.pwrule.is-met .pwrule__dot { background: var(--blue); border-color: var(--blue); }
+.pwrule.is-met .pwrule__dot .ic { opacity: 1; }
+/* Tells you which part is still missing, instead of leaving you to guess. */
+.pwrule__missing { display: block; color: var(--text-muted); font-weight: 400; margin-top: 2px; }
 
 .phone-row { display: grid; grid-template-columns: 108px 1fr; gap: 8px; }
 
@@ -657,9 +682,9 @@ input, select { font: inherit; color: inherit; }
    Refine hub
    ========================================================================== */
 .current-est { background: var(--blue); color: #fff; border-radius: var(--r-sm); padding: 11px 13px; margin-top: 18px; }
-.current-est__label { font-size: 12px; color: #C4C8D3; }
+.current-est__label { font-size: 12px; color: var(--blue-on-dark); }
 .current-est__value { font-size: 16px; font-weight: 800; margin-top: 3px; }
-.current-est__value small { font-size: 11.5px; font-weight: 400; color: #C4C8D3; }
+.current-est__value small { font-size: 11.5px; font-weight: 400; color: var(--blue-on-dark); }
 
 .hub-card {
   border: 1px solid var(--border); border-radius: var(--r); padding: 14px;

@@ -358,15 +358,14 @@
 
   /* =====================================================================
      9. account-password
-     Confirmation field appears once the rules are met; both must match.
+     The requirements from the design are shown, and tick live as you type,
+     but they are NOT enforced — this is a prototype, so any non-empty
+     password continues and a mismatched confirmation does not block.
      ===================================================================== */
   screens['account-password'] = function (st) {
     const f = st.form;
     const r = global.APP.passwordRules(f.password);
-    const showConfirm = r.len && r.mix;
-    const match = f.password && f.password === f.password2;
-    const ok = showConfirm && match;
-    const mismatch = showConfirm && f.password2.length > 0 && !match;
+    const ok = f.password.length > 0;
 
     return U.header({ variant: 'plain', back: 'go:account-personal-details' }) + scroll(`
       <h1 class="h1 mt-40">Stel je wachtwoord in</h1>
@@ -374,21 +373,21 @@
 
       <div class="rules">
         <p class="rules__title">Je wachtwoord moet bevatten:</p>
-        <p class="rule${r.len ? ' is-met' : ''}"><span class="rule__dot" aria-hidden="true"></span>
-          Minstens 10 tekens ${r.len ? '<span class="sr-only">(voldaan)</span>' : ''}</p>
-        <p class="rule${r.mix ? ' is-met' : ''}"><span class="rule__dot" aria-hidden="true"></span>
-          Een combinatie van hoofdletters, kleine letters, cijfers en symbolen.
-          ${r.mix ? '<span class="sr-only">(voldaan)</span>' : ''}</p>
+        <p class="pwrule${r.len ? ' is-met' : ''}">
+          <span class="pwrule__dot" aria-hidden="true">${U.icon('i-check')}</span>
+          <span>Minstens 10 tekens${r.len ? '<span class="sr-only"> — voldaan</span>' : ''}</span>
+        </p>
+        <p class="pwrule${r.mix ? ' is-met' : ''}">
+          <span class="pwrule__dot" aria-hidden="true">${U.icon('i-check')}</span>
+          <span>Een combinatie van hoofdletters, kleine letters, cijfers en symbolen.${r.mix ? '<span class="sr-only"> — voldaan</span>' : ''}</span>
+        </p>
       </div>
 
-      ${showConfirm ? U.passwordField({
-        id: 'pw2', label: 'Bevestig je wachtwoord', value: f.password2, model: 'password2',
-        error: mismatch ? 'De wachtwoorden komen niet overeen.' : ''
-      }) : ''}
+      ${U.passwordField({ id: 'pw2', label: 'Bevestig je wachtwoord', value: f.password2, model: 'password2' })}
 
       ${U.button({
         label: 'Volgende', block: true, act: 'go:account-phone',
-        disabled: !ok, title: ok ? '' : 'Kies eerst een wachtwoord dat aan de voorwaarden voldoet'
+        disabled: !ok, title: ok ? '' : 'Vul eerst een wachtwoord in'
       })}
     `);
   };
