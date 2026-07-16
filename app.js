@@ -472,6 +472,10 @@
     state.form.addressPicked = true;
     state.form.email = 'jan.janssens@email.be';
     state.account.email = state.form.email;
+    // so a jumped-to account screen never reads "naar (BE) +32 ."
+    state.form.firstName = 'Jan';
+    state.form.lastName = 'Janssens';
+    state.form.phone = '478 22 83';
     if (screen === 'estimate-result-locked') return;
     state.signedIn = true;
     state.property.saved = true;
