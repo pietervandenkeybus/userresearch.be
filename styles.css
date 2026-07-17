@@ -656,6 +656,92 @@ input, select { font: inherit; color: inherit; }
 .panel__title { display: block; font-size: 14px; font-weight: 800; margin-bottom: 8px; }
 
 .chart, .map { width: 100%; display: block; border-radius: var(--r-sm); }
+
+/* ==========================================================================
+   Market-activity map — two pin types + a small card on tap
+   (Slack review: "it would be nice to have 2 types of pins: one for sold,
+   the other for for sale" + "there will be a small tooltip on these pins")
+   ========================================================================== */
+.map-wrap { position: relative; display: block; }
+.map-wrap.is-locked { filter: blur(5px); }
+
+.pin {
+  position: absolute;
+  width: 22px; height: 28px;
+  /* the pin's tip sits exactly on its x/y coordinate */
+  transform: translate(-50%, -100%);
+  padding: 0; line-height: 0;
+  cursor: pointer;
+}
+.pin.is-static { cursor: default; pointer-events: none; }
+.pin__shape { width: 22px; height: 28px; display: block; stroke-width: 1.6; }
+
+/* Verkocht — filled pin with a white dot */
+.pin--sold .pin__shape   { fill: var(--blue); stroke: #fff; }
+.pin--sold .pin__dot     { fill: #fff; stroke: none; }
+/* Te koop — outlined pin. Different shape-fill, not just a different hue,
+   so the two never rely on colour alone. */
+.pin--forsale .pin__shape { fill: #fff; stroke: var(--blue); stroke-width: 2.2; }
+
+.pin:not(.is-static):hover .pin__shape { transform: scale(1.12); transform-origin: 50% 100%; }
+.pin.is-active { z-index: 3; }
+.pin.is-active .pin__shape { transform: scale(1.18); transform-origin: 50% 100%; }
+.pin:focus-visible { outline: 3px solid var(--focus); outline-offset: 1px; border-radius: 3px; }
+
+/* The card itself */
+.map-tip {
+  position: absolute;
+  z-index: 4;
+  width: 186px;
+  /* The map is only ~322 x 200, so an open card inevitably covers other pins.
+     Letting clicks pass through keeps every pin reachable: clicking a covered
+     pin selects it, clicking bare map closes the card. The close button opts
+     back in below. */
+  pointer-events: none;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 11px;
+  box-shadow: 0 6px 20px rgba(0, 9, 36, .18);
+  text-align: left;
+  /* default: sits above the pin */
+  transform: translate(-50%, calc(-100% - 32px));
+}
+.map-tip--below { transform: translate(-50%, 8px); }
+
+.map-tip__close {
+  pointer-events: auto;
+  position: absolute; top: 4px; right: 4px;
+  width: 22px; height: 22px;
+  display: grid; place-items: center;
+  border-radius: 50%; color: var(--text-muted);
+}
+.map-tip__close:hover { background: var(--bg-subtle); }
+
+.map-tip__badge {
+  display: inline-block;
+  font-size: 9.5px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: .04em;
+  padding: 3px 7px; border-radius: var(--r-pill);
+}
+.map-tip__badge--sold    { background: var(--blue); color: #fff; }
+.map-tip__badge--forsale { background: #fff; color: var(--blue); border: 1.5px solid var(--blue); }
+
+.map-tip__date  { display: block; font-size: 10px; color: var(--text-muted); margin-top: 6px; }
+.map-tip__price { display: block; font-size: 16px; font-weight: 800; margin-top: 3px; }
+.map-tip__addr  { display: block; font-size: 11px; color: var(--text-muted); margin-top: 2px;
+                  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.map-tip__meta  { display: flex; gap: 10px; margin-top: 7px;
+                  padding-top: 7px; border-top: 1px solid var(--divider);
+                  font-size: 10.5px; color: var(--text-muted); }
+.map-tip__meta span { display: inline-flex; align-items: center; gap: 3px; }
+
+/* Legend swatches reuse the real pin shapes, so legend and map always agree. */
+.legend__pin { display: inline-block; width: 11px; height: 14px; }
+.legend__pin .pin__shape { width: 11px; height: 14px; stroke-width: 1.6; }
+.legend__pin--sold .pin__shape    { fill: var(--blue); stroke: #fff; }
+.legend__pin--sold .pin__dot      { fill: #fff; stroke: none; }
+.legend__pin--forsale .pin__shape { fill: #fff; stroke: var(--blue); stroke-width: 2.4; }
 .chart.is-locked, .map.is-locked, .locked-wrap .chart, .locked-wrap .map { filter: blur(5px); }
 .locked-wrap { position: relative; display: block; }
 .locked-badge {

@@ -35,7 +35,8 @@
         previewTab: 'overview',   // PDF shows Marktoverzicht as the default tab
         detailTab: 'overview',
         intentDismissed: false,
-        sheet: null               // 'epc' | 'heating' | null
+        sheet: null,              // 'epc' | 'heating' | null
+        activePin: null           // id of the open pin on the market-activity map
       },
 
       form: {
@@ -138,6 +139,7 @@
     if (!global.SCREENS[screen]) { console.warn('[proto] unknown screen:', screen); return; }
     if (state.screen !== screen) state.history.push(state.screen);
     state.screen = screen;
+    state.ui.activePin = null;   // never carry an open map card to a new screen
     if (!opts || !opts.replace) location.hash = screen;
     save();
     render();
@@ -197,6 +199,16 @@
      ===================================================================== */
   document.addEventListener('click', function (ev) {
     const el = ev.target.closest('[data-act]');
+
+    // Clicking anywhere outside an open pin card closes it.
+    if (state.ui.activePin && (!el || ['pin', 'close-pin'].indexOf(el.dataset.act) === -1)
+        && !ev.target.closest('.map-tip')) {
+      state.ui.activePin = null;
+      save(); render();
+      if (!el) return;
+      // fall through so the click that closed the card still does its job
+    }
+
     if (!el) return;
     if (el.disabled || el.getAttribute('aria-disabled') === 'true') return;
 
@@ -270,7 +282,21 @@
 
       /* ---- tabs ------------------------------------------------------- */
       case 'set-preview-tab': state.ui.previewTab = value; save(); render(); break;
-      case 'set-detail-tab':  state.ui.detailTab = value; save(); render(); break;
+      case 'set-detail-tab':
+        state.ui.detailTab = value;
+        state.ui.activePin = null;      // don't leave a card open on a hidden map
+        save(); render();
+        break;
+
+      /* ---- market-activity map pins ----------------------------------- */
+      case 'pin':
+        // clicking the open pin again closes it
+        state.ui.activePin = state.ui.activePin === value ? null : value;
+        save(); render();
+        break;
+      case 'close-pin':
+        state.ui.activePin = null; save(); render();
+        break;
 
       /* ---- account ---------------------------------------------------- */
       case 'create-account':
@@ -401,6 +427,7 @@
 
   document.addEventListener('keydown', function (ev) {
     if (ev.key === 'Escape' && state.ui.sheet) { state.ui.sheet = null; render(); }
+    if (ev.key === 'Escape' && state.ui.activePin) { state.ui.activePin = null; save(); render(); }
     if (ev.key === 'Backspace' && ev.target.dataset && ev.target.dataset.otp !== undefined && !ev.target.value) {
       const i = Number(ev.target.dataset.otp);
       const boxes = document.querySelectorAll('[data-otp]');

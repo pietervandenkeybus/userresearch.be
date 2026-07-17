@@ -283,7 +283,7 @@
       </div>
       <button type="button" class="panel panel--locked" data-act="go:account-benefits">
         <span class="panel__title">Marktactiviteit (laatste X jaar)</span>
-        <span class="locked-wrap">${U.mapIllustration({ activity: true, locked: true })}
+        <span class="locked-wrap">${U.activityMap({ interactive: false, locked: true })}
           <span class="locked-badge">${U.icon('i-lock', 'ic--sm')}</span></span>
       </button>`;
 
@@ -483,11 +483,8 @@
       </div>
       <div class="panel">
         <p class="panel__title">Marktactiviteit (laatste X jaar)</p>
-        ${U.mapIllustration({ activity: true })}
-        <p class="legend">
-          <span>${U.icon('i-pin', 'ic--xs')} verkochte woningen in de buurt</span>
-          <span>${U.icon('i-pin', 'ic--xs')} woningen te koop in de buurt</span>
-        </p>
+        ${U.activityMap({ active: st.ui.activePin })}
+        ${U.activityLegend()}
       </div>`;
 
     // Selling-intention question — dismissable, matches the wireframe popover

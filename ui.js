@@ -376,33 +376,131 @@
 
   /* ======================================================================
      Static map illustration — a drawing, not a map API.
+     Used for the address confirmation (one pin) and as the backdrop of the
+     market-activity map (pins drawn separately, see activityMap).
      ====================================================================== */
-  function mapIllustration(opts) {
-    const o = opts || {};
-    const pins = o.activity
-      ? `<g fill="#133dbd">
-           ${[[90, 40], [185, 34], [215, 58], [130, 78], [285, 62], [215, 98]].map(([px, py]) =>
-             `<path d="M${px} ${py}a9 9 0 0 0-9 9c0 7 9 17 9 17s9-10 9-17a9 9 0 0 0-9-9Z"/>`).join('')}
-         </g>`
-      : `<g transform="translate(158,72)" fill="#133dbd">
+  const MAP_W = 340;
+
+  function mapBackdrop(o) {
+    const h = o.h || 170;
+    // Roads/buildings are laid out proportionally so the drawing still reads
+    // at any height (the activity map is taller than the address map).
+    const r = f => Math.round(h * f);
+    const roads = `<path d="M-10 ${r(.24)} L 350 ${r(.41)}"/>
+                   <path d="M90 -10 L 120 ${h + 10}"/>
+                   <path d="M-10 ${r(.76)} L 350 ${r(.66)}"/>`;
+    const pin = o.pin
+      ? `<g transform="translate(158,${r(.36)})" fill="var(--blue)">
            <path d="M12 0a12 12 0 0 0-12 12c0 9 12 22 12 22s12-13 12-22A12 12 0 0 0 12 0Z"/>
            <circle cx="12" cy="12" r="4.5" fill="#fff"/>
-         </g>`;
-    return `<svg class="map${o.locked ? ' is-locked' : ''}" viewBox="0 0 340 ${o.h || 170}" role="img"
-      aria-label="${o.activity ? 'Illustratie van de marktactiviteit in de buurt' : 'Kaartillustratie van de gekozen woning'}">
-      <rect width="340" height="${o.h || 170}" fill="#F2F3F6"/>
-      <g stroke="#DDE0E7" stroke-width="7" fill="none">
-        <path d="M-10 40 L 350 70"/><path d="M90 -10 L 120 190"/><path d="M-10 130 L 350 112"/>
-      </g>
-      <g stroke="#fff" stroke-width="2.5" fill="none">
-        <path d="M-10 40 L 350 70"/><path d="M90 -10 L 120 190"/><path d="M-10 130 L 350 112"/>
-      </g>
+         </g>`
+      : '';
+    return `<svg class="map${o.locked ? ' is-locked' : ''}" viewBox="0 0 ${MAP_W} ${h}" role="img"
+      aria-label="${esc(o.label || 'Kaartillustratie')}">
+      <rect width="${MAP_W}" height="${h}" fill="#F2F3F6"/>
+      <g stroke="#DDE0E7" stroke-width="7" fill="none">${roads}</g>
+      <g stroke="#fff" stroke-width="2.5" fill="none">${roads}</g>
       <g fill="#D7DAE3">
-        <rect x="20" y="88" width="44" height="28" rx="2"/><rect x="170" y="20" width="48" height="26" rx="2"/>
-        <rect x="240" y="120" width="56" height="30" rx="2"/><rect x="196" y="82" width="36" height="22" rx="2"/>
+        <rect x="20"  y="${r(.52)}" width="44" height="${r(.16)}" rx="2"/>
+        <rect x="170" y="${r(.12)}" width="48" height="${r(.15)}" rx="2"/>
+        <rect x="240" y="${r(.71)}" width="56" height="${r(.17)}" rx="2"/>
+        <rect x="196" y="${r(.48)}" width="36" height="${r(.13)}" rx="2"/>
       </g>
-      ${pins}
+      ${pin}
     </svg>`;
+  }
+
+  // The single-pin map on the address confirmation screen.
+  function mapIllustration(opts) {
+    const o = opts || {};
+    return mapBackdrop({ h: o.h, locked: o.locked, pin: true,
+      label: 'Kaartillustratie van de gekozen woning' });
+  }
+
+  /* ======================================================================
+     Market-activity map.
+     Two pin types, matching the legend: filled = verkocht, outlined = te koop.
+     Pins are real <button>s laid over the drawing rather than shapes inside
+     it, so they are focusable and work with the keyboard.
+     `interactive: false` (the locked preview) renders them as inert spans —
+     that whole panel is itself one button leading to account creation, and
+     a button inside a button is invalid HTML.
+     ====================================================================== */
+  /* The activity map is taller than the address map on purpose: an open card
+     is ~125px, and it has to fit between a pin and the map edge. At 170 it
+     could not, and the card spilled over the panel title. */
+  const PIN_H = 230;
+
+  function pinShape(type) {
+    // 22 × 28 pin; tip at the bottom centre
+    return `<svg viewBox="0 0 22 28" class="pin__shape" aria-hidden="true">
+      <path d="M11 1a10 10 0 0 0-10 10c0 7.5 10 16 10 16s10-8.5 10-16A10 10 0 0 0 11 1Z"/>
+      ${type === 'sold' ? '<circle cx="11" cy="11" r="3.4" class="pin__dot"/>' : ''}
+    </svg>`;
+  }
+
+  function activityMap(opts) {
+    const o = opts || {};
+    const pins = global.DATA.MARKET.activity;
+    const interactive = o.interactive !== false;
+
+    const marks = pins.map(p => {
+      const style = `left:${(p.x / MAP_W * 100).toFixed(2)}%;top:${(p.y / PIN_H * 100).toFixed(2)}%`;
+      const cls = `pin pin--${p.type}${o.active === p.id ? ' is-active' : ''}`;
+      const label = `${p.type === 'sold' ? 'Verkocht' : 'Te koop'}: ${p.address}, ${euro(p.price)}`;
+      if (!interactive) {
+        return `<span class="${cls} is-static" style="${style}" aria-hidden="true">${pinShape(p.type)}</span>`;
+      }
+      return `<button type="button" class="${cls}" style="${style}"
+        data-act="pin" data-value="${esc(p.id)}"
+        aria-expanded="${o.active === p.id ? 'true' : 'false'}"
+        aria-label="${esc(label)}">${pinShape(p.type)}</button>`;
+    }).join('');
+
+    const active = interactive && o.active ? pins.find(p => p.id === o.active) : null;
+
+    return `<div class="map-wrap${o.locked ? ' is-locked' : ''}">
+      ${mapBackdrop({ h: PIN_H, locked: false, label: 'Illustratie van de marktactiviteit in de buurt' })}
+      ${marks}
+      ${active ? pinTooltip(active) : ''}
+    </div>`;
+  }
+
+  /* The small card that opens on a pin. */
+  function pinTooltip(p) {
+    // Keep the card inside the map: clamp its centre, and flip it below the
+    // pin when the pin sits too high for the card to fit above it.
+    const CARD = 186, MAP_PX = 322;                 // card / map width in CSS px
+    const half = (CARD / 2 / MAP_PX) * 100;
+    const left = Math.min(Math.max((p.x / MAP_W) * 100, half + 1), 100 - half - 1);
+    const below = p.y < PIN_H / 2;
+    const cls = 'map-tip' + (below ? ' map-tip--below' : '');
+
+    const meta = `<span class="map-tip__meta">
+      <span>${icon('i-bed', 'ic--xs')} ${p.beds}</span>
+      <span>${icon('i-bath', 'ic--xs')} ${p.baths}</span>
+      <span>${icon('i-area', 'ic--xs')} ${p.area} m²</span>
+    </span>`;
+
+    return `<div class="${cls}" style="left:${left.toFixed(2)}%;top:${(p.y / PIN_H * 100).toFixed(2)}%"
+      role="dialog" aria-label="Details van deze woning">
+      <button type="button" class="map-tip__close" data-act="close-pin" aria-label="Sluiten">
+        ${icon('i-close', 'ic--xs')}
+      </button>
+      <span class="map-tip__badge map-tip__badge--${p.type}">${p.type === 'sold' ? 'Verkocht' : 'Te koop'}</span>
+      ${p.date ? `<span class="map-tip__date">Verkocht op ${esc(p.date)}</span>` : ''}
+      <span class="map-tip__price">${euro(p.price)}</span>
+      <span class="map-tip__addr">${esc(p.address)}</span>
+      ${meta}
+    </div>`;
+  }
+
+  /* Legend — the two swatches must match the two pin styles. */
+  function activityLegend() {
+    return `<p class="legend">
+      <span><span class="legend__pin legend__pin--sold">${pinShape('sold')}</span> verkochte woningen in de buurt</span>
+      <span><span class="legend__pin legend__pin--forsale">${pinShape('forsale')}</span> woningen te koop in de buurt</span>
+    </p>`;
   }
 
   /* ======================================================================
@@ -438,6 +536,6 @@
     esc, euro, nlNum, icon, header, bottomNav, actionBar, progressBar, button,
     radioCard, radioGroup, tile, tileGroup, checkRow, field, selectField,
     sheetSelect, passwordField, counter, estimateCard, addressLine, statusBadge,
-    trendChart, mapIllustration, agentCards, toggle
+    trendChart, mapIllustration, activityMap, activityLegend, agentCards, toggle
   };
 })(window);

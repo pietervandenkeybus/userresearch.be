@@ -167,6 +167,34 @@ Separately, primary actions are *disabled* — a different thing — while requi
 information is missing. That is a state, not a dead end: fill the fields and the button
 activates.
 
+## The "Marktactiviteit" map
+
+Two pin types, matching the legend the map already carried:
+
+- **Verkocht** — filled pin with a white dot. Its card also shows the sale date.
+- **Te koop** — outlined pin. No sale date.
+
+The two differ in *fill*, not just colour, so they are still distinguishable
+without colour. Tapping a pin opens a small card with the price, address and
+beds / baths / area; tapping it again, the ✕, the map, or Escape closes it. Pins
+are real buttons, so they take focus and respond to Enter.
+
+Notes for whoever picks this up:
+
+- **The map is 340 × 230, taller than the address map.** An open card is ~125px
+  and has to fit between the pin and the map edge; at the original height it
+  spilled over the panel title. Sold pins sit low and open upwards, for-sale pins
+  sit high and open downwards, so a card never leaves the map.
+- **The card is `pointer-events: none`** (except its ✕). On a map this small an
+  open card unavoidably covers other pins — letting clicks pass through keeps
+  every pin reachable.
+- **On the locked preview the pins are inert spans, not buttons.** That whole
+  panel is itself one button leading to account creation, and a button inside a
+  button is invalid HTML. Clicking the locked map still routes to
+  account-benefits, as the wireframes require.
+
+Pin data lives in `DATA.MARKET.activity` in `data.js`.
+
 ## Deterministic values
 
 Nothing is randomised.

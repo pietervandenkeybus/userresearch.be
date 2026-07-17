@@ -53,7 +53,29 @@
     competing:  '54',
     competingDelta: '↑ 13 nieuwe woningen sinds mei',
     trendPoints: [412, 430, 437, 452, 461, 471, 476],
-    trendLabels: ['jun ’24', 'aug ’24', 'okt ’24', 'dec ’24', 'feb ’25', 'apr ’25', 'jun ’25']
+    trendLabels: ['jun ’24', 'aug ’24', 'okt ’24', 'dec ’24', 'feb ’25', 'apr ’25', 'jun ’25'],
+
+    /* ---- Pins on the "Marktactiviteit" map ----
+       Two kinds, matching the legend the map already carries:
+         sold    — verkochte woningen in de buurt  (filled pin)
+         forsale — woningen te koop in de buurt    (outlined pin)
+       x/y are coordinates inside the map's 340 × 230 viewBox.
+       Sold pins sit low and open their card upwards; for-sale pins sit high
+       and open downwards, so a card never falls outside the map. */
+    activity: [
+      { id: 'p1', type: 'sold',    x: 62,  y: 178, price: 398000, date: '15 januari 2025',
+        address: 'Statiestraat 22',        beds: 3, baths: 1, area: 118 },
+      { id: 'p2', type: 'sold',    x: 152,  y: 196, price: 442500, date: '3 maart 2025',
+        address: 'Van Wesenbekestraat 8',  beds: 4, baths: 2, area: 152 },
+      { id: 'p3', type: 'sold',    x: 252,  y: 182, price: 515000, date: '28 april 2025',
+        address: 'De Coninckplein 3',      beds: 5, baths: 2, area: 186 },
+      { id: 'p4', type: 'forsale', x: 104,  y: 42,  price: 469000,
+        address: 'Statiestraat 41',        beds: 3, baths: 2, area: 140 },
+      { id: 'p5', type: 'forsale', x: 206,  y: 34,  price: 529000,
+        address: 'Diamantstraat 12',       beds: 4, baths: 2, area: 175 },
+      { id: 'p6', type: 'forsale', x: 292,  y: 50,  price: 615000,
+        address: 'Pelikaanstraat 60',      beds: 5, baths: 3, area: 210 }
+    ]
   };
 
   const AGENTS = [
