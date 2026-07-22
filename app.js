@@ -23,6 +23,11 @@
       // false = entered via "Schatten"                   (PDF row 2)
       claimed: false,
 
+      /* Why the account is being created. 'refine' means the user came from
+         "Verfijn mijn schatting", so finishing the account should drop them
+         into the refine flow rather than the Owner Hub. */
+      signupIntent: null,
+
       property: { saved: false },
 
       account: { firstName: '', lastName: '', email: '', phone: '' },
@@ -157,13 +162,28 @@
   /* =====================================================================
      Render
      ===================================================================== */
+  let renderedScreen = null;   // which screen is currently in the DOM
+
   function render() {
     const root = $('#screen-root');
     const fn = global.SCREENS[state.screen] || global.SCREENS['owner-hub-empty'];
+
+    /* Scroll position.
+       A new screen opens at the top. An in-screen re-render — switching tabs,
+       opening a map pin, flipping a toggle, ticking an amenity — must keep the
+       reader where they were. Review: "Bij het klikken op de tabs /op de map
+       moet de positie op de pagina behouden worden. Geen sprong terug naar het
+       begin van de pagina." */
+    const sameScreen = renderedScreen === state.screen;
+    const keep = sameScreen && root.querySelector('.scroll')
+      ? root.querySelector('.scroll').scrollTop
+      : 0;
+
     root.innerHTML = fn(state) + sheetMarkup();
-    // Scroll position resets when a new screen opens.
+    renderedScreen = state.screen;
+
     const sc = root.querySelector('.scroll');
-    if (sc) sc.scrollTop = 0;
+    if (sc) sc.scrollTop = keep;
     syncJump();
   }
 
@@ -233,6 +253,13 @@
     // sheet:<key>
     if (act.startsWith('sheet:')) { state.ui.sheet = act.slice(6); render(); return; }
 
+    // signup:<intent> — remember why the account is being created
+    if (act.startsWith('signup:')) {
+      state.signupIntent = act.slice(7);
+      go('account-benefits');
+      return;
+    }
+
     // complete:<section>
     if (act.startsWith('complete:')) {
       state.sections[act.slice(9)] = 'done';
@@ -299,15 +326,25 @@
         break;
 
       /* ---- account ---------------------------------------------------- */
-      case 'create-account':
+      case 'create-account': {
         state.signedIn = true;
         state.property.saved = true;
         state.account.firstName = state.form.firstName;
         state.account.lastName = state.form.lastName;
         state.account.phone = state.form.phone;
+
+        /* Where to land. The wireframes send account creation to the Owner Hub,
+           and that stays the default. But if the user got here by tapping
+           "Verfijn mijn schatting", dumping them on the Owner Hub loses what
+           they asked for — so that one path continues into the refine flow. */
+        const next = state.signupIntent === 'refine'
+          ? 'estimate-section-overview'
+          : 'owner-hub-property';
+        state.signupIntent = null;
         save();
-        go('owner-hub-property');
+        go(next);
         break;
+      }
 
       /* ---- claim (only reachable on the unclaimed branch) -------------- */
       case 'claim-property':

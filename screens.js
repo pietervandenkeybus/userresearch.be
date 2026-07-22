@@ -345,7 +345,8 @@
     const f = st.form;
     const ok = f.firstName.trim() && f.lastName.trim() && global.APP.emailValid(f.email);
     return U.header({ variant: 'plain', back: 'go:account-benefits' }) + scroll(`
-      <h1 class="h1 mt-40">Vertel ons iets over jezelf</h1>
+      ${U.stepIndicator(1, 4)}
+      <h1 class="h1 mt-24">Vertel ons iets over jezelf</h1>
       ${U.field({ id: 'fn', label: 'Voornaam', autocomplete: 'given-name', value: f.firstName, model: 'firstName' })}
       ${U.field({ id: 'ln', label: 'Achternaam', autocomplete: 'family-name', value: f.lastName, model: 'lastName' })}
       ${U.field({ id: 'em', label: 'E-mailadres', type: 'email', autocomplete: 'email', value: f.email, model: 'email' })}
@@ -368,7 +369,8 @@
     const ok = f.password.length > 0;
 
     return U.header({ variant: 'plain', back: 'go:account-personal-details' }) + scroll(`
-      <h1 class="h1 mt-40">Stel je wachtwoord in</h1>
+      ${U.stepIndicator(2, 4)}
+      <h1 class="h1 mt-24">Stel je wachtwoord in</h1>
       ${U.passwordField({ id: 'pw', label: 'Wachtwoord', value: f.password, model: 'password' })}
 
       <div class="rules">
@@ -399,7 +401,8 @@
     const f = st.form;
     const ok = f.phone.replace(/\D/g, '').length >= 6;
     return U.header({ variant: 'plain', back: 'go:account-password' }) + scroll(`
-      <h1 class="h1 mt-40">Je bent er bijna</h1>
+      ${U.stepIndicator(3, 4)}
+      <h1 class="h1 mt-24">Je bent er bijna</h1>
       <div class="field">
         <label class="field__label" for="tel">Telefoonnummer</label>
         <div class="phone-row">
@@ -427,7 +430,8 @@
     const code = st.form.code;
     const ok = code.join('').length === 6;
     return U.header({ variant: 'plain', back: 'go:account-phone' }) + scroll(`
-      <h1 class="h1 mt-40">Bevestig je nummer</h1>
+      ${U.stepIndicator(4, 4)}
+      <h1 class="h1 mt-24">Bevestig je nummer</h1>
       <p class="lede">Vul de code in die we via sms stuurden naar ${U.esc(st.form.countryCode)} ${U.esc(st.form.phone)}.
         Verkeerd nummer? <button type="button" class="link" data-act="go:account-phone">Wijzigen</button></p>
 

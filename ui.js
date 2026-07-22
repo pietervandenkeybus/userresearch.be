@@ -98,6 +98,21 @@
   }
 
   /* ======================================================================
+     Step indicator for the account-creation flow.
+     Deliberately minimal (review: "you may add it, but very simple"): a thin
+     segmented bar plus "Stap x van y". The text matters — progress is never
+     communicated by the filled segments alone.
+     ====================================================================== */
+  function stepIndicator(current, total) {
+    const segs = Array.from({ length: total }, (_, i) =>
+      `<span class="steps__seg${i < current ? ' is-done' : ''}"></span>`).join('');
+    return `<div class="steps">
+      <span class="steps__bar" aria-hidden="true">${segs}</span>
+      <span class="steps__label">Stap ${current} van ${total}</span>
+    </div>`;
+  }
+
+  /* ======================================================================
      Progress indicator (0-100).
      ====================================================================== */
   function progressBar(pct) {
@@ -304,9 +319,13 @@
         <span>Schatting verfijnd met je laatste gegevens.<br>Laatste update 3 juli.</span></p>
         ${button({ label: 'Verfijn mijn schatting', variant: 'soft-dark', small: true, act: 'go:estimate-section-overview' })}`;
     } else if (o.locked) {
+      // Note the action: 'signup:refine', not a plain jump to the benefits
+      // screen. Someone who taps *this* button has said they want to refine, so
+      // after the account is made we continue into the refine flow instead of
+      // dropping them on the Owner Hub. See app.js → case 'create-account'.
       foot = `<p class="est__q">Wil je een nauwkeurigere schatting?</p>
         <p class="est__body">Maak een gratis account om de gegevens van je woning te verfijnen en de marge hierboven te verkleinen. Je ziet ook precies hoe we tot dit bedrag komen.</p>
-        ${button({ label: 'Verfijn mijn schatting', variant: 'soft-dark', small: true, act: 'go:account-benefits', lock: true })}`;
+        ${button({ label: 'Verfijn mijn schatting', variant: 'soft-dark', small: true, act: 'signup:refine', lock: true })}`;
     } else {
       foot = `<p class="est__q">Wil je een nauwkeurigere schatting?</p>
         <p class="est__body">Hoe meer we over je woning weten, hoe scherper je schatting. Vul je gegevens aan of pas ze aan om de marge hierboven te verfijnen.</p>
@@ -533,7 +552,7 @@
   }
 
   global.UI = {
-    esc, euro, nlNum, icon, header, bottomNav, actionBar, progressBar, button,
+    esc, euro, nlNum, icon, header, bottomNav, actionBar, progressBar, stepIndicator, button,
     radioCard, radioGroup, tile, tileGroup, checkRow, field, selectField,
     sheetSelect, passwordField, counter, estimateCard, addressLine, statusBadge,
     trendChart, mapIllustration, activityMap, activityLegend, agentCards, toggle

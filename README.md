@@ -167,6 +167,21 @@ Separately, primary actions are *disabled* — a different thing — while requi
 information is missing. That is a state, not a dead end: fill the fields and the button
 activates.
 
+## Two behaviours worth knowing about
+
+**Scroll position is kept across in-screen changes.** Switching tabs, opening a
+map pin, flipping a toggle or ticking an amenity re-renders the screen but keeps
+you exactly where you were. Only opening a genuinely *new* screen starts at the
+top. Both live in `render()` in `app.js`.
+
+**"Verfijn mijn schatting" returns you to the refine flow.** The wireframes send
+account creation to the Owner Hub, and that is still the default. But someone who
+taps *that* button has said what they want, so finishing the account drops them
+straight into "Krijg een nauwkeurigere schatting" instead. The intent is held in
+`state.signupIntent` and cleared once used; every other route into account
+creation (locked stats, the locked map, "Bekijk alle inzichten") still ends on
+the Owner Hub as drawn.
+
 ## The "Marktactiviteit" map
 
 Two pin types, matching the legend the map already carried:
