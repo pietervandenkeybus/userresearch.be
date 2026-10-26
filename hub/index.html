@@ -1,0 +1,1191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#133DBD">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Immoweb">
+<meta name="robots" content="noindex, nofollow">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<title>Immoweb Search Together</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;700&display=swap">
+<style>
+/* Layout: one phone sized app. Sticky brand header, scrolling content, bottom sheets for every choice. */
+:root {
+  color-scheme: light;
+  --navy: #082479;
+  --blue: #133DBD;
+  --blue-strong: #1542C9;
+  --line-strong: #315ED1;
+  --line: #A8BEEA;
+  --line-soft: #DCE4F5;
+  --text: #63697D;
+  --surface: #F3F5FA;
+  --white: #FFFFFF;
+  --green: #65D78D;
+  --green-soft: #E3F8EA;
+  --orange: #E2530D;
+  --orange-soft: #FCE9DF;
+  --blue-soft: #E7EDFB;
+  --danger: #B3261E;
+  --stage: #DDE3F1;
+  --bezel: #0A1B55;
+  --font: "Gratimo Grotesk", "Lexend", Arial, "Trebuchet MS", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; overscroll-behavior: none; }
+body {
+  background: var(--stage);
+  color: var(--text);
+  font: 400 16px/1.5 var(--font);
+  -webkit-font-smoothing: antialiased;
+}
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; padding: 0; text-align: inherit; }
+:focus-visible { outline: 3px solid var(--line-strong); outline-offset: 2px; }
+[hidden] { display: none !important; }
+
+.stage { min-height: 100%; display: flex; align-items: center; justify-content: center; gap: 40px; padding: 24px 16px; }
+.phone {
+  position: relative; flex: none;
+  width: 390px; height: min(820px, calc(100dvh - 48px));
+  background: var(--white);
+  border: 10px solid var(--bezel); border-radius: 44px;
+  overflow: hidden;
+}
+.aside { max-width: 260px; display: flex; flex-direction: column; gap: 12px; }
+.aside h2 { margin: 0; color: var(--navy); font-size: 20px; line-height: 1.2; }
+.aside p { margin: 0; font-size: 14px; }
+.aside .btn { align-self: flex-start; }
+@media (max-width: 760px) {
+  .aside { display: none; }
+}
+@media (max-width: 520px) {
+  .stage { padding: 0; display: block; height: 100%; }
+  .phone { width: 100%; height: 100%; border: 0; border-radius: 0; padding-top: env(safe-area-inset-top, 0px); }
+}
+
+.app { height: 100%; display: flex; flex-direction: column; }
+.scroll { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.pad { padding: 16px 20px 32px; display: flex; flex-direction: column; gap: 16px; }
+
+/* Header */
+.top { flex: none; display: flex; align-items: center; justify-content: space-between; min-height: 56px; padding: 8px 12px 8px 20px; border-bottom: 1px solid var(--line-soft); background: var(--white); }
+.logo { display: inline-flex; align-items: center; color: var(--blue); font-weight: 700; font-size: 25px; letter-spacing: -0.02em; line-height: 1; }
+.logo svg { width: 19px; height: 19px; margin: 3px 1px 0; }
+.top-actions { display: flex; align-items: center; gap: 4px; }
+.icon-btn { position: relative; width: 40px; height: 40px; display: grid; place-items: center; color: var(--blue); border-radius: 50%; }
+.icon-btn svg { width: 24px; height: 24px; }
+.badge { position: absolute; top: 3px; right: 2px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--orange); color: var(--white); font-size: 11px; font-weight: 700; line-height: 18px; text-align: center; }
+.backbar { flex: none; display: flex; align-items: center; justify-content: space-between; padding: 6px 12px; border-bottom: 1px solid var(--line-soft); }
+.back { display: inline-flex; align-items: center; gap: 4px; height: 40px; padding: 0 8px 0 0; color: var(--blue); font-weight: 700; font-size: 14px; }
+.back svg { width: 22px; height: 22px; }
+
+/* Type */
+h1 { margin: 0; color: var(--navy); font-size: 20px; line-height: 1.2; font-weight: 700; text-wrap: balance; }
+h2 { margin: 0; color: var(--navy); font-size: 16px; line-height: 1.25; font-weight: 700; }
+p { margin: 0; }
+.lead { font-size: 16px; }
+.small { font-size: 14px; }
+.fine { font-size: 13px; line-height: 1.45; }
+.count { color: var(--text); font-weight: 400; }
+b, strong { font-weight: 700; color: var(--navy); }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 20px; border-radius: 22px; font-weight: 700; font-size: 16px; line-height: 1.2; text-align: center; border: 1px solid transparent; }
+.btn svg { width: 18px; height: 18px; flex: none; }
+.btn.primary { background: var(--green); border-color: var(--green); color: var(--navy); }
+.btn.tertiary { background: var(--white); border-color: var(--line-strong); color: var(--blue); }
+.btn.small { min-height: 36px; padding: 6px 14px; font-size: 14px; border-radius: 18px; }
+.btn.block { width: 100%; }
+.btn.danger { background: var(--white); border-color: var(--danger); color: var(--danger); }
+.link { color: var(--blue); font-weight: 700; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Listing card, after the Immoweb result card */
+.cards { display: flex; flex-direction: column; gap: 16px; }
+.card { position: relative; border: 1px solid var(--line); border-radius: 4px; background: var(--white); overflow: hidden; }
+.card-main { display: block; width: 100%; }
+.media { position: relative; display: block; aspect-ratio: 16 / 10; background: var(--surface); overflow: hidden; }
+.scene { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.flags { position: absolute; left: 8px; top: 8px; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.flag { display: inline-block; padding: 1px 6px; border-radius: 2px; background: var(--blue-strong); color: var(--white); font-size: 11px; font-weight: 700; line-height: 16.5px; text-transform: uppercase; letter-spacing: 0.02em; }
+.flag-new { background: var(--orange); }
+.flag-match { background: var(--green); color: var(--navy); }
+.heart { position: absolute; right: 8px; top: 8px; z-index: 1; width: 38px; height: 38px; border-radius: 50%; background: rgba(8, 36, 121, 0.82); color: var(--white); display: grid; place-items: center; }
+.heart svg { width: 19px; height: 19px; }
+.saver { position: absolute; right: 52px; top: 11px; z-index: 1; display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 10px 0 4px; border-radius: 16px; background: rgba(255, 255, 255, 0.94); color: var(--navy); font-size: 12px; font-weight: 700; }
+.vline .link { margin-left: auto; flex: none; font-size: 13px; }
+.vline > span { min-width: 0; }
+.peb { position: absolute; left: 8px; bottom: 8px; padding: 1px 14px 1px 8px; font-size: 12px; font-weight: 700; line-height: 18px; color: var(--white); clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 50%, calc(100% - 9px) 100%, 0 100%); }
+.peb-A { background: #1E9B4B; } .peb-B { background: #6FB23A; } .peb-C { background: #B5C400; color: var(--navy); }
+.peb-D { background: #F2C500; color: var(--navy); } .peb-E { background: #F09A00; color: var(--navy); } .peb-F { background: #E2530D; }
+.body { display: block; padding: 12px 14px 12px; }
+.body > span { display: block; }
+.type { font-weight: 700; font-size: 16px; line-height: 1.3; }
+.price { color: var(--navy); font-weight: 700; font-size: 20px; line-height: 1.25; font-variant-numeric: tabular-nums; }
+.facts, .loc { font-size: 15px; line-height: 1.4; }
+.by { margin-top: 6px; font-size: 13px; }
+
+/* Collaboration row on a card */
+.collab { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 14px; border-top: 1px solid var(--line-soft); }
+.rx-pair { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.rx { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 10px 0 4px; border-radius: 17px; background: var(--surface); font-size: 13px; color: var(--text); }
+.rx .emo { font-size: 18px; line-height: 1; }
+button.rx { border: 1px solid var(--line); background: var(--white); }
+.rx-todo { border: 1px dashed var(--line-strong) !important; color: var(--blue); font-weight: 700; }
+.av { flex: none; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 11px; font-weight: 700; color: var(--white); line-height: 1; }
+.av-me { background: var(--blue); font-size: 9.5px; letter-spacing: -0.02em; }
+.av-me.av-lg { font-size: 13px; }
+.av-partner { background: var(--orange); }
+.av-lg { width: 40px; height: 40px; font-size: 15px; border: 2px solid var(--white); }
+.av-empty { background: var(--white); border: 2px dashed var(--line) !important; color: var(--line-strong); }
+.cmt { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 8px; color: var(--blue); font-weight: 700; font-size: 14px; }
+.cmt svg { width: 20px; height: 20px; }
+.vline { display: flex; align-items: center; gap: 8px; width: 100%; padding: 9px 14px; border-top: 1px solid var(--line-soft); font-size: 14px; line-height: 1.3; color: var(--navy); }
+.vline svg { width: 18px; height: 18px; flex: none; color: var(--blue); }
+.vline.todo { background: var(--orange-soft); font-weight: 700; }
+.vline.todo svg { color: var(--orange); }
+.vline.ok { background: var(--green-soft); }
+.vline.wait { background: var(--surface); color: var(--text); }
+
+/* Banners */
+.banner { background: var(--surface); border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.banner .pair { display: flex; }
+.banner .pair .av + .av { margin-left: -6px; }
+.proto { width: 100%; padding: 10px 12px; border: 2px dashed #7A2E8E; border-radius: 4px; color: #4A1A59; font-size: 12px; font-weight: 700; text-align: center; background: #F6E9FA; font-family: ui-monospace, Menlo, Consolas, monospace; }
+.proto::before { content: 'TEST '; color: #7A2E8E; }
+.proto-note { font-size: 12px; text-align: center; color: var(--text); }
+
+/* Hub */
+.hub-head { padding: 16px 20px 12px; display: flex; align-items: center; gap: 12px; }
+.hub-head .pair { display: flex; flex: none; }
+.hub-head .pair .av + .av { margin-left: -6px; }
+.hub-head .txt { flex: 1; min-width: 0; }
+.hub-head .txt p { font-size: 14px; }
+.tabs { position: sticky; top: 0; z-index: 2; display: flex; background: var(--white); border-bottom: 1px solid var(--line-soft); padding: 0 12px; }
+.tab { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 46px; font-weight: 700; font-size: 15px; color: var(--text); border-bottom: 3px solid transparent; }
+.tab[aria-selected="true"] { color: var(--blue); border-bottom-color: var(--blue); }
+.tab .dot { min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--orange); color: var(--white); font-size: 11px; line-height: 18px; text-align: center; }
+.chips { display: flex; gap: 8px; overflow-x: auto; padding: 14px 20px 2px; scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
+.chip { flex: none; height: 36px; padding: 0 14px; border-radius: 18px; border: 1px solid var(--line-strong); color: var(--blue); font-weight: 700; font-size: 14px; background: var(--white); white-space: nowrap; }
+.chip[aria-pressed="true"] { background: var(--blue); border-color: var(--blue); color: var(--white); }
+.section { display: flex; flex-direction: column; gap: 10px; }
+.section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.empty { padding: 28px 16px; text-align: center; background: var(--surface); border-radius: 8px; font-size: 14px; }
+
+/* Activity feed */
+.feed { display: flex; flex-direction: column; }
+.item { position: relative; display: flex; gap: 12px; width: 100%; padding: 12px 20px; border-bottom: 1px solid var(--line-soft); align-items: flex-start; }
+.item.unread { background: var(--blue-soft); }
+.item .av { margin-top: 2px; }
+.item .txt { flex: 1; min-width: 0; font-size: 14px; line-height: 1.4; }
+.item .txt .quote { display: block; margin-top: 2px; color: var(--text); }
+.item .when { display: block; margin-top: 2px; font-size: 12px; }
+.thumb { position: relative; flex: none; width: 56px; height: 44px; border-radius: 4px; overflow: hidden; background: var(--surface); }
+.av-both { background: var(--green); color: var(--navy); }
+.av-both svg { width: 14px; height: 14px; }
+
+/* Visits */
+.mini { display: flex; gap: 12px; align-items: center; width: 100%; }
+.mini .thumb { width: 72px; height: 56px; }
+.mini .txt { flex: 1; min-width: 0; font-size: 14px; line-height: 1.35; }
+.mini .txt .price { font-size: 16px; }
+.vcard { border: 1px solid var(--line); border-radius: 4px; padding: 12px 14px; display: flex; flex-direction: column; gap: 12px; }
+.slots { display: flex; flex-direction: column; gap: 8px; }
+.slot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 8px 8px 12px; border-radius: 8px; background: var(--surface); font-size: 15px; color: var(--navy); font-weight: 500; }
+.when-row { display: flex; align-items: center; gap: 10px; color: var(--navy); font-weight: 700; font-size: 15px; }
+.when-row svg { width: 20px; height: 20px; color: var(--blue); flex: none; }
+.row-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Detail */
+.detail { position: relative; }
+.detail .media { aspect-ratio: 16 / 11; }
+.about { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin: 0; font-size: 14px; }
+.about dt { color: var(--text); }
+.about dd { margin: 0; color: var(--navy); font-weight: 500; }
+.detail-body { padding: 14px 20px 28px; display: flex; flex-direction: column; gap: 22px; }
+.detail-body .price { font-size: 24px; }
+.rx-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.rx-opt { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 2px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--white); font-size: 12px; line-height: 1.2; color: var(--text); text-align: center; }
+.rx-opt .emo { font-size: 26px; line-height: 1; }
+.rx-opt[aria-pressed="true"] { border: 2px solid var(--blue); padding: 9px 1px 7px; background: var(--blue-soft); color: var(--navy); font-weight: 700; }
+.their { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.status-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.pill { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-radius: 15px; background: var(--blue-soft); color: var(--navy); font-weight: 700; font-size: 13px; }
+.thread { display: flex; flex-direction: column; gap: 10px; }
+.msg { display: flex; gap: 8px; align-items: flex-end; max-width: 88%; }
+.msg .bubble { padding: 8px 12px; border-radius: 14px 14px 14px 4px; background: var(--surface); font-size: 14.5px; line-height: 1.4; color: var(--navy); }
+.msg.me { align-self: flex-end; flex-direction: row-reverse; }
+.msg.me .bubble { background: var(--blue); color: var(--white); border-radius: 14px 14px 4px 14px; }
+.typing { font-size: 13px; padding-left: 34px; }
+.composer { flex: none; display: flex; flex-direction: row; align-items: center; gap: 8px; padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line-soft); background: var(--white); }
+.composer input { flex: 1; min-width: 0; height: 44px; padding: 0 16px; border-radius: 22px; border: 1px solid var(--line); background: var(--white); color: var(--navy); font-size: 16px; }
+.composer input::placeholder, .field input::placeholder { color: #8A90A2; }
+.composer button[type="submit"] { flex: none; width: 44px; height: 44px; border-radius: 50%; background: var(--green); color: var(--navy); display: grid; place-items: center; }
+.composer button[type="submit"] svg { width: 20px; height: 20px; }
+
+/* Forms */
+.benefits { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.benefits li { display: flex; gap: 12px; align-items: flex-start; }
+.benefits .ico { flex: none; width: 36px; height: 36px; border-radius: 50%; background: var(--blue-soft); color: var(--blue); display: grid; place-items: center; }
+.benefits .ico svg { width: 19px; height: 19px; }
+.benefits b { display: block; font-size: 15px; line-height: 1.3; }
+.benefits span { font-size: 14px; line-height: 1.4; }
+form { display: flex; flex-direction: column; gap: 14px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label, legend { font-weight: 700; font-size: 14px; color: var(--navy); padding: 0; }
+.field input { height: 48px; padding: 0 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--white); color: var(--navy); font-size: 16px; }
+.field input:focus, .composer input:focus { outline: 2px solid var(--line-strong); outline-offset: 0; border-color: var(--line-strong); }
+.err { color: var(--danger); font-size: 14px; font-weight: 500; }
+fieldset { border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.opt { display: flex; gap: 12px; align-items: flex-start; padding: 12px; border: 1px solid var(--line); border-radius: 8px; cursor: pointer; }
+.opt input { flex: none; width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--blue); }
+.opt .t { display: block; color: var(--navy); font-weight: 500; font-size: 15px; line-height: 1.35; }
+.opt .s { display: block; font-size: 13px; line-height: 1.4; }
+.opt:has(input:checked) { border-color: var(--blue); box-shadow: inset 0 0 0 1px var(--blue); background: var(--blue-soft); }
+.picklist { display: flex; flex-direction: column; gap: 6px; padding-left: 6px; }
+.picktools { display: flex; flex-direction: column; gap: 8px; }
+.picktools input { height: 44px; padding: 0 14px; border-radius: 8px; border: 1px solid var(--line); font-size: 15px; color: var(--navy); }
+.picktools .chips { padding: 0; margin: 0; }
+.picktools .chip { height: 32px; font-size: 13px; }
+.pickcount { font-size: 13px; }
+.picklist label { display: flex; gap: 10px; align-items: center; font-size: 14px; color: var(--navy); min-height: 32px; }
+.picklist label input { width: 18px; height: 18px; accent-color: var(--blue); }
+.toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 44px; color: var(--navy); font-size: 15px; cursor: pointer; }
+.toggle-row input { flex: none; appearance: none; width: 46px; height: 28px; border-radius: 14px; background: var(--line); position: relative; margin: 0; cursor: pointer; transition: background 0.15s; }
+.toggle-row input::after { content: ""; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: var(--white); transition: transform 0.15s; }
+.toggle-row input:checked { background: var(--blue); }
+.toggle-row input:checked::after { transform: translateX(18px); }
+
+/* Sheets */
+.backdrop { position: absolute; inset: 0; z-index: 10; background: rgba(8, 36, 121, 0.45); }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 11; max-height: 88%; overflow-y: auto; background: var(--white); border-radius: 16px 16px 0 0; padding: 8px 20px calc(24px + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; gap: 14px; }
+.sheet.enter { animation: rise 0.22s ease-out; }
+.backdrop.enter { animation: fade 0.22s ease-out; }
+@keyframes rise { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+.grab { align-self: center; width: 40px; height: 4px; border-radius: 2px; background: var(--line); flex: none; }
+.sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.sheet-head h2 { font-size: 18px; }
+.radio-list { display: flex; flex-direction: column; }
+.radio { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; border-bottom: 1px solid var(--line-soft); color: var(--navy); font-size: 16px; width: 100%; }
+.radio:last-child { border-bottom: 0; }
+.radio .mark { flex: none; width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; }
+.radio[aria-checked="true"] { font-weight: 700; }
+.radio[aria-checked="true"] .mark { border-color: var(--blue); }
+.radio[aria-checked="true"] .mark::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--blue); }
+.check { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px; color: var(--navy); font-size: 15px; font-weight: 500; cursor: pointer; }
+.check input { width: 20px; height: 20px; accent-color: var(--blue); margin: 0; }
+.check:has(input:checked) { border-color: var(--blue); background: var(--blue-soft); }
+.menu-list { display: flex; flex-direction: column; }
+.menu-list button svg { width: 20px; height: 20px; flex: none; color: var(--blue); }
+.menu-list button { min-height: 48px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line-soft); color: var(--navy); font-size: 16px; font-weight: 500; width: 100%; }
+.person { display: flex; align-items: center; gap: 12px; min-height: 52px; border-bottom: 1px solid var(--line-soft); }
+.person .txt { flex: 1; min-width: 0; font-size: 14px; line-height: 1.35; }
+.person .txt b { display: block; font-size: 15px; }
+
+/* App tab bar: floating pill with five items, after the Immoweb app */
+.tabbar { position: absolute; left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); z-index: 5; display: flex; padding: 5px; border-radius: 34px; background: var(--white); border: 1px solid var(--line); box-shadow: 0 6px 22px rgba(8, 36, 121, 0.16); }
+.tb { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 7px 0 6px; border-radius: 28px; font-size: 11.5px; font-weight: 500; line-height: 1.2; color: var(--navy); text-align: center; white-space: nowrap; }
+.tb[aria-current="page"] { background: var(--blue-soft); color: var(--blue); font-weight: 700; }
+.tb-ico { position: relative; width: 28px; height: 26px; display: grid; place-items: center; }
+.tb-ico svg { width: 24px; height: 24px; }
+.tb-ico .badge { top: -3px; right: -8px; }
+.scroll.tabbed { padding-bottom: 84px; }
+.btn.blue { background: var(--blue); border-color: var(--blue); color: var(--white); }
+.promo { border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; background: var(--surface); }
+.promo p { font-size: 14px; }
+.promo .btn { margin-top: 6px; }
+.group { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.group .rowlink { border: 0; border-radius: 0; padding: 14px 16px; }
+.group .rowlink + .rowlink { border-top: 1px solid var(--line-soft); }
+.big { font-size: 22px; }
+
+/* Saved: switch between my saved properties and the shared list */
+.segbar { flex: none; padding: 12px 20px; border-bottom: 1px solid var(--line-soft); background: var(--white); }
+.segsw { display: flex; padding: 3px; border-radius: 22px; background: var(--surface); }
+.segsw button { flex: 1; min-width: 0; display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 38px; padding: 0 10px; border-radius: 19px; color: var(--text); font-weight: 700; font-size: 14px; white-space: nowrap; }
+.segsw button > span:first-child { overflow: hidden; text-overflow: ellipsis; }
+.segsw button[aria-selected="true"] { background: var(--blue); color: var(--white); }
+.segsw .dot { flex: none; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--orange); color: var(--white); font-size: 11px; line-height: 18px; text-align: center; }
+.segsw .n { flex: none; font-weight: 400; }
+
+.searchbox.line { border: 1px solid var(--line); color: var(--navy); height: 48px; }
+
+/* Home */
+.hero { background: var(--blue); padding: 20px 20px 22px; display: flex; flex-direction: column; gap: 14px; }
+.hero h1 { color: var(--white); font-size: 24px; }
+.seg { display: inline-flex; align-self: flex-start; padding: 3px; border-radius: 20px; background: rgba(255, 255, 255, 0.18); }
+.seg button { height: 34px; padding: 0 16px; border-radius: 17px; color: var(--white); font-weight: 700; font-size: 14px; }
+.seg button[aria-pressed="true"] { background: var(--white); color: var(--blue); }
+.searchbox { display: flex; align-items: center; gap: 10px; width: 100%; height: 52px; padding: 0 6px 0 16px; border-radius: 26px; background: var(--white); color: #8A90A2; font-size: 16px; }
+.searchbox .go { margin-left: auto; flex: none; width: 40px; height: 40px; border-radius: 50%; background: var(--green); color: var(--navy); display: grid; place-items: center; }
+.searchbox svg { width: 20px; height: 20px; flex: none; }
+.searchbox > svg { color: var(--blue); }
+.rowlink { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; border: 1px solid var(--line); border-radius: 8px; font-size: 14px; line-height: 1.35; }
+.rowlink .ico { flex: none; width: 36px; height: 36px; border-radius: 50%; background: var(--blue-soft); color: var(--blue); display: grid; place-items: center; }
+.rowlink .ico svg { width: 19px; height: 19px; }
+.rowlink .txt { flex: 1; min-width: 0; }
+.rowlink .txt b { display: block; font-size: 15px; }
+.rowlink > svg { flex: none; width: 20px; height: 20px; color: var(--blue); }
+.tcard { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.tcard-head { display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px; background: var(--surface); }
+.tcard-head .pair { display: flex; flex: none; }
+.tcard-head .pair .av + .av { margin-left: -6px; }
+.tcard-head .txt { flex: 1; min-width: 0; font-size: 14px; line-height: 1.35; }
+.tcard-head .txt b { display: block; font-size: 16px; }
+.tcard-head > svg { flex: none; width: 20px; height: 20px; color: var(--blue); }
+.tcard .item { padding: 12px 14px; }
+.tcard .item:last-child { border-bottom: 0; }
+.hscroll { display: flex; gap: 12px; overflow-x: auto; margin: 0 -20px; padding: 0 20px 4px; scrollbar-width: none; }
+.hscroll::-webkit-scrollbar { display: none; }
+.scard { flex: none; width: 150px; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+.scard .media { aspect-ratio: 3 / 2; }
+.scard .body { padding: 8px 10px 10px; }
+.scard .price { font-size: 16px; }
+.scard .facts, .scard .loc { font-size: 13px; }
+.strip { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 12px; border-radius: 8px; background: var(--surface); font-size: 14px; line-height: 1.35; color: var(--navy); }
+.strip .pair { display: flex; flex: none; }
+.strip .pair .av + .av { margin-left: -6px; }
+.strip .txt { flex: 1; min-width: 0; }
+.strip > svg { flex: none; width: 20px; height: 20px; color: var(--blue); }
+.landing-pair { display: flex; }
+.landing-pair .av { width: 56px; height: 56px; font-size: 20px; border: 3px solid var(--white); }
+.landing-pair .av-me { font-size: 16px; }
+.landing-pair .av + .av { margin-left: -10px; }
+.landing-pair svg { width: 24px; height: 24px; }
+
+/* Toast */
+.toast { position: absolute; left: 12px; right: 12px; bottom: calc(92px + env(safe-area-inset-bottom, 0px)); z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border-radius: 8px; background: var(--navy); color: var(--white); font-size: 14px; line-height: 1.35; box-shadow: 0 6px 20px rgba(8, 36, 121, 0.28); animation: rise 0.2s ease-out; }
+.toast button { flex: none; color: var(--green); font-weight: 700; font-size: 14px; padding: 4px 2px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="phone" id="phone">
+    <div class="app" id="app"></div>
+    <div class="toast" id="toast" role="status" hidden></div>
+  </div>
+  <aside class="aside">
+    <h2>Search together</h2>
+    <p>Concept prototype for user research. Sample data only. Nothing is sent or saved.</p>
+    <button class="btn tertiary small" data-act="restart">Restart from the beginning</button>
+    <button class="btn tertiary small" data-act="jump">Jump to the shared list</button>
+    <p>On a phone, both shortcuts are in the Profile tab.</p>
+  </aside>
+</div>
+
+<script src="i18n.js"></script>
+<script>
+(function () {
+'use strict';
+
+/* ---------- helpers ---------- */
+const $ = (s, r) => (r || document).querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const now = new Date();
+const addDays = (n, from) => { const d = new Date(from || now); d.setDate(d.getDate() + n); return d; };
+const nextDow = (dow, min) => { for (let i = min; i < min + 7; i++) { const d = addDays(i); if (d.getDay() === dow) return d; } };
+const LANG = ((new URLSearchParams(location.search).get('lang') || 'en').slice(0, 2));
+document.documentElement.lang = LANG;
+const LOC = { nl: 'nl-BE', fr: 'fr-BE' }[LANG] || 'en-GB';
+const fmtD = d => d.toLocaleDateString(LOC, { weekday: 'short', day: 'numeric', month: 'short' }).replace(',', '').replace(/\.$/, '');
+const slotLabel = s => fmtD(s.d) + ', ' + s.t;
+const price = p => LANG === 'en' ? '€' + p.price.toLocaleString('en-US') : '€ ' + p.price.toLocaleString('de-DE');
+const town = p => p.loc.split(' ').slice(1).join(' ');
+const place = p => p.type + ' in ' + town(p);
+
+const R = {
+  love: { e: '😍', l: 'Love it', pos: true },
+  like: { e: '🙂', l: 'Like it', pos: true },
+  unsure: { e: '🤔', l: 'Not sure', pos: false },
+  no: { e: '🙁', l: 'Not for me', pos: false }
+};
+const RKEYS = ['love', 'like', 'unsure', 'no'];
+const STATUS = { saved: 'Saved', contacted: 'Agency contacted', planned: 'Visit planned', visited: 'Visited', offer: 'Offer made', dropped: 'No longer interested' };
+
+const svg = (d, fill) => '<svg viewBox="0 0 24 24" aria-hidden="true" fill="' + (fill ? 'currentColor' : 'none') + '"' + (fill ? '' : ' stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"') + '>' + d + '</svg>';
+const I = {
+  heart: svg('<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>', true),
+  bell: svg('<path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>', true),
+  user: svg('<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5z"/>'),
+  menu: svg('<path d="M4 7h16M4 12h16M4 17h16"/>'),
+  back: svg('<path d="M15 5l-7 7 7 7"/>'),
+  chev: svg('<path d="M9 5l7 7-7 7"/>'),
+  chat: svg('<path d="M4 5h16v11H10l-6 4z"/>'),
+  cal: svg('<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'),
+  link: svg('<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'),
+  send: svg('<path d="M4 12l16-8-6 16-3-6z"/>'),
+  check: svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>'),
+  close: svg('<path d="M6 6l12 12M18 6L6 18"/>'),
+  plus: svg('<path d="M12 5v14M5 12h14"/>'),
+  clock: svg('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'),
+  tune: svg('<path d="M4 7h9M19 7h1M4 17h1M11 17h9"/><circle cx="16" cy="7" r="2.5"/><circle cx="8" cy="17" r="2.5"/>'),
+  home: svg('<polygon points="12,3.5 20.5,10 17.5,20.5 6.5,20.5 3.5,10"/>'),
+  lock: svg('<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'),
+  key: svg('<circle cx="8" cy="15.5" r="4.5"/><path d="M11.3 12.2L20 3.5M16.5 7l3 3M13.5 10l2 2"/>'),
+  people: svg('<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.5 2.9-5.5 6.5-5.5s6.5 2 6.5 5.5"/><circle cx="17.2" cy="9" r="2.8"/><path d="M17.8 14.6c2.3.4 3.7 2.1 3.7 4.9"/>'),
+  search: svg('<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/>'),
+  heartline: svg('<path d="M12 20s-7-4.4-9-9C1.7 7.9 3.6 4.5 7 4.5c2 0 3.6 1.1 5 3 1.4-1.9 3-3 5-3 3.4 0 5.3 3.4 4 6.5-2 4.6-9 9-9 9z"/>'),
+  smile: svg('<circle cx="12" cy="12" r="9"/><path d="M8.5 14.5c1 1.2 2.1 1.8 3.5 1.8s2.5-.6 3.5-1.8M9 10h.01M15 10h.01"/>'),
+  list: svg('<path d="M12 20s-6.5-4-8.3-8C2.4 9 4.1 6 7.2 6c1.7 0 3.1.9 3.8 2.2h2C13.7 6.9 15.1 6 16.8 6c3.1 0 4.8 3 3.5 6-1.8 4-8.3 8-8.3 8z"/>')
+};
+const house = '<svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12,1.5 23,10 19,23 5,23 1,10" fill="currentColor"/><polygon points="12,8 17,11.8 15.2,17.8 8.8,17.8 7,11.8" fill="#FFFFFF"/></svg>';
+
+/* ---------- illustrated listing photos ---------- */
+let uid = 0;
+function scene(kind, swap) {
+  const id = 'sk' + (++uid);
+  const sky = { terrace: ['#BFD9F2', '#EAF3FB'], block: ['#A9CDEE', '#E6F1FA'], villa: ['#B7DCF0', '#EEF7F4'], newbuild: ['#C9DDF3', '#F3F6FA'], townhouse: ['#CBD8EA', '#F1F3F7'], penthouse: ['#9CC7EE', '#F9E7D6'] }[kind];
+  const win = (x, y, w, h, glass, frame) => '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="' + (frame || '#FFFFFF') + '"/><rect x="' + (x + 3) + '" y="' + (y + 3) + '" width="' + (w - 6) + '" height="' + (h - 6) + '" fill="' + (glass || '#C4DAEC') + '"/><rect x="' + (x + w / 2 - 1) + '" y="' + (y + 3) + '" width="2" height="' + (h - 6) + '" fill="' + (frame || '#FFFFFF') + '"/>';
+  const cloud = (x, y, s) => '<g fill="#FFFFFF" opacity="0.85"><ellipse cx="' + x + '" cy="' + y + '" rx="' + 28 * s + '" ry="' + 9 * s + '"/><ellipse cx="' + (x + 16 * s) + '" cy="' + (y - 6 * s) + '" rx="' + 17 * s + '" ry="' + 9 * s + '"/></g>';
+  const tree = (x, y, r, c) => '<rect x="' + (x - 3) + '" y="' + y + '" width="6" height="' + (250 - y) + '" fill="#7A5A44"/><circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="' + c + '"/><circle cx="' + (x + r * 0.5) + '" cy="' + (y + r * 0.4) + '" r="' + r * 0.7 + '" fill="' + c + '"/>';
+  const street = '<rect x="0" y="243" width="400" height="7" fill="#C9CED8"/>';
+  let b = '';
+  if (kind === 'terrace') {
+    b += cloud(64, 38, 1);
+    b += '<rect x="-10" y="62" width="128" height="188" fill="#E6DCCB"/><rect x="-10" y="56" width="132" height="8" fill="#CFC3AE"/>' + win(14, 84, 36, 48) + win(64, 84, 36, 48) + win(14, 152, 36, 48) + win(64, 152, 36, 48);
+    b += '<rect x="282" y="48" width="128" height="202" fill="#8C5A48"/><rect x="278" y="42" width="132" height="8" fill="#6E4435"/>' + win(300, 70, 36, 50) + win(350, 70, 36, 50) + win(300, 142, 36, 50) + win(350, 142, 36, 50);
+    b += '<rect x="118" y="30" width="164" height="220" fill="#B5553C"/>';
+    for (let y = 40; y < 240; y += 9) b += '<rect x="118" y="' + y + '" width="164" height="1" fill="#000000" opacity="0.07"/>';
+    b += '<rect x="112" y="22" width="176" height="10" fill="#F4EFE6"/>' + win(136, 48, 52, 56) + win(212, 48, 52, 56) + win(136, 120, 52, 56) + win(212, 120, 52, 56);
+    b += '<rect x="136" y="188" width="48" height="62" fill="#F4EFE6"/><rect x="140" y="192" width="40" height="58" fill="#1E3A5F"/><circle cx="173" cy="224" r="2.5" fill="#E8C66A"/>' + win(204, 188, 62, 46);
+    b += street;
+  } else if (kind === 'block') {
+    b += cloud(322, 34, 1) + tree(30, 160, 34, '#5E9E6B');
+    b += '<rect x="70" y="26" width="260" height="224" fill="#ECE7DF"/><rect x="62" y="18" width="276" height="9" fill="#3C4654"/>';
+    for (let f = 0; f < 5; f++) {
+      const y = 38 + f * 42;
+      b += win(88, y, 50, 32, '#B4D0E6', '#3C4654') + win(150, y, 50, 32, '#B4D0E6', '#3C4654') + win(212, y, 50, 32, '#B4D0E6', '#3C4654') + win(274, y, 40, 32, '#B4D0E6', '#3C4654');
+      if (f < 4) b += '<rect x="82" y="' + (y + 20) + '" width="236" height="14" fill="#9CC4DE" opacity="0.5"/><rect x="70" y="' + (y + 34) + '" width="260" height="5" fill="#C9C2B6"/>';
+    }
+    b += tree(372, 184, 26, '#6FAE78') + street;
+  } else if (kind === 'villa') {
+    b += cloud(76, 44, 1) + cloud(300, 30, 0.8);
+    b += '<rect x="0" y="196" width="400" height="54" fill="#8DC27F"/>' + tree(46, 120, 40, '#4F9160');
+    b += '<rect x="270" y="50" width="16" height="40" fill="#4A4F5C"/><rect x="110" y="110" width="210" height="100" fill="#C9744F"/><polygon points="94,112 215,38 336,112" fill="#4A4F5C"/>';
+    b += win(197, 72, 36, 26) + win(128, 130, 50, 44) + win(252, 130, 52, 44) + '<rect x="196" y="138" width="38" height="72" fill="#F4EFE6"/><rect x="200" y="142" width="30" height="68" fill="#2F5D50"/>';
+    b += '<polygon points="200,210 232,210 256,250 176,250" fill="#DAD4C8"/><rect x="-10" y="214" width="170" height="20" rx="10" fill="#5E9E6B"/><rect x="270" y="214" width="140" height="20" rx="10" fill="#5E9E6B"/>';
+  } else if (kind === 'newbuild') {
+    b += cloud(90, 36, 1);
+    b += '<rect x="200" y="40" width="150" height="210" fill="#D9D5CE"/><rect x="60" y="72" width="180" height="178" fill="#F5F5F3"/><rect x="60" y="156" width="140" height="94" fill="#B98858"/>';
+    for (let x = 68; x < 200; x += 9) b += '<rect x="' + x + '" y="156" width="1" height="94" fill="#000000" opacity="0.1"/>';
+    b += win(80, 90, 104, 48, '#A9CBE4', '#2E3A48') + win(256, 58, 76, 44, '#A9CBE4', '#2E3A48') + win(256, 144, 76, 52, '#A9CBE4', '#2E3A48');
+    b += '<rect x="246" y="118" width="104" height="5" fill="#2E3A48"/><rect x="246" y="100" width="104" height="18" fill="#A9CBE4" opacity="0.55"/>';
+    b += '<rect x="102" y="182" width="38" height="68" fill="#2E3A48"/><rect x="134" y="214" width="3" height="10" fill="#C9CED8"/>' + win(256, 208, 76, 36, '#A9CBE4', '#2E3A48');
+    b += tree(376, 176, 20, '#7DB887') + street;
+  } else if (kind === 'townhouse') {
+    b += cloud(330, 30, 0.9);
+    b += '<rect x="-10" y="70" width="120" height="180" fill="#C9B8A3"/>' + win(16, 92, 32, 52) + win(62, 92, 32, 52) + win(16, 162, 32, 52) + win(62, 162, 32, 52);
+    b += '<rect x="290" y="60" width="120" height="190" fill="#A8A096"/>' + win(306, 84, 32, 52) + win(352, 84, 32, 52) + win(306, 156, 32, 52) + win(352, 156, 32, 52);
+    b += '<polygon points="108,48 124,8 276,8 292,48" fill="#3F4756"/>' + win(150, 16, 30, 26) + win(220, 16, 30, 26);
+    b += '<rect x="108" y="46" width="184" height="204" fill="#EFE8DC"/><rect x="108" y="200" width="184" height="50" fill="#BCB6AB"/><rect x="102" y="44" width="196" height="8" fill="#D8CFBF"/>';
+    b += win(126, 64, 36, 60, '#B9CFE2') + win(182, 64, 36, 60, '#B9CFE2') + win(238, 64, 36, 60, '#B9CFE2') + win(126, 134, 36, 56, '#B9CFE2') + win(182, 134, 36, 56, '#B9CFE2') + win(238, 134, 36, 56, '#B9CFE2');
+    b += '<rect x="174" y="186" width="52" height="4" fill="#2B2F38"/><rect x="236" y="202" width="40" height="48" fill="#EFE8DC"/><rect x="240" y="206" width="32" height="44" fill="#7B2D26"/>' + win(126, 208, 36, 28, '#B9CFE2') + win(182, 208, 36, 28, '#B9CFE2');
+    b += street;
+  } else {
+    b += '<circle cx="346" cy="62" r="22" fill="#FFE4B8"/>';
+    b += '<rect x="250" y="150" width="56" height="100" fill="#B4C3D9"/><polygon points="322,150 329,92 336,150" fill="#A7B8D1"/><rect x="314" y="150" width="30" height="100" fill="#A7B8D1"/><rect x="350" y="136" width="60" height="114" fill="#BFCBDD"/>';
+    b += '<rect x="20" y="84" width="240" height="10" fill="#3C4654"/><rect x="30" y="94" width="210" height="110" fill="#F2F0EC"/><rect x="46" y="108" width="180" height="96" fill="#3C4654"/><rect x="50" y="112" width="55" height="92" fill="#A9CBE4"/><rect x="109" y="112" width="55" height="92" fill="#B9D6EA"/><rect x="168" y="112" width="54" height="92" fill="#A9CBE4"/>';
+    b += '<rect x="0" y="202" width="400" height="48" fill="#C8A77E"/>';
+    for (let y = 212; y < 250; y += 10) b += '<rect x="0" y="' + y + '" width="400" height="1" fill="#000000" opacity="0.1"/>';
+    b += '<rect x="240" y="168" width="160" height="34" fill="#CFE6F3" opacity="0.6"/><rect x="240" y="166" width="160" height="3" fill="#3C4654"/>';
+    b += '<circle cx="274" cy="200" r="13" fill="#5E9E6B"/><circle cx="292" cy="196" r="15" fill="#6FAE78"/><rect x="262" y="208" width="42" height="24" fill="#5A606C"/>';
+  }
+  (swap || []).forEach(w => { b = b.split(w[0]).join(w[1]); });
+  return '<svg class="scene" viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="' + id + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + sky[0] + '"/><stop offset="1" stop-color="' + sky[1] + '"/></linearGradient></defs><rect width="400" height="250" fill="url(#' + id + ')"/>' + b + '</svg>';
+}
+
+/* ---------- sample data ---------- */
+function seedProps() {
+  const sat = nextDow(6, 2), wed = nextDow(3, 2);
+  const since = ((now.getDay() + 1) % 7) || 7, lastSat = addDays(-since);
+  return [
+    { id: 'zuid', kind: 'block', type: 'Apartment', price: 295000, bdr: 2, area: 98, loc: '2000 Antwerpen', peb: 'B', by: 'partner', ago: '2 hours ago', isNew: true, saved: false, shared: true,
+      me: null, partner: 'love', status: 'saved', visit: null,
+      comments: [{ by: 'partner', t: 'Found this one this morning. Top floor with a terrace facing south. What do you think?' }] },
+    { id: 'berchem', kind: 'terrace', type: 'House', price: 389000, bdr: 3, area: 152, loc: '2600 Berchem', peb: 'C', by: 'me', ago: '5 days ago', saved: true, shared: true,
+      me: 'love', partner: 'love', status: 'planned', visit: { state: 'planned', slot: { d: sat, t: '10:30' }, requested: true },
+      comments: [{ by: 'me', t: 'Love the light in the living room.' }, { by: 'partner', t: 'Same here. And it is a 10 minute bike ride to work.' }] },
+    { id: 'deurne', kind: 'newbuild', type: 'Apartment', flag: 'New build', price: 339000, bdr: 2, area: 105, loc: '2100 Deurne', peb: 'A', by: 'me', ago: '4 days ago', saved: true, shared: true,
+      me: 'love', partner: 'like', status: 'contacted', visit: { state: 'theirs', slots: [{ d: sat, t: '14:00' }, { d: wed, t: '18:30' }] },
+      comments: [{ by: 'partner', t: 'I called the agency. They do visits on Saturday afternoons and Wednesday evenings.' }] },
+    { id: 'mortsel', kind: 'villa', type: 'House', price: 425000, bdr: 4, area: 185, loc: '2640 Mortsel', peb: 'D', by: 'me', ago: '6 days ago', saved: true, shared: true,
+      me: 'like', partner: 'unsure', status: 'saved', visit: null,
+      comments: [{ by: 'me', t: 'Big garden and close to the station.' }, { by: 'partner', t: 'Over budget once we redo the roof. And energy label D worries me.' }] },
+    { id: 'wilrijk', kind: 'penthouse', type: 'Penthouse', price: 365000, bdr: 2, area: 110, loc: '2610 Wilrijk', peb: 'B', by: 'partner', ago: 'last week', saved: false, shared: true,
+      me: 'like', partner: 'like', status: 'visited', visit: { state: 'visited', slot: { d: lastSat, t: '11:00' } },
+      comments: [{ by: 'partner', t: 'Better than the photos. The terrace is huge.' }, { by: 'me', t: 'Agree, but the kitchen is tiny.' }] },
+    { id: 'borgerhout', kind: 'townhouse', type: 'Town house', price: 449000, bdr: 3, area: 170, loc: '2140 Borgerhout', peb: 'E', by: 'me', ago: 'last week', saved: true, shared: true,
+      me: 'like', partner: 'no', status: 'saved', visit: null,
+      comments: [{ by: 'partner', t: 'Too much renovation work for me.' }] },
+    { id: 'r1', kind: 'block', swap: [['#ECE7DF', '#C98B6B'], ['#C9C2B6', '#A56A4D']], type: 'Apartment', flag: 'New', price: 279000, bdr: 2, area: 92, loc: '2018 Antwerpen', peb: 'B' },
+    { id: 'r2', kind: 'terrace', swap: [['#B5553C', '#D8C08F'], ['#1E3A5F', '#2F5D50']], type: 'House', price: 415000, bdr: 3, area: 164, loc: '2600 Berchem', peb: 'B' },
+    { id: 'r3', kind: 'villa', swap: [['#C9744F', '#F1ECE2'], ['#4A4F5C', '#8C4A3A'], ['#2F5D50', '#1E3A5F']], type: 'House', price: 439000, bdr: 4, area: 190, loc: '2640 Mortsel', peb: 'C' },
+    { id: 'r4', kind: 'newbuild', swap: [['#B98858', '#6E7B8B'], ['#D9D5CE', '#E9E2D6']], type: 'Apartment', flag: 'New build', price: 325000, bdr: 2, area: 101, loc: '2100 Deurne', peb: 'A' },
+    { id: 'r5', kind: 'townhouse', swap: [['#EFE8DC', '#B5553C'], ['#7B2D26', '#1E3A5F']], type: 'Town house', price: 398000, bdr: 3, area: 158, loc: '2140 Borgerhout', peb: 'D' }
+  ].map(p => Object.assign({ saved: false, shared: false, me: null, partner: null, status: 'saved', visit: null, comments: [], ago: '' }, p));
+}
+const RESULTS = ['r1', 'r2', 'berchem', 'r3', 'r4', 'r5'];
+const DESC = {
+  House: 'Family home with a garden, close to schools, shops and public transport. Ready to move in.',
+  Apartment: 'Bright apartment with a terrace and a lift, a short walk from shops and tram stops.',
+  Penthouse: 'Top floor apartment with a wide terrace and open views over the city.',
+  'Town house': 'Town house with high ceilings and original details. Some renovation needed.'
+};
+function seedFeed() {
+  return [
+    { who: 'partner', kind: 'saved', pid: 'zuid', ago: '2 hours ago', unread: true },
+    { who: 'partner', kind: 'proposed', pid: 'deurne', n: 2, ago: '3 hours ago', unread: true },
+    { who: 'partner', kind: 'comment', pid: 'mortsel', q: 'Over budget once we redo the roof. And energy label D worries me.', ago: 'Yesterday', unread: true },
+    { who: 'both', kind: 'match', pid: 'berchem', ago: '2 days ago' },
+    { who: 'partner', kind: 'react', pid: 'borgerhout', r: 'no', ago: '2 days ago' },
+    { who: 'me', kind: 'planned', pid: 'berchem', ago: '3 days ago' },
+    { who: 'partner', kind: 'joined', ago: '3 days ago' }
+  ];
+}
+
+/* ---------- state ---------- */
+let st, epoch = 0, scrolls = {}, toastTimer = null;
+function fresh() {
+  return { collab: 'none', partner: 'Alex', stack: [{ s: 'home' }], deal: 'sale', seg: 'mine', saveMode: 'ask', pick: null, seq: 0, sim: 0, tab: 'list', filter: 'all', sheet: null, sheetFresh: false,
+    props: seedProps(), feed: seedFeed(), typing: null,
+    notif: { saved: true, react: true, comment: true, visit: true, channel: 'push', when: 'now' } };
+}
+const cur = () => st.stack[st.stack.length - 1];
+const prop = id => st.props.find(p => p.id === id);
+const pn = () => esc(st.partner);
+const isMatch = p => p.me && p.partner && R[p.me].pos && R[p.partner].pos;
+const isDiscuss = p => p.me && p.partner && R[p.me].pos !== R[p.partner].pos;
+const isActive = () => st.collab === 'active';
+const byNew = k => (a, b) => (b[k] || 0) - (a[k] || 0);
+const mySaves = () => st.props.filter(p => p.saved).sort(byNew('savedAt'));
+const sharedList = () => st.props.filter(p => p.shared).sort(byNew('sharedAt'));
+const inList = p => p.saved || (isActive() && p.shared);
+const vis = f => !f.pid || prop(f.pid).shared;
+const unread = () => st.feed.filter(f => f.unread && vis(f)).length;
+const pic = p => scene(p.kind, p.swap);
+const av = (who, cls) => who === 'me'
+  ? '<span class="av av-me ' + (cls || '') + '" aria-hidden="true">You</span>'
+  : '<span class="av av-partner ' + (cls || '') + '" aria-hidden="true">' + esc(st.partner.charAt(0).toUpperCase()) + '</span>';
+
+/* ---------- views ---------- */
+function top() {
+  const active = st.collab === 'active', n = unread();
+  return '<header class="top"><button class="logo" data-act="home" aria-label="Immoweb home">imm' + house + 'web</button><div class="top-actions">' +
+    (active ? '<button class="icon-btn" data-act="bell" aria-label="Activity, ' + n + ' new">' + I.bell + (n ? '<span class="badge">' + n + '</span>' : '') + '</button>' : '') + '</div></header>';
+}
+function tabbar(active) {
+  const n = st.collab === 'active' ? unread() : 0;
+  const t = [['home', 'Home', I.home], ['search', 'Search', I.search], ['saved', 'Saves', I.heartline], ['myimmo', 'My immo', I.key], ['account', 'Profile', I.user]];
+  return '<nav class="tabbar" aria-label="Main">' + t.map(x => '<button class="tb" data-act="nav" data-v="' + x[0] + '"' + (active === x[0] ? ' aria-current="page"' : '') + '><span class="tb-ico">' + x[2] + (x[0] === 'saved' && n ? '<span class="badge">' + n + '</span>' : '') + '</span>' + x[1] + '</button>').join('') + '</nav>';
+}
+function segbar() {
+  const active = st.collab === 'active', n = active ? unread() : 0, mine = mySaves().length;
+  return '<div class="segbar"><div class="segsw" role="tablist" aria-label="Saved properties">' +
+    '<button role="tab" aria-selected="' + (st.seg === 'mine') + '" data-act="seg" data-v="mine"><span>My saves</span><span class="n">' + mine + '</span></button>' +
+    '<button role="tab" aria-selected="' + (st.seg === 'shared') + '" data-act="seg" data-v="shared"><span>' + (active ? 'With ' + pn() : 'Search together') + '</span>' + (active ? (n ? '<span class="dot">' + n + '</span>' : '<span class="n">' + sharedList().length + '</span>') : '') + '</button>' +
+    '</div></div>';
+}
+function backbar(label) {
+  return '<div class="backbar"><button class="back" data-act="back">' + I.back + esc(label) + '</button></div>';
+}
+function heartBtn(p) {
+  const on = inList(p);
+  return '<button class="heart" data-act="save" data-id="' + p.id + '" aria-pressed="' + on + '" aria-label="' + (on ? 'Saved. Remove from your saves' : 'Save this property') + '">' + (on ? I.heart : I.heartline) + '</button>';
+}
+function saverBadge(p, shared) {
+  if (!shared) return '';
+  return '<span class="saver">' + av(p.by === 'partner' ? 'partner' : 'me') + (p.by === 'partner' ? pn() : 'You') + '</span>';
+}
+function flagHtml(p, shared) {
+  const flags = [];
+  if (shared && p.isNew) flags.push('<span class="flag flag-new">New from ' + pn() + '</span>');
+  if (shared && isMatch(p)) flags.push('<span class="flag flag-match">' + (p.me === 'love' && p.partner === 'love' ? 'You both love it' : 'You both like it') + '</span>');
+  if (p.flag) flags.push('<span class="flag' + (p.flag === 'New' ? ' flag-new' : '') + '">' + p.flag + '</span>');
+  return '<span class="flags">' + flags.join('') + '</span>';
+}
+function card(p, mode) {
+  const shared = mode === 'shared';
+  return '<article class="card"><button class="card-main" data-act="open" data-id="' + p.id + '" aria-label="' + p.type + ', ' + price(p) + ', ' + p.loc + '">' +
+    '<span class="media">' + pic(p) + flagHtml(p, shared) + saverBadge(p, shared) + '<span class="peb peb-' + p.peb + '">' + p.peb + '</span></span>' +
+    '<span class="body"><span class="type">' + p.type + '</span><span class="price">' + price(p) + '</span><span class="facts">' + p.bdr + ' bdr. · ' + p.area + ' m²</span><span class="loc">' + p.loc + '</span>' +
+    (shared ? '<span class="by">Saved by ' + (p.by === 'partner' ? pn() : 'you') + ', ' + p.ago + '</span>' : '') + '</span></button>' + heartBtn(p) +
+    (shared ? collabRow(p) : mode === 'mine' ? shareRow(p) : '') + '</article>';
+}
+function shareRow(p) {
+  if (!isActive()) return '';
+  return p.shared
+    ? '<div class="vline ok">' + I.people + '<span>Shared with ' + pn() + '</span><button class="link" data-act="unshare" data-id="' + p.id + '">Keep private</button></div>'
+    : '<div class="vline wait">' + I.lock + '<span>Only you can see this</span><button class="link" data-act="share" data-id="' + p.id + '">Share with ' + pn() + '</button></div>';
+}
+function scard(p) {
+  return '<button class="scard" data-act="open" data-id="' + p.id + '" aria-label="' + p.type + ', ' + price(p) + ', ' + p.loc + '"><span class="media">' + pic(p) + '<span class="peb peb-' + p.peb + '">' + p.peb + '</span></span><span class="body"><span class="price">' + price(p) + '</span><span class="facts">' + p.bdr + ' bdr. · ' + p.area + ' m²</span><span class="loc">' + p.loc + '</span></span></button>';
+}
+function collabRow(p) {
+  const mine = p.me
+    ? '<button class="rx" data-act="react-sheet" data-id="' + p.id + '" aria-label="Your reaction: ' + R[p.me].l + '. Change">' + av('me') + '<span class="emo">' + R[p.me].e + '</span></button>'
+    : '<button class="rx rx-todo" data-act="react-sheet" data-id="' + p.id + '">' + av('me') + '<span>Your turn</span></button>';
+  const theirs = p.partner
+    ? '<span class="rx" title="' + pn() + ': ' + R[p.partner].l + '">' + av('partner') + '<span class="emo">' + R[p.partner].e + '</span></span>'
+    : '<span class="rx">' + av('partner') + '<span>No reaction yet</span></span>';
+  return '<div class="collab"><div class="rx-pair">' + mine + theirs + '</div><button class="cmt" data-act="open" data-id="' + p.id + '" aria-label="' + p.comments.length + ' comments">' + I.chat + '<span>' + p.comments.length + '</span></button></div>' + visitLine(p);
+}
+function visitLine(p) {
+  const v = p.visit;
+  if (v && v.state === 'planned') return '<div class="vline ok">' + I.cal + '<span>Visit planned for <b>' + slotLabel(v.slot) + '</b></span></div>';
+  if (v && v.state === 'theirs') return '<button class="vline todo" data-act="open" data-id="' + p.id + '">' + I.cal + '<span>' + pn() + ' proposed ' + v.slots.length + ' time slots. Pick one.</span></button>';
+  if (v && v.state === 'mine') return '<div class="vline wait">' + I.clock + '<span>Waiting for ' + pn() + ' to pick a visit time</span></div>';
+  if (v && v.state === 'visited') return '<div class="vline wait">' + I.check + '<span>Visited on ' + fmtD(v.slot.d) + '</span></div>';
+  if (p.status !== 'saved') return '<div class="vline wait">' + I.check + '<span>' + STATUS[p.status] + '</span></div>';
+  return '';
+}
+
+function pendingBanner() {
+  const named = !st.linkOnly;
+  return '<div class="banner"><div class="pair">' + av('me', 'av-lg') + '<span class="av av-lg av-empty" aria-hidden="true">?</span></div>' +
+    (named ? '<h2>Invite sent to ' + pn() + '</h2><p class="small">You get a notification as soon as ' + pn() + ' joins. Your shared list starts then.</p>' +
+      '<div class="row-actions"><button class="btn tertiary small" data-act="remind">Send a reminder</button><button class="btn tertiary small" data-act="cancel-invite">Cancel invite</button></div>'
+    : '<h2>Your invite link is ready</h2><p class="small">Send it to the person you search with. You get a notification as soon as they join.</p>' +
+      '<div class="row-actions"><button class="btn tertiary small" data-act="copy-link">' + I.link + 'Copy link again</button><button class="btn tertiary small" data-act="cancel-invite">Cancel invite</button></div>') + '</div>' +
+    '<button class="proto" data-act="accept">' + (named ? pn() : 'Alex') + ' accepted, three days later</button>';
+}
+function teaser() {
+  return '<div class="banner"><div class="pair">' + av('me', 'av-lg') + '<span class="av av-lg av-empty" aria-hidden="true">' + I.plus + '</span></div>' +
+    '<h2>Searching with someone?</h2><p class="small">Share your saved properties, see what you both like and plan visits together.</p>' +
+    '<button class="btn primary" data-act="invite">Invite someone</button></div>';
+}
+function feedItem(f, i) {
+  const a = f.who === 'both' ? '<span class="av av-both" aria-hidden="true">' + I.heart + '</span>' : av(f.who);
+  const p = f.pid && prop(f.pid);
+  return '<button class="item' + (f.unread ? ' unread' : '') + '" data-act="feed" data-v="' + i + '">' + a + '<span class="txt">' + feedText(f) + '<span class="when">' + f.ago + '</span></span>' + (p ? '<span class="thumb">' + pic(p) + '</span>' : '') + '</button>';
+}
+function homeView() {
+  const mine = mySaves(), n = unread(), fresh = RESULTS.map(prop).filter(p => !inList(p)).slice(0, 4);
+  let together;
+  if (st.collab === 'active') {
+    const latest = st.feed.map((f, i) => [f, i]).filter(x => x[0].who !== 'me' && vis(x[0])).slice(0, 2);
+    together = '<section class="tcard"><button class="tcard-head" data-act="nav" data-v="together"><span class="pair">' + av('me', 'av-lg') + av('partner', 'av-lg') + '</span>' +
+      '<span class="txt"><b>You and ' + pn() + '</b>' + (n ? n + ' new since your last visit' : 'Nothing new since your last visit') + '</span>' + I.chev + '</button>' +
+      latest.map(x => feedItem(x[0], x[1])).join('') + '</section>';
+  } else if (st.collab === 'pending') {
+    together = '<button class="strip" data-act="nav" data-v="together"><span class="pair">' + av('me') + '</span><span class="txt"><b>' + (st.linkOnly ? 'Invite link ready' : 'Invite sent to ' + pn()) + '</b><br>Waiting for them to join</span>' + I.chev + '</button>';
+  } else {
+    together = teaser();
+  }
+  return '<div class="hero"><h1>Find your next home</h1>' +
+    '<div class="seg"><button aria-pressed="' + (st.deal === 'sale') + '" data-act="deal" data-v="sale">For sale</button><button aria-pressed="' + (st.deal === 'rent') + '" data-act="deal" data-v="rent">For rent</button></div>' +
+    '<button class="searchbox" data-act="nav" data-v="search" aria-label="Search by city or postal code">' + I.search + '<span>City or postal code</span><span class="go">' + I.chev + '</span></button></div>' +
+    '<div class="pad">' +
+    '<button class="rowlink" data-act="nav" data-v="search"><span class="ico">' + I.clock + '</span><span class="txt"><b>Your last search</b>House or apartment in Antwerp, up to €450,000</span>' + I.chev + '</button>' +
+    together +
+    (fresh.length ? '<div class="section"><div class="section-head"><h2>New for your search</h2><button class="link" data-act="nav" data-v="search">See all</button></div><div class="hscroll">' + fresh.map(scard).join('') + '</div></div>' : '') +
+    (mine.length ? '<div class="section"><div class="section-head"><h2>Saved properties <span class="count">(' + mine.length + ')</span></h2><button class="link" data-act="nav" data-v="saved" data-seg="mine">See all</button></div><div class="hscroll">' + mine.map(scard).join('') + '</div></div>' : '') +
+    '<p class="proto-note">Concept prototype for user research. Not a live Immoweb feature.</p></div>';
+}
+function savedView() {
+  const list = mySaves();
+  return '<div class="pad"><div class="cards">' + (list.length ? list.map(p => card(p, 'mine')).join('') : '<p class="empty">No saved properties yet. Tap the heart on a property to save it.</p><button class="btn tertiary" data-act="nav" data-v="search">Go to Search</button>') + '</div>' +
+    '<p class="proto-note">Concept prototype for user research. Not a live Immoweb feature.</p></div>';
+}
+function benefits() {
+  return '<ul class="benefits">' +
+    '<li><span class="ico">' + I.list + '</span><div><b>One shared list</b><span>See what each of you saved, in one place.</span></div></li>' +
+    '<li><span class="ico">' + I.smile + '</span><div><b>React and comment</b><span>Know at a glance which homes you both like.</span></div></li>' +
+    '<li><span class="ico">' + I.cal + '</span><div><b>Plan visits together</b><span>Agree on a time before you contact the agency.</span></div></li></ul>';
+}
+function landingView() {
+  if (st.collab === 'pending') return '<div class="pad"><h1>Search together</h1>' + pendingBanner() + benefits() + '</div>';
+  return '<div class="pad"><div class="landing-pair">' + av('me') + '<span class="av av-empty" aria-hidden="true">' + I.plus + '</span></div>' +
+    '<h1>Search together</h1><p class="lead">Looking for a home with someone else? Put your saved properties in one shared list.</p>' + benefits() +
+    '<button class="btn primary block" data-act="invite">Invite someone</button><button class="btn tertiary block" data-act="copy-link">' + I.link + 'Copy invite link</button><p class="fine">You choose what you share, and you can stop sharing at any time.</p></div>';
+}
+function searchView() {
+  const list = RESULTS.map(prop);
+  return '<div class="pad"><button class="searchbox line" data-act="oos-search" aria-label="Change your search">' + I.search + '<span>Antwerp, up to €450,000</span></button>' +
+    '<div class="row-actions">' + ['Criteria', 'Map', 'Sort'].map(t => '<button class="btn tertiary small" data-act="oos-search">' + t + '</button>').join('') + '</div>' +
+    '<h1>House and apartment for sale in Antwerp <span class="count">(' + list.length + ')</span></h1>' +
+    '<div class="cards">' + list.map(p => card(p, 'result')).join('') + '</div>' +
+    '<p class="proto-note">Concept prototype for user research. Sample results only.</p></div>';
+}
+function myImmoView() {
+  const row = (t, sub) => '<button class="rowlink" data-act="oos"><span class="txt"><b>' + t + '</b>' + sub + '</span>' + I.chev + '</button>';
+  return '<div class="pad"><h1 class="big">Seize opportunities</h1>' +
+    '<div class="promo"><h2>Estimate your property for free</h2><p>Monitor the value of your property</p><button class="btn blue small" data-act="oos">Estimate</button></div>' +
+    '<div class="group">' + row('Find an agency nearby', 'Get your questions answered') + '</div>' +
+    '<h1 class="big">Manage your property</h1>' +
+    '<div class="promo"><h2>Publish a listing</h2><p>Start searching for potential candidates</p><button class="btn blue small" data-act="oos">Create</button></div>' +
+    '<div class="group">' + row('Manage your listings', 'Edit your listings and check requests') + row('Entrust your sale to an expert', 'See nearby agencies to find the best partner') + '</div></div>';
+}
+function accountView() {
+  const active = st.collab === 'active';
+  return '<div class="pad"><h1>Profile</h1><div class="menu-list">' +
+    '<button data-act="oos"><span>My details</span>' + I.chev + '</button>' +
+    '<button data-act="oos"><span>Saved searches and alerts</span>' + I.chev + '</button>' +
+    '<button data-act="' + (active ? 'manage' : 'nav') + '" data-v="together"><span>Search together</span>' + I.chev + '</button>' +
+    (active ? '<button data-act="notif"><span>Notification settings</span>' + I.chev + '</button>' : '') +
+    '<button data-act="oos"><span>Language: English</span>' + I.chev + '</button></div>' +
+    '<button class="proto" data-act="restart">restart from the beginning</button>' +
+    '<button class="proto" data-act="jump">jump to the shared list</button>' +
+    '<button class="proto" data-act="toggle-auto">when you save, ' + { ask: 'the app asks where to save it', auto: 'it is shared automatically', 'private': 'it stays private until you share it' }[st.saveMode] + '. Tap to switch.</button>' +
+    '<p class="proto-note">Concept prototype for user research. Not a live Immoweb feature. Sample data only.</p></div>';
+}
+
+function inviteView() {
+  const mine = mySaves();
+  return '<div class="pad"><h1>Invite someone</h1><p class="lead">They get a link to join your shared list.</p>' +
+    '<form data-form="invite" novalidate>' +
+    '<div class="field"><label for="inv-name">Their first name</label><input id="inv-name" type="text" placeholder="Alex" autocomplete="off" maxlength="20"></div>' +
+    '<div class="field"><label for="inv-email">Their email address</label><input id="inv-email" type="email" inputmode="email" placeholder="name@example.com" autocomplete="off"><p class="err" id="inv-err" hidden>Enter an email address, or copy the invite link below.</p></div>' +
+    '<fieldset><legend>What do you want to share?</legend>' +
+    '<label class="opt"><input type="radio" name="share" value="all" id="share-all" checked><span><span class="t">All my saved properties (' + mine.length + ')</span><span class="s">Properties you save later are shared too.</span></span></label>' +
+    '<label class="opt"><input type="radio" name="share" value="pick" id="share-pick"><span><span class="t">Only the properties I choose</span><span class="s">The rest stays private.</span></span></label>' +
+    '<div class="picklist" id="picklist" hidden><div class="picktools"><input type="search" id="pick-q" placeholder="Filter by town or type" aria-label="Filter saved properties"><div class="chips" id="pick-chips">' + ['All', 'House', 'Apartment', 'Town house', 'Penthouse'].map(t => '<button type="button" class="chip" data-act="pick-type" data-v="' + t + '" aria-pressed="' + (t === 'All') + '">' + t + '</button>').join('') + '</div><p class="pickcount" id="pick-count">' + mine.length + ' selected</p></div>' + mine.map(p => '<label data-type="' + p.type + '" data-text="' + (place(p) + ' ' + p.loc).toLowerCase() + '"><input type="checkbox" checked id="pick-' + p.id + '">' + place(p) + ', ' + price(p) + '</label>').join('') + '</div></fieldset>' +
+    '<p class="fine">The person you invite can see the properties you share, add their own, react and comment. You can stop sharing at any time.</p>' +
+    '<button class="btn primary block" type="submit">Send invite</button>' +
+    '<button class="btn tertiary block" type="button" data-act="copy-link">' + I.link + 'Copy invite link</button></form></div>';
+}
+
+function hubView() {
+  const n = unread();
+  const tabs = [['list', 'Shortlist'], ['activity', 'Activity'], ['visits', 'Visits']];
+  const head = '<div class="hub-head"><div class="pair">' + av('me', 'av-lg') + av('partner', 'av-lg') + '</div><div class="txt"><h1>You and ' + pn() + '</h1><p>' + sharedList().length + ' saved properties</p></div><button class="link" data-act="manage">Manage</button></div>';
+  const bar = '<div class="tabs" role="tablist">' + tabs.map(t => '<button class="tab" role="tab" aria-selected="' + (st.tab === t[0]) + '" data-act="tab" data-v="' + t[0] + '">' + t[1] + (t[0] === 'activity' && n ? '<span class="dot">' + n + '</span>' : '') + '</button>').join('') + '</div>';
+  const body = st.tab === 'list' ? listTab() : st.tab === 'activity' ? activityTab() : visitsTab();
+  return head + bar + body;
+}
+function listTab() {
+  const f = {
+    all: sharedList(),
+    match: sharedList().filter(isMatch),
+    discuss: sharedList().filter(isDiscuss),
+    todo: sharedList().filter(p => !p.me)
+  };
+  const chips = [['all', 'All'], ['match', 'Both positive'], ['discuss', 'Different opinions'], ['todo', 'No reaction from you']];
+  const list = f[st.filter];
+  return '<div class="chips">' + chips.map(c => '<button class="chip" aria-pressed="' + (st.filter === c[0]) + '" data-act="filter" data-v="' + c[0] + '">' + c[1] + ' ' + f[c[0]].length + '</button>').join('') + '</div>' +
+    '<div class="pad"><div class="cards">' + (list.length ? list.map(p => card(p, 'shared')).join('') : '<p class="empty">Nothing here right now. Properties move here as you and ' + pn() + ' react.</p>') + '</div>' +
+    '<p class="proto-note">Concept prototype for user research. Not a live Immoweb feature.</p></div>';
+}
+function feedText(f) {
+  const p = f.pid && prop(f.pid), where = p ? '<b>' + place(p) + '</b>' : '';
+  const who = f.who === 'me' ? '<b>You</b>' : '<b>' + pn() + '</b>';
+  switch (f.kind) {
+    case 'saved': return who + ' saved ' + where;
+    case 'shared': return who + ' shared ' + where;
+    case 'proposed': return who + ' proposed ' + f.n + ' time slots for ' + where;
+    case 'comment': return who + ' commented on ' + where + '<span class="quote">' + esc(f.q) + '</span>';
+    case 'match': return 'You both like ' + where;
+    case 'react': return who + ' reacted ' + R[f.r].e + ' to ' + where;
+    case 'planned': return who + ' planned a visit to ' + where;
+    case 'visited': return who + ' marked ' + where + ' as visited';
+    case 'cancelled': return who + ' cancelled the visit to ' + where;
+    case 'status': return who + ' changed ' + where + ' to ' + esc(f.q);
+    case 'joined': return who + ' joined your search';
+  }
+  return '';
+}
+function activityTab() {
+  const n = unread();
+  return '<div class="pad" style="padding-bottom:8px"><div class="section-head"><h2>' + (n ? n + ' new' : 'All caught up') + '</h2><button class="link" data-act="notif">Notification settings</button></div></div>' +
+    '<div class="feed">' + st.feed.map((f, i) => vis(f) ? feedItem(f, i) : '').join('') + '</div>' +
+    (n ? '<div class="pad"><button class="btn tertiary small" style="align-self:center" data-act="read-all">Mark all as read</button></div>' : '<div class="pad"></div>');
+}
+function mini(p) {
+  return '<button class="mini" data-act="open" data-id="' + p.id + '"><span class="thumb">' + pic(p) + '</span><span class="txt"><b>' + place(p) + '</b><br><span class="price">' + price(p) + '</span></span></button>';
+}
+function visitBlock(p, withMini) {
+  const v = p.visit; let h = '';
+  if (!v) {
+    h = '<p class="small">' + (isMatch(p) ? 'You both like this one. Agree on a time before you contact the agency.' : 'Propose a few times that work for you. ' + pn() + ' picks one.') + '</p><div class="row-actions"><button class="btn tertiary small" data-act="propose" data-id="' + p.id + '">' + I.cal + 'Propose time slots</button></div>';
+  } else if (v.state === 'theirs') {
+    h = '<p class="small">' + pn() + ' proposed these time slots. Pick the one that suits you.</p><div class="slots">' + v.slots.map((s, i) => '<div class="slot"><span>' + slotLabel(s) + '</span><button class="btn primary small" data-act="pick" data-id="' + p.id + '" data-v="' + i + '">Pick this time</button></div>').join('') + '</div><div class="row-actions"><button class="link" data-act="propose" data-id="' + p.id + '">None of these work</button></div>';
+  } else if (v.state === 'mine') {
+    h = '<div class="when-row">' + I.clock + '<span>Waiting for ' + pn() + '</span></div><p class="small">You proposed ' + v.slots.map(slotLabel).join(' and ') + '.</p>';
+  } else if (v.state === 'planned') {
+    h = '<div class="when-row">' + I.cal + '<span>' + slotLabel(v.slot) + '</span></div>' +
+      (v.requested ? '<p class="small">Requested from the agency. You both get a notification when they confirm.</p>' : '<p class="small">You agreed on a time. Next step: ask the agency for this visit.</p>') +
+      '<div class="row-actions">' + (v.requested ? '<button class="btn tertiary small" data-act="calendar">Add to calendar</button><button class="btn tertiary small" data-act="visited" data-id="' + p.id + '">We visited it</button>' : '<button class="btn primary small" data-act="request" data-id="' + p.id + '">Request this visit</button>') +
+      '<button class="btn tertiary small" data-act="cancel-visit" data-id="' + p.id + '">Cancel visit</button></div>';
+  } else {
+    h = '<div class="when-row">' + I.check + '<span>Visited on ' + fmtD(v.slot.d) + '</span></div><p class="small">Still feel the same? Update your reaction so ' + pn() + ' knows where you stand.</p>' + (withMini ? '<div class="row-actions"><button class="btn tertiary small" data-act="react-sheet" data-id="' + p.id + '">Update my reaction</button></div>' : '');
+  }
+  return (withMini ? mini(p) : '') + h;
+}
+function visitsTab() {
+  const groups = [
+    ['Pick a time', sharedList().filter(p => p.visit && p.visit.state === 'theirs')],
+    ['Planned', sharedList().filter(p => p.visit && p.visit.state === 'planned')],
+    ['Waiting for ' + pn(), sharedList().filter(p => p.visit && p.visit.state === 'mine')],
+    ['Ready to plan', sharedList().filter(p => !p.visit && isMatch(p))],
+    ['Visited', sharedList().filter(p => p.visit && p.visit.state === 'visited')]
+  ].filter(g => g[1].length);
+  const rest = sharedList().filter(p => !p.visit && !isMatch(p)).length;
+  return '<div class="pad">' + groups.map(g => '<div class="section"><h2>' + g[0] + '</h2>' + g[1].map(p => '<div class="vcard">' + visitBlock(p, true) + '</div>').join('') + '</div>').join('') +
+    (rest ? '<p class="fine">' + rest + ' more ' + (rest === 1 ? 'property' : 'properties') + ' on your shortlist. Open one to propose a visit.</p>' : '') + '</div>';
+}
+
+function detailView(p) {
+  const collab = isActive() && p.shared;
+  const info = '<div><div class="type">' + p.type + '</div><div class="price">' + price(p) + '</div><div class="facts">' + p.bdr + ' bdr. · ' + p.area + ' m²</div><div class="loc">' + p.loc + '</div>' +
+    (collab ? '<div class="by">Saved by ' + (p.by === 'partner' ? pn() : 'you') + ', ' + p.ago + '</div>' : '') + '</div>';
+  const about = '<div class="section"><h2>About this property</h2><p class="small">' + DESC[p.type] + '</p><dl class="about"><dt>Bedrooms</dt><dd>' + p.bdr + '</dd><dt>Living area</dt><dd>' + p.area + ' m²</dd><dt>Energy label</dt><dd>' + p.peb + '</dd><dt>Location</dt><dd>' + p.loc + '</dd></dl></div>' +
+    '<button class="btn tertiary" data-act="listing">Contact the agency</button>';
+  let mid = '';
+  if (collab) {
+    mid = '<div class="section"><h2>What do you think?</h2><div class="rx-grid">' + RKEYS.map(k => '<button class="rx-opt" aria-pressed="' + (p.me === k) + '" data-act="react" data-id="' + p.id + '" data-v="' + k + '"><span class="emo">' + R[k].e + '</span>' + R[k].l + '</button>').join('') + '</div>' +
+      '<div class="their">' + av('partner') + (p.partner ? '<span>' + pn() + ' says <b>' + R[p.partner].e + ' ' + R[p.partner].l + '</b></span>' : '<span>' + pn() + ' has not reacted yet</span>') + '</div></div>' +
+      '<div class="section"><div class="status-row"><h2>Status</h2><button class="link" data-act="status" data-id="' + p.id + '">Change</button></div><div><span class="pill">' + STATUS[p.status] + '</span></div></div>' +
+      '<div class="section"><h2>Visit</h2>' + visitBlock(p, false) + '</div>' +
+      '<div class="section" id="comments"><h2>Comments <span class="count">(' + p.comments.length + ')</span></h2><div class="thread">' +
+      (p.comments.length ? p.comments.map(c => '<div class="msg ' + (c.by === 'me' ? 'me' : '') + '">' + av(c.by) + '<div class="bubble">' + esc(c.t) + '</div></div>').join('') : '<p class="small">No comments yet. Tell ' + pn() + ' what you think.</p>') +
+      (st.typing === p.id ? '<p class="typing">' + pn() + ' is typing</p>' : '') + '</div></div>';
+  } else if (p.saved && isActive()) {
+    mid = '<div class="vline wait" style="border:0;border-radius:8px">' + I.lock + '<span>Only you can see this property. Share it to react and plan a visit together.</span></div>';
+  } else if (p.saved && st.collab === 'none') {
+    mid = '<button class="strip" data-act="invite"><span class="pair">' + av('me') + '</span><span class="txt"><b>Searching with someone?</b><br>Invite them to see your saves</span>' + I.chev + '</button>';
+  }
+  return '<div class="detail"><div class="media">' + pic(p) + flagHtml(p, collab) + saverBadge(p, collab) + '<span class="peb peb-' + p.peb + '">' + p.peb + '</span></div>' + heartBtn(p) +
+    '<div class="detail-body">' + info + (collab ? mid + about : about + mid) + '</div></div>';
+}
+function composer(p) {
+  return '<form class="composer" data-form="comment" data-id="' + p.id + '"><input id="comment-input" type="text" placeholder="Write a comment for ' + pn() + '" autocomplete="off" aria-label="Write a comment for ' + pn() + '"><button type="submit" aria-label="Send comment">' + I.send + '</button></form>';
+}
+function saveBar(p) {
+  const b = (cls, act, label) => '<div class="composer"><button class="btn ' + cls + ' block" data-act="' + act + '" data-id="' + p.id + '">' + label + '</button></div>';
+  if (!p.saved) return b('primary', 'save', I.heartline + 'Save');
+  if (isActive()) return b('primary', 'share', I.people + 'Share with ' + pn());
+  return b('tertiary', 'save', I.heart + 'Saved');
+}
+
+/* ---------- sheets ---------- */
+function sheetHtml() {
+  const s = st.sheet; if (!s) return '';
+  const p = s.id && prop(s.id); let h = '';
+  const head = t => '<span class="grab"></span><div class="sheet-head"><h2>' + t + '</h2><button class="icon-btn" data-act="close-sheet" aria-label="Close">' + I.close + '</button></div>';
+  if (s.type === 'react') {
+    h = head('What do you think?') + mini(p) + '<div class="rx-grid">' + RKEYS.map(k => '<button class="rx-opt" aria-pressed="' + (p.me === k) + '" data-act="react" data-id="' + p.id + '" data-v="' + k + '"><span class="emo">' + R[k].e + '</span>' + R[k].l + '</button>').join('') + '</div><p class="fine">' + pn() + ' sees your reaction on the shared list.</p>';
+  } else if (s.type === 'status') {
+    h = head('Change status') + '<div class="radio-list" role="radiogroup">' + Object.keys(STATUS).map(k => '<button class="radio" role="radio" aria-checked="' + (p.status === k) + '" data-act="set-status" data-id="' + p.id + '" data-v="' + k + '"><span>' + STATUS[k] + '</span><span class="mark"></span></button>').join('') + '</div><p class="fine">The status is shared with ' + pn() + '. Visit statuses update automatically when you plan a visit.</p>';
+  } else if (s.type === 'propose') {
+    const sat = nextDow(6, 2), sun = addDays(1, sat), wed = nextDow(3, 2), mon = nextDow(1, 2);
+    const opts = [{ d: sat, t: '10:00' }, { d: sat, t: '14:00' }, { d: sun, t: '11:00' }, { d: mon, t: '18:30' }, { d: wed, t: '18:30' }, { d: addDays(7, sat), t: '10:00' }].sort((a, b) => a.d - b.d);
+    st.slotOpts = opts;
+    h = head('Propose time slots') + mini(p) + '<p class="small">Choose up to 3 time slots that suit you. ' + pn() + ' picks one.</p>' +
+      '<form data-form="propose" data-id="' + p.id + '">' + opts.map((o, i) => '<label class="check"><input type="checkbox" name="slot" value="' + i + '" id="slot-' + i + '">' + slotLabel(o) + '</label>').join('') +
+      '<p class="err" id="slot-err" hidden>Choose 1 to 3 time slots.</p><button class="btn primary block" type="submit">Send to ' + pn() + '</button></form>';
+  } else if (s.type === 'notif') {
+    const n = st.notif;
+    const tg = (k, l) => '<label class="toggle-row"><span>' + l + '</span><input type="checkbox" id="nt-' + k + '"' + (n[k] ? ' checked' : '') + '></label>';
+    const rd = (name, v, l, sub) => '<label class="opt"><input type="radio" name="' + name + '" value="' + v + '" id="n-' + name + '-' + v + '"' + (n[name] === v ? ' checked' : '') + '><span><span class="t">' + l + '</span>' + (sub ? '<span class="s">' + sub + '</span>' : '') + '</span></label>';
+    h = head('Notification settings') + '<form data-form="notif"><fieldset><legend>Tell me when ' + pn() + '</legend>' + tg('saved', 'Saves a new property') + tg('react', 'Reacts to a property') + tg('comment', 'Writes a comment') + tg('visit', 'Proposes or picks a visit time') + '</fieldset>' +
+      '<fieldset><legend>How</legend>' + rd('channel', 'push', 'Notification on my phone') + rd('channel', 'email', 'Email') + rd('channel', 'both', 'Both') + '</fieldset>' +
+      '<fieldset><legend>When</legend>' + rd('when', 'now', 'Right away') + rd('when', 'daily', 'One summary a day', 'Every evening at 19:00.') + '</fieldset>' +
+      '<button class="btn primary block" type="submit">Save settings</button></form>';
+  } else if (s.type === 'saveto') {
+    h = head('Where do you want to save it?') + mini(p) + '<div class="slots">' +
+      '<button class="rowlink" data-act="save-to" data-id="' + p.id + '" data-v="shared"><span class="ico">' + I.people + '</span><span class="txt"><b>Shared list with ' + pn() + '</b>' + pn() + ' sees it and can react</span>' + I.chev + '</button>' +
+      '<button class="rowlink" data-act="save-to" data-id="' + p.id + '" data-v="private"><span class="ico">' + I.lock + '</span><span class="txt"><b>My saves only</b>Only you can see it</span>' + I.chev + '</button></div>' +
+      '<label class="toggle-row"><span>Remember my choice</span><input type="checkbox" id="save-remember"></label>';
+  } else if (s.type === 'manage') {
+    h = head('Search together') +
+      '<div><div class="person">' + av('me', 'av-lg') + '<div class="txt"><b>You</b>Started this shared list</div></div>' +
+      '<div class="person">' + av('partner', 'av-lg') + '<div class="txt"><b>' + pn() + '</b>Can save, react, comment and plan visits</div><button class="link" data-act="stop">Remove</button></div></div>' +
+      '<button class="btn tertiary" data-act="add-person">' + I.plus + 'Invite another person</button>' +
+      '<button class="btn tertiary" data-act="notif">' + I.tune + 'Notification settings</button>' +
+      (s.confirm ? '<div class="banner"><h2>Remove ' + pn() + ' and stop sharing?</h2><p class="small">You each keep the properties you saved. Reactions, comments and visit plans are no longer shared.</p><div class="row-actions"><button class="btn danger small" data-act="stop-yes">Remove</button><button class="btn tertiary small" data-act="stop-no">Keep sharing</button></div></div>' : '<button class="link" style="align-self:center;color:var(--danger)" data-act="stop">Stop sharing</button>');
+  }
+  const cls = st.sheetFresh ? ' enter' : '';
+  return '<div class="backdrop' + cls + '" data-act="close-sheet"></div><div class="sheet' + cls + '" role="dialog" aria-modal="true">' + h + '</div>';
+}
+
+/* ---------- translation (applied to the rendered DOM) ---------- */
+const RULES = LANG === 'en' ? [] : (window.HUB_I18N || []).map(r => {
+  const src = r[0], dst = LANG === 'nl' ? r[1] : r[2];
+  if (!/\{[ndx]\}/.test(src)) return { s: src, d: dst };
+  const re = new RegExp('^' + src.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\\\{n\\\}/g, '(\\S+)').replace(/\\\{d\\\}/g, '(\\d+)').replace(/\\\{x\\\}/g, '(.+?)') + '$');
+  return { re: re, d: dst };
+});
+const EXACT = {}; RULES.forEach(r => { if (r.s) EXACT[r.s] = r.d; });
+const PATS = RULES.filter(r => r.re);
+function tr(text) {
+  const m = text.match(/^(\s*)(.*?)(\s*)$/), core = m[2]; if (!core) return text;
+  let out = EXACT[core];
+  if (out === undefined) {
+    for (const r of PATS) { const mm = core.match(r.re); if (mm) { out = r.d.replace(/\{(\d)\}/g, (_, i) => tr(mm[+i])); break; } }
+  }
+  return out === undefined ? text : m[1] + out + m[3];
+}
+function translate(root) {
+  if (LANG === 'en' || !root) return;
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT); const nodes = [];
+  while (w.nextNode()) nodes.push(w.currentNode);
+  nodes.forEach(n => { const t = tr(n.nodeValue); if (t !== n.nodeValue) n.nodeValue = t; });
+  root.querySelectorAll('[placeholder],[aria-label],[title]').forEach(e => { ['placeholder', 'aria-label', 'title'].forEach(a => { const v = e.getAttribute(a); if (v) e.setAttribute(a, tr(v)); }); });
+}
+
+/* ---------- render ---------- */
+function viewKey() { const c = cur(); return c.s + (c.id || '') + (c.s === 'saved' ? st.seg + st.collab + st.tab : ''); }
+function view() {
+  const c = cur(), main = h => '<main class="scroll tabbed">' + h + '</main>';
+  if (c.s === 'home') return top() + main(homeView()) + tabbar('home');
+  if (c.s === 'search') return top() + main(searchView()) + tabbar('search');
+  if (c.s === 'saved') return top() + segbar() + main(st.seg === 'mine' ? savedView() : st.collab === 'active' ? hubView() : landingView()) + tabbar('saved');
+  if (c.s === 'myimmo') return top() + main(myImmoView()) + tabbar('myimmo');
+  if (c.s === 'account') return top() + main(accountView()) + tabbar('account');
+  if (c.s === 'invite') return backbar('Back') + '<main class="scroll">' + inviteView() + '</main>';
+  const p = prop(c.id);
+  return backbar('Back') + '<main class="scroll">' + detailView(p) + '</main>' + (isActive() && p.shared ? composer(p) : saveBar(p));
+}
+function render(opts) {
+  opts = opts || {};
+  const app = $('#app'), old = $('.scroll', app);
+  if (old && app.dataset.key) scrolls[app.dataset.key] = old.scrollTop;
+  const keep = {};
+  app.querySelectorAll('input[type=text][id], input[type=email][id]').forEach(i => { keep[i.id] = i.value; });
+  const focusId = document.activeElement && app.contains(document.activeElement) ? document.activeElement.id : '';
+  const rem = $('#save-remember', app), remOn = !!(rem && rem.checked);
+  const key = viewKey();
+  app.innerHTML = view() + sheetHtml();
+  if (remOn && $('#save-remember', app)) $('#save-remember', app).checked = true;
+  app.dataset.key = key;
+  Object.keys(keep).forEach(id => { const i = document.getElementById(id); if (i) i.value = keep[id]; });
+  if (focusId) { const f = document.getElementById(focusId); if (f) f.focus({ preventScroll: true }); }
+  const m = $('.scroll', app);
+  if (m) m.scrollTop = opts.top ? 0 : opts.bottom ? m.scrollHeight : (scrolls[key] || 0);
+  if (opts.anchor) { const a = document.getElementById(opts.anchor); if (a && m) m.scrollTop = a.offsetTop - 8; }
+  translate(app);
+  st.sheetFresh = false;
+}
+function go(s, extra) { const e = Object.assign({ s: s }, extra || {}); st.stack.push(e); st.sheet = null; scrolls[viewKey()] = 0; render(extra && extra.anchor ? { anchor: extra.anchor } : null); }
+function back() { if (st.stack.length > 1) st.stack.pop(); st.sheet = null; render(); }
+function openSheet(type, id) { st.sheet = { type: type, id: id }; st.sheetFresh = true; render(); }
+function closeSheet() { st.sheet = null; render(); }
+
+function toast(text, act, id, label) {
+  const t = $('#toast');
+  t.innerHTML = '<span>' + text + '</span>' + (act ? '<button data-act="' + act + '"' + (id ? ' data-id="' + id + '"' : '') + '>' + (label || 'View') + '</button>' : '');
+  translate(t);
+  t.hidden = true; void t.offsetWidth; t.hidden = false;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, act ? 5500 : 3800);
+}
+function later(ms, fn) { const e = epoch; setTimeout(() => { if (e === epoch) fn(); }, ms); }
+function log(f) { st.feed.unshift(Object.assign({ ago: 'Just now' }, f)); }
+
+/* ---------- actions ---------- */
+function restart() { epoch++; st = fresh(); scrolls = {}; $('#app').innerHTML = ''; $('#toast').hidden = true; render(); }
+function readPick() {
+  const r = $('#share-pick');
+  st.pick = r && r.checked ? mySaves().filter(p => { const c = document.getElementById('pick-' + p.id); return c && c.checked; }).map(p => p.id) : null;
+}
+function activate(silent) {
+  if (!st.partner) st.partner = 'Alex'; st.linkOnly = false;
+  st.props.forEach(p => { if (p.saved) p.shared = st.pick ? st.pick.indexOf(p.id) >= 0 : true; });
+  st.collab = 'active'; st.stack = [{ s: 'saved' }]; st.seg = 'shared'; st.tab = 'list'; st.filter = 'all'; st.sheet = null; scrolls = {};
+  render();
+  if (!silent) toast(pn() + ' joined. This is your shared list.');
+}
+function shareProp(p, announce) {
+  p.shared = true; p.sharedAt = ++st.seq; p.by = p.by || 'me';
+  log({ who: 'me', kind: 'shared', pid: p.id });
+  if (announce) { render(); toast('Shared with ' + pn(), 'unshare', p.id, 'Undo'); }
+  if (!p.partner && !p.simmed) { p.simmed = true; later(6500, () => partnerReacts(p)); }
+}
+function unshareProp(p) {
+  p.shared = false; render(); toast('Only you can see this one now', 'share', p.id, 'Undo');
+}
+function partnerReacts(p) {
+  if (!p.shared || p.partner || !isActive()) return;
+  const k = (st.sim++ % 2 === 0) ? 'love' : 'like';
+  p.partner = k;
+  log({ who: 'partner', kind: 'react', pid: p.id, r: k, unread: true });
+  render(); toast(pn() + ' reacted ' + R[k].e + ' to ' + place(p), 'open', p.id);
+}
+function toggleSave(p) {
+  if (p.saved) {
+    p.wasShared = p.shared && p.by !== 'partner';
+    p.saved = false; if (p.wasShared) p.shared = false;
+    render(); toast('Removed from your saves', 'undo-save', p.id, 'Undo'); return;
+  }
+  if (isActive() && p.shared) { toast(pn() + ' saved this one, so only ' + pn() + ' can remove it.'); return; }
+  if (isActive() && st.saveMode === 'ask') { openSheet('saveto', p.id); return; }
+  doSave(p, isActive() && st.saveMode === 'auto');
+}
+function doSave(p, share) {
+  p.saved = true; p.savedAt = ++st.seq; p.by = p.by || 'me'; p.ago = 'just now';
+  if (share) { shareProp(p, false); render(); toast('Saved and shared with ' + pn(), 'unshare', p.id, 'Keep private'); }
+  else if (isActive()) { render(); toast('Saved. Only you can see it.', 'share', p.id, 'Share'); }
+  else { render(); toast('Saved to My saves'); }
+}
+function setReaction(p, k) {
+  const was = isMatch(p);
+  p.me = k; p.isNew = false;
+  st.sheet = null; render();
+  if (!was && isMatch(p)) { log({ who: 'both', kind: 'match', pid: p.id }); toast('You both like this one ' + R[k].e); render(); }
+  else toast('Your reaction is shared with ' + pn());
+}
+function partnerPicks(p) {
+  if (!p.visit || p.visit.state !== 'mine') return;
+  const s = p.visit.slots[0];
+  p.visit = { state: 'planned', slot: s, requested: false }; p.status = 'planned';
+  log({ who: 'partner', kind: 'planned', pid: p.id, unread: true });
+  render(); toast(pn() + ' picked ' + slotLabel(s), 'open', p.id);
+}
+function partnerReplies(p) {
+  const lines = { zuid: 'Great. Shall I ask the agency for a visit this weekend?', mortsel: 'Fair point. Let us look at the roof quote together tonight.', borgerhout: 'Okay, I will take another look at the photos.' };
+  st.typing = p.id; render({ bottom: cur().s === 'detail' && cur().id === p.id });
+  later(2200, () => {
+    st.typing = null;
+    const t = lines[p.id] || 'Good point. Let us talk it through tonight.';
+    p.comments.push({ by: 'partner', t: t });
+    const here = cur().s === 'detail' && cur().id === p.id;
+    log({ who: 'partner', kind: 'comment', pid: p.id, q: t, unread: !here });
+    render({ bottom: here });
+    if (!here) toast(pn() + ' replied on ' + place(p), 'open', p.id);
+  });
+}
+
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]'); if (!el) return;
+  const a = el.dataset.act, id = el.dataset.id, v = el.dataset.v, p = id && prop(id);
+  switch (a) {
+    case 'home': st.sheet = null; st.stack = [{ s: 'home' }]; render({ top: true }); break;
+    case 'nav': {
+      const to = v === 'together' ? 'saved' : v;
+      if (v === 'together') st.seg = 'shared'; else if (el.dataset.seg) st.seg = el.dataset.seg;
+      const same = cur().s === to && st.stack.length === 1 && el.classList.contains('tb');
+      st.sheet = null; st.stack = [{ s: to }]; render({ top: same }); break;
+    }
+    case 'seg': st.seg = v; render(); break;
+    case 'deal': st.deal = v; render(); break;
+    case 'oos-search': toast('Changing the search is not part of this prototype.'); break;
+    case 'back': back(); break;
+    case 'bell': st.sheet = null; st.stack = [{ s: 'saved' }]; st.seg = 'shared'; st.tab = 'activity'; scrolls[viewKey()] = 0; render(); break;
+    case 'invite': go('invite'); break;
+    case 'copy-link': {
+      if ($('#share-pick')) readPick();
+      const n = ($('#inv-name') || {}).value; st.partner = (n && n.trim()) || ''; st.linkOnly = !st.partner;
+      if (st.collab !== 'active') st.collab = 'pending';
+      render(); toast('Invite link copied. Send it to the person you search with.'); break;
+    }
+    case 'remind': toast('Reminder sent to ' + pn()); break;
+    case 'cancel-invite': st.collab = 'none'; st.linkOnly = false; render(); toast('Invite cancelled'); break;
+    case 'accept': activate(); break;
+    case 'jump': epoch++; st = fresh(); $('#toast').hidden = true; activate(true); break;
+    case 'restart': restart(); break;
+    case 'tab': st.tab = v; scrolls[viewKey()] = 0; render(); break;
+    case 'filter': st.filter = v; render(); break;
+    case 'open':
+      $('#toast').hidden = true;
+      if (cur().s === 'detail' && cur().id === id) { st.sheet = null; render(); break; }
+      if (cur().s === 'detail') st.stack.pop();
+      go('detail', { id: id, anchor: el.classList.contains('cmt') ? 'comments' : null }); break;
+    case 'react-sheet': openSheet('react', id); break;
+    case 'react': setReaction(p, v); break;
+    case 'status': openSheet('status', id); break;
+    case 'set-status': {
+      p.status = v; log({ who: 'me', kind: 'status', pid: p.id, q: STATUS[v] });
+      st.sheet = null; render(); toast('Status changed to ' + STATUS[v]); break;
+    }
+    case 'propose': openSheet('propose', id); break;
+    case 'pick': {
+      const s = p.visit.slots[+v]; p.visit = { state: 'planned', slot: s, requested: false }; p.status = 'planned';
+      log({ who: 'me', kind: 'planned', pid: p.id }); render(); toast('Visit planned for ' + slotLabel(s)); break;
+    }
+    case 'cancel-visit': p.visit = null; p.status = 'saved'; log({ who: 'me', kind: 'cancelled', pid: p.id }); render(); toast('Visit cancelled. ' + pn() + ' is notified.'); break;
+    case 'request': p.visit.requested = true; render(); toast('Visit request sent to the agency'); break;
+    case 'calendar': toast('Added to your calendar'); break;
+    case 'visited': {
+      p.visit = { state: 'visited', slot: { d: now, t: '' } }; p.status = 'visited';
+      log({ who: 'me', kind: 'visited', pid: p.id }); render(); toast('Marked as visited'); break;
+    }
+    case 'feed': {
+      const f = st.feed[+v]; f.unread = false;
+      if (f.pid) go('detail', { id: f.pid, anchor: f.kind === 'comment' ? 'comments' : null }); else render(); break;
+    }
+    case 'read-all': st.feed.forEach(f => { f.unread = false; }); render(); break;
+    case 'notif': openSheet('notif'); break;
+    case 'manage': openSheet('manage'); break;
+    case 'add-person': toast('In this prototype you search with one other person.'); break;
+    case 'stop': st.sheet.confirm = true; render(); break;
+    case 'stop-no': st.sheet.confirm = false; render(); break;
+    case 'stop-yes': { const n = pn(); st.collab = 'none'; st.stack = [{ s: 'saved' }]; st.seg = 'shared'; st.sheet = null; scrolls = {}; render(); toast('You stopped sharing with ' + n); break; }
+    case 'listing': toast('Contacting the agency is not part of this prototype.'); break;
+    case 'save': toggleSave(p); break;
+    case 'undo-save': p.saved = true; if (p.wasShared) p.shared = true; render(); toast('Saved again'); break;
+    case 'share': shareProp(p, true); break;
+    case 'unshare': unshareProp(p); break;
+    case 'pick-type': document.querySelectorAll('#pick-chips .chip').forEach(c => c.setAttribute('aria-pressed', c === el)); filterPick(); break;
+    case 'toggle-auto': st.saveMode = { ask: 'auto', auto: 'private', 'private': 'ask' }[st.saveMode]; render(); break;
+    case 'save-to': {
+      const rem = $('#save-remember');
+      if (rem && rem.checked) st.saveMode = v === 'shared' ? 'auto' : 'private';
+      st.sheet = null; doSave(p, v === 'shared'); break;
+    }
+    case 'oos': toast('This page is not part of this prototype.'); break;
+    case 'close-sheet': closeSheet(); break;
+  }
+});
+
+function filterPick() {
+  const q = (($('#pick-q') || {}).value || '').toLowerCase().trim(), t = (document.querySelector('#pick-chips [aria-pressed="true"]') || {}).dataset;
+  const type = t ? t.v : 'All'; let n = 0;
+  document.querySelectorAll('#picklist label').forEach(l => { l.hidden = (type !== 'All' && l.dataset.type !== type) || (q && l.dataset.text.indexOf(q) < 0); if (l.querySelector('input').checked) n++; });
+  const shown = document.querySelectorAll('#picklist label:not([hidden])').length;
+  const c = $('#pick-count'); if (c) c.textContent = n + ' selected' + (shown ? '' : '. No saved properties match this filter.');
+  if (c) c.textContent = tr(c.textContent);
+}
+document.addEventListener('input', e => { if (e.target.id === 'pick-q') filterPick(); });
+document.addEventListener('change', e => {
+  if (e.target.name === 'share') { const l = $('#picklist'); if (l) l.hidden = !$('#share-pick').checked; }
+  if (e.target.closest('#picklist')) filterPick();
+  if (e.target.name === 'slot') { const all = document.querySelectorAll('input[name=slot]'), n = document.querySelectorAll('input[name=slot]:checked').length; all.forEach(i => { i.disabled = !i.checked && n >= 3; i.closest('label').style.opacity = i.disabled ? '0.45' : ''; }); }
+});
+
+document.addEventListener('submit', e => {
+  const form = e.target.closest('[data-form]'); if (!form) return;
+  e.preventDefault();
+  const kind = form.dataset.form, p = form.dataset.id && prop(form.dataset.id);
+  if (kind === 'invite') {
+    const email = $('#inv-email').value.trim(), name = $('#inv-name').value.trim();
+    if (!/^\S+@\S+\.\S+$/.test(email)) { $('#inv-err').hidden = false; $('#inv-email').focus(); return; }
+    readPick();
+    st.partner = name || 'Alex'; st.linkOnly = false; st.collab = 'pending'; st.stack = [{ s: 'saved' }]; st.seg = 'shared'; scrolls = {};
+    $('#app').innerHTML = ''; render(); toast('Invite sent to ' + pn());
+  } else if (kind === 'comment') {
+    const input = $('#comment-input'), t = input.value.trim(); if (!t) return;
+    input.value = '';
+    p.comments.push({ by: 'me', t: t }); p.isNew = false;
+    render({ bottom: true });
+    if (!p.replied) { p.replied = true; later(1400, () => partnerReplies(p)); }
+  } else if (kind === 'propose') {
+    const picked = Array.from(form.querySelectorAll('input[name=slot]:checked')).map(i => st.slotOpts[+i.value]);
+    if (picked.length < 1 || picked.length > 3) { $('#slot-err').hidden = false; return; }
+    p.visit = { state: 'mine', slots: picked };
+    log({ who: 'me', kind: 'proposed', pid: p.id, n: picked.length });
+    st.sheet = null; render(); toast('Sent to ' + pn() + '. You get a notification when they pick.');
+    later(7000, () => partnerPicks(p));
+  } else if (kind === 'notif') {
+    ['saved', 'react', 'comment', 'visit'].forEach(k => { st.notif[k] = $('#nt-' + k).checked; });
+    st.notif.channel = form.querySelector('input[name=channel]:checked').value;
+    st.notif.when = form.querySelector('input[name=when]:checked').value;
+    st.sheet = null; render(); toast('Notification settings saved');
+  }
+});
+
+st = fresh();
+render();
+if (location.hash === '#shared') activate(true);
+})();
+</script>
+</body>
+</html>
