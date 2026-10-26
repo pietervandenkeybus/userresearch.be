@@ -2,7 +2,7 @@ import json
 from PIL import Image
 from collections import Counter
 D='/home/claude/repo/cdp/img/'
-im=Image.open(D+'detail.png').convert('RGB'); card=Image.open(D+'card.png').convert('RGB'); gal=Image.open(D+'gallery.png').convert('RGB'); cta=Image.open(D+'cta.png').convert('RGB')
+im=Image.open(D+'detail.png').convert('RGB'); card=Image.open(D+'card.png').convert('RGB'); gal=Image.open(D+'gallery.png').convert('RGB')
 def colors(img,X0,Y0,X1,Y1):
     c=Counter(); X0,Y0,X1,Y1=int(X0),int(Y0),int(X1),int(Y1)
     for yy in range(Y0,Y1,2):
@@ -22,7 +22,7 @@ def item(kind,x0,y0,x1,y1,st,nl,fr,align='left',pad=1,lh=None,bgo=None,colo=None
     elif kind=='card':
         img=card; W=393; H=291; X0,Y0,X1,Y1=x0*2,y0*2,x1*2,y1*2; k=0.5
     elif kind=='cta':
-        img=cta; W=393; H=76; X0,Y0,X1,Y1=x0*2,y0*2,x1*2,y1*2; k=0.5
+        img=card; W=393; H=76; X0,Y0,X1,Y1=x0*2,y0*2,x1*2,y1*2; k=0.5
     elif kind=='viewer':
         img=view; W=393; H=812; X0,Y0,X1,Y1=x0*2,y0*2,x1*2,y1*2; k=0.5
     else:
@@ -31,7 +31,7 @@ def item(kind,x0,y0,x1,y1,st,nl,fr,align='left',pad=1,lh=None,bgo=None,colo=None
     if bgo: bg=bgo
     if colo: col=colo
     fs,fw=S[st]
-    cy=(Y0+Y1)/2*k; gh=(fs*1.25) if not (lh or el) else (Y1-Y0)*k   # patch covers the glyph band only, not the whole line box
+    cy=(Y0+Y1)/2*k; gh=(fs*1.8) if not (lh or el) else (Y1-Y0)*k   # patch covers the glyph band only, not the whole line box
     y0p=cy-gh/2
     l=(X0*k-pad)/W*100; t=(y0p-pad)/H*100; w=(X1-X0)*k/W*100+2*pad/W*100; hgt=(gh+2*pad)/H*100
     if pill: l=X0*k/W*100; t=Y0*k/H*100; w=(X1-X0)*k/W*100; hgt=(Y1-Y0)*k/H*100
@@ -102,7 +102,7 @@ d(57,4287,185,4317,'h2','Totale projectkost','Coût total du projet')
 d(129,4343,295,4377,'btn','Simuleer bij Belfius','Simuler avec Belfius',align='center')
 d(57,4413,340,4443,'xs','¹ Indicatieve, niet-contractuele simulatie op basis van parameters van Belfius. Meer info','¹ Simulation indicative et non contractuelle basée sur les paramètres de Belfius. En savoir plus',lh=16)
 d(100,4510,325,4544,'body','Immoweb-code: 9273615','Code Immoweb : 9273615',align='center')
-d(157,4554,300,4588,'btn','Zoekertje melden','Signaler cette annonce',align='center')
+d(152,4554,305,4588,'btns','Zoekertje melden','Signaler cette annonce')
 d(32,4636,225,4683,'h1','Vergelijkbare panden','Biens similaires')
 d(76,4719,102,4745,'pill','Nieuw','Nouveau')
 d(311,4724,392,4743,'pills','OPENBARE VERKOOP','VENTE PUBLIQUE')
