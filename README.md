@@ -25,4 +25,4 @@ Open the language link in Safari or Chrome, then Add to Home Screen. Bookmark on
 
 ## Updating
 - Hub texts: edit `hub/i18n.js` (English, Dutch, French per line).
-- CDP screens: replace the PNGs in `cdp/img/`. CDP translations: `cdp/translations.py` regenerates `cdp/ov.json` (then paste it into `cdp/index.html` where `const OV` is defined).
+- CDP screens: replace the PNGs in `cdp/img/`. CDP translations: `cdp/translations.py` (main page) and `cdp/sheets_i18n.py` (the sheets) regenerate `cdp/ov.json`; paste it into `cdp/index.html` where `const OV` is defined.
